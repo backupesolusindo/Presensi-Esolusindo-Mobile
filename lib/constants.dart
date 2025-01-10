@@ -1,0 +1,21 @@
+import 'package:flutter/material.dart';
+
+const kPrimaryColor = Color.fromARGB(255, 192, 33, 47);
+const kLightPrimaryColor = Color.fromARGB(255, 254, 217, 218);
+const kDarkPrimaryColor = Color.fromARGB(255, 146, 14, 25);
+const kPrimaryLightColor = Color(0xFFFF1F9FE);
+const CText = Color.fromARGB(255, 56, 65, 77);
+const ColorLight = Color(0xFF7995a9c4);
+const CSuccess = Color(0xFF55cd4c);
+const CDanger = Color(0xFFf33a3a);
+const CWarning = Color(0xFFff9e4e);
+const softblue = Color(0xFFE6F8FE);
+const softred = Color(0xFFF6666);
+const softorange = Color(0xFFFFE0B1);
+const approval_kegiatan = Color(0xFF91e4e7);
+const approval_presensi = Color(0xFFFE9B29);
+const approval_cuti = Color(0xFFF33a3a);
+const Cdark = Color(0xFF000000);
+const CBackground = Color.fromRGBO(225, 225, 240, 0.3);
+const CTranparant = Color.fromARGB(0, 1, 177, 241);
+// const CBackground = Color.fromRGBO(21, 21, 196, 0.298);
