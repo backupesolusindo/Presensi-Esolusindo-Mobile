@@ -23,9 +23,9 @@ class LokasiKampusPost {
   static Future<LokasiKampusPost?> connectToApi(String idkampus) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var url = Uri.parse(Core().ApiUrl + "Pegawai/set_lokasi");
+    var url = Uri.parse("${Core().ApiUrl}Pegawai/set_lokasi");
 
-    var request = new http.MultipartRequest("POST", url);
+    var request = http.MultipartRequest("POST", url);
     request.fields['uuid'] = prefs.getString("ID")!;
     request.fields['idkampus'] = idkampus;
 

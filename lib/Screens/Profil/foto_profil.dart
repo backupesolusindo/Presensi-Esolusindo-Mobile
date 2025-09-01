@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Foto_Profil extends StatefulWidget {
+  const Foto_Profil({super.key});
+
   @override
   _Foto_ProfilState createState() => _Foto_ProfilState();
 }
@@ -38,7 +40,7 @@ class _Foto_ProfilState extends State<Foto_Profil> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UUID = prefs.getString("ID")!;
     var res = await http.get(
-      Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
+      Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
       headers: {"Accept": "application/json"},
     );
     var resBody = json.decode(res.body);

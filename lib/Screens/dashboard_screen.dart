@@ -5,6 +5,8 @@ import 'package:mobile_presensi_kdtg/Screens/bottom_nav_screen.dart';
 import '../constants.dart';
 
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: MaterialColor(
           kPrimaryColor.value,
-          <int, Color>{
+          const <int, Color>{
             50: kPrimaryColor,
             100: kPrimaryColor,
             200: kPrimaryColor,

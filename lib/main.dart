@@ -58,6 +58,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -74,6 +76,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -88,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSetting =
         InitializationSettings(android: initializationSettingsAndroid);
 
@@ -96,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
       AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
+      if (android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -122,11 +126,11 @@ class _MyHomePageState extends State<MyHomePage> {
     String? token = await FirebaseMessaging.instance.getToken();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", token!);
-    print("Token : " + token);
+    print("Token : $token");
   }
 
   Future<void> _getMockLocation() async {
-    Timer(Duration(seconds: 2), () => _Cek_Login());
+    Timer(const Duration(seconds: 2), () => _Cek_Login());
     // bool _mocklocation = await TrustLocation.isMockLocation;
     // print(_mocklocation);
     // if (_mocklocation == true) {
@@ -185,8 +189,8 @@ class _MyHomePageState extends State<MyHomePage> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("FAKE GPS"),
-            content: SingleChildScrollView(
+            title: const Text("FAKE GPS"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("HARAP UNINSTALL FAKE GPS ANDA !!!"),
@@ -195,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

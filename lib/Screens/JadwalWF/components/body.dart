@@ -16,12 +16,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
 
 class _Body extends State<Body> {
-  PostLogin postLogin = new PostLogin();
+  PostLogin postLogin = PostLogin();
   final txtKeterangan = TextEditingController();
   final txtTanggalMulai = TextEditingController();
   final txtTanggalAkhir = TextEditingController();
@@ -47,7 +49,7 @@ class _Body extends State<Body> {
               hintText: "Tanggal",
               IdCon: txtTanggalMulai,
             ),
-            new DropdownButton(
+            DropdownButton(
               items: <String>['WFO', 'WFH']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(

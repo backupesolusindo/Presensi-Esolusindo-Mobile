@@ -12,6 +12,8 @@ import 'package:mobile_presensi_kdtg/components/text_style.dart';
 import 'package:mobile_presensi_kdtg/components/or_divider.dart';
 
 class AbsenScreen extends StatelessWidget {
+  const AbsenScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,12 +23,14 @@ class AbsenScreen extends StatelessWidget {
 }
 
 class AbsenPage extends StatefulWidget {
+  const AbsenPage({super.key});
+
   @override
   _AbsenPage createState() => _AbsenPage();
 }
 
 class _AbsenPage extends State<AbsenPage> {
-  final AbsenPost absenPost = new AbsenPost();
+  final AbsenPost absenPost = AbsenPost();
   double la_polije = -8.1594718;
   double lo_polije = 113.720271;
   double Jarak = 0;
@@ -106,11 +110,10 @@ class _AbsenPage extends State<AbsenPage> {
         body: Stack(children: <Widget>[
       GoogleMap(
         initialCameraPosition: CameraPosition(
-          target: new LatLng(la, lo),
+          target: LatLng(la, lo),
           zoom: 16.0,
         ),
-        markers: Set<Marker>.of(
-          [
+        markers: <Marker>{
             Marker(
               markerId: MarkerId('marker_1'),
               position: LatLng(la, lo),
@@ -123,10 +126,9 @@ class _AbsenPage extends State<AbsenPage> {
                 print("Marker tapped");
               },
             ),
-          ],
-        ),
+          },
         mapType: MapType.hybrid,
-        polygons: Set<Polygon>.of([
+        polygons: <Polygon>{
           Polygon(
               polygonId: PolygonId("Area Polije"),
               points: const <LatLng>[
@@ -140,18 +142,18 @@ class _AbsenPage extends State<AbsenPage> {
               strokeWidth: 2,
               strokeColor: Colors.blue,
               fillColor: Colors.blue.withOpacity(0.1))
-        ]),
+        },
         onTap: (location) => print('onTap: $location'),
         onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
         compassEnabled: true,
         onMapCreated: (controller) {
-          Future.delayed(Duration(seconds: 2)).then(
+          Future.delayed(const Duration(seconds: 2)).then(
             (_) {
               controller.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
                     bearing: 0,
-                    target: new LatLng(la, lo),
+                    target: LatLng(la, lo),
                     tilt: 30.0,
                     zoom: 18,
                   ),
@@ -168,7 +170,7 @@ class _AbsenPage extends State<AbsenPage> {
           bottom: 10,
           width: size.width * 0.85,
           child: Container(
-            margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0),
+            margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -182,50 +184,50 @@ class _AbsenPage extends State<AbsenPage> {
                     children: [
                       (_image == null)
                           ? Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                   left: 10.0, right: 10.0, top: 10.0),
                               height: 59,
                               width: 59,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image: AssetImage(
                                       'assets/images/user_image.png'),
                                 ),
                               ),
                             )
                           : Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, right: 10.0, top: 10.0),
                               child:
                                   Image.file(_image, width: 70, height: 100)),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 5, top: 10, right: 0),
+                        padding: const EdgeInsets.only(bottom: 5, top: 10, right: 0),
                         child: Column(
                           children: <Widget>[
-                            Text(
+                            const Text(
                               'Elsa Manora Ramadania',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.blue),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text(
+                            const Text(
                               '082128767898',
                               style:
                                   TextStyle(fontSize: 15, color: Colors.blue),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text("Jarak Anda Menuju Kantor : "),
-                            SizedBox(
+                            const Text("Jarak Anda Menuju Kantor : "),
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text(Jarak.toInt().toString() + " Meter",
+                            Text("${Jarak.toInt()} Meter",
                                 style: keterangan),
                           ],
                         ),
@@ -238,7 +240,7 @@ class _AbsenPage extends State<AbsenPage> {
                           children: <Widget>[
                         ElevatedButton(
                           onPressed: getImage,
-                          child: Text("Ambil Foto"),
+                          child: const Text("Ambil Foto"),
                         ),
                         RoundedButtonSmall(
                           text: "Upload",

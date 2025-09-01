@@ -22,12 +22,12 @@ class AbsenKegiatanPost {
   static Future<AbsenKegiatanPost?> connectToApi(String id, String idkegiatan,
       String lat, String long, String lokasi, File imageFile) async {
     var stream =
-        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+        http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     var length = await imageFile.length();
-    var url = Uri.parse(Core().ApiUrl + "Kegiatan/absen_kegiatan");
+    var url = Uri.parse("${Core().ApiUrl}Kegiatan/absen_kegiatan");
 
-    var request = new http.MultipartRequest("POST", url);
-    var multipartFile = new http.MultipartFile("image", stream, length,
+    var request = http.MultipartRequest("POST", url);
+    var multipartFile = http.MultipartFile("image", stream, length,
         filename: basename(imageFile.path));
     request.fields['id'] = id;
     request.fields['idkegiatan'] = idkegiatan;

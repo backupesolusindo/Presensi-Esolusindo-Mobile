@@ -50,7 +50,7 @@ class PostLogin {
 
   static Future<PostLogin?> connectToApi(
       String username, String password, String token) async {
-    var url = Uri.parse(Core().ApiUrl + "Login/aksi_login");
+    var url = Uri.parse("${Core().ApiUrl}Login/aksi_login");
     var apiResult = await http.post(url, body: {
       "nip": username,
       "password": password,

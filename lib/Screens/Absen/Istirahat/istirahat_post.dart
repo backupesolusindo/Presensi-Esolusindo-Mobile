@@ -20,19 +20,19 @@ class AbsenIstirahatPost {
   }
 
   static Future<AbsenIstirahatPost?> connectToApi(String id, String lat,
-      String long, String jenis_tempat, File imageFile) async {
+      String long, String jenisTempat, File imageFile) async {
     var stream =
-        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+        http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     var length = await imageFile.length();
-    var url = Uri.parse(Core().ApiUrl + "Absen/insert_istirahat");
+    var url = Uri.parse("${Core().ApiUrl}Absen/insert_istirahat");
 
-    var request = new http.MultipartRequest("POST", url);
-    var multipartFile = new http.MultipartFile("image", stream, length,
+    var request = http.MultipartRequest("POST", url);
+    var multipartFile = http.MultipartFile("image", stream, length,
         filename: basename(imageFile.path));
     request.fields['id'] = id;
     request.fields['lat'] = lat;
     request.fields['long'] = long;
-    request.fields['jenis_tempat'] = jenis_tempat;
+    request.fields['jenis_tempat'] = jenisTempat;
     request.files.add(multipartFile);
 
     http.Response response =

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_presensi_kdtg/Screens/JadwalWF/ListJadwalWF/body.dart';
 
 class ListJadwalWF_Screen extends StatefulWidget {
+  const ListJadwalWF_Screen({super.key});
+
   @override
   _ListJadwalWF_ScreenState createState() => _ListJadwalWF_ScreenState();
 }

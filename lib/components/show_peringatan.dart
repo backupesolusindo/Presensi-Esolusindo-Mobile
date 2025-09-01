@@ -27,7 +27,7 @@ class ShowPeringatan extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Keluar'),
+            child: const Text('Keluar'),
             onPressed: () {
               Navigator.of(context).pop();
             },

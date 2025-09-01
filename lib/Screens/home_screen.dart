@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     getPref();
     // cekFakeGPS();
-    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
   }
 
   // cekFakeGPS() async {
@@ -100,34 +100,34 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     //   }));
     // }
 
-    var url = Uri.parse(Core().ApiUrl + "Login/set_token");
+    var url = Uri.parse("${Core().ApiUrl}Login/set_token");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
       "token": prefs.getString("token"),
     });
     print(response.body);
-    print("Login Pref :" + UUID);
+    print("Login Pref :$UUID");
     getDataDash();
     // fetchKegiatan();
   }
 
   Future<String> getDataDash() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var res = await http.get(Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
+    var res = await http.get(Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
       statusLoading = 0;
       ssHeader = true;
-      Timer(Duration(milliseconds: 250), () {
+      Timer(const Duration(milliseconds: 250), () {
         ssBody = true;
-        Timer(Duration(milliseconds: 250), () {
+        Timer(const Duration(milliseconds: 250), () {
           ssFooter = true;
         });
       });
 
       DataPegawai = resBody['data']["pegawai"];
-      print("Data Pegawai : " + DataPegawai.toString());
+      print("Data Pegawai : $DataPegawai");
       DataLokasi = resBody['data']["lokasi"];
       DataAbsen = resBody['data']["absen"];
       DataAbsenPulang = resBody['data']["absensi_pulang"];
@@ -175,15 +175,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             DateTime.parse(DataAbsenPulang['waktu']), [dd, '/', mm, '/', yyyy]);
       }
       if (DataSelesaiIstirahat != null) {
-        jam_istirahat = formatDate(DateTime.parse(DataIstirahat['waktu']),
-                [HH, ':', nn, ':', ss]) +
-            " s/d " +
-            formatDate(DateTime.parse(DataSelesaiIstirahat['waktu']),
-                [HH, ':', nn, ':', ss]);
+        jam_istirahat = "${formatDate(DateTime.parse(DataIstirahat['waktu']),
+                [HH, ':', nn, ':', ss])} s/d ${formatDate(DateTime.parse(DataSelesaiIstirahat['waktu']),
+                [HH, ':', nn, ':', ss])}";
       } else {
-        jam_istirahat = formatDate(DateTime.parse(DataIstirahat['waktu']),
-                [HH, ':', nn, ':', ss]) +
-            " - Belum Presensi";
+        jam_istirahat = "${formatDate(DateTime.parse(DataIstirahat['waktu']),
+                [HH, ':', nn, ':', ss])} - Belum Presensi";
       }
     });
     print(resBody);
@@ -192,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   fetchKegiatan() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse(Core().ApiUrl + "Dash/getKegiatanTerkini");
+    var url = Uri.parse("${Core().ApiUrl}Dash/getKegiatanTerkini");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
     });
@@ -237,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
           ),
           CustomScrollView(
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             slivers: <Widget>[
               _buildHeader(screenHeight),
               SliverToBoxAdapter(
@@ -245,9 +242,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     ? Container(
                         width: size.width,
                         alignment: Alignment.center,
-                        child: CircularProgressIndicator(),
+                        child: const CircularProgressIndicator(),
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
               ),
               (statusWF == 1)
                   ? _buildMenuWFO(screenHeight)
@@ -270,27 +267,27 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             duration: const Duration(milliseconds: 500),
             child: AnimatedContainer(
                 margin: ssFooter
-                    ? EdgeInsets.only(top: 0)
-                    : EdgeInsets.only(top: 30),
+                    ? const EdgeInsets.only(top: 0)
+                    : const EdgeInsets.only(top: 30),
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.fastEaseInToSlowEaseOut,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
+                    const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
                       child: Text(
                         'Presensi Anda :',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                     if (DataAbsen == null &&
-                        DataKegiatan.length < 1 &&
+                        DataKegiatan.isEmpty &&
                         StatusDinasLuar == 1)
                       Container(
                         padding: const EdgeInsets.all(20.0),
@@ -300,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         decoration: BoxDecoration(
                           color: CWarning,
                           borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: CWarning,
                               blurRadius: 4,
@@ -308,9 +305,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             ),
                           ],
                         ),
-                        child: Text(
+                        child: const Text(
                           "Anda Hari Ini Belum Melakukan Presensi",
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: Colors.white70,
                               fontWeight: FontWeight.w600),
                         ),
@@ -349,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             BoxShadow(
                               color: kPrimaryColor.withOpacity(0.8),
                               blurRadius: 4,
-                              offset: Offset(4, 4), // Shadow position
+                              offset: const Offset(4, 4), // Shadow position
                             ),
                           ],
                         ),
@@ -357,15 +354,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            const Text(
                               "Dinas Luar :",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
@@ -376,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
@@ -388,9 +385,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               ),
                             ),
                             Text(
-                              "Tanggal : " +
-                                  DataDinasLuar['tanggal_mulai'] +
-                                  " s/d " +
+                              "${"Tanggal : " +
+                                  DataDinasLuar['tanggal_mulai']} s/d " +
                                   DataDinasLuar['tanggal_selesai'],
                               style: const TextStyle(
                                 color: Colors.white,
@@ -415,15 +411,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            const Text(
                               "Tugas Belajar :",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
@@ -436,7 +432,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
@@ -473,18 +469,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             duration: const Duration(milliseconds: 500),
             child: AnimatedContainer(
               margin:
-                  ssFooter ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 30),
+                  ssFooter ? const EdgeInsets.only(top: 0) : const EdgeInsets.only(top: 30),
               duration: const Duration(milliseconds: 500),
               curve: Curves.fastEaseInToSlowEaseOut,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 20),
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8, left: 20),
                     child: Text(
                       'Kegiatan Anda :',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -499,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       decoration: BoxDecoration(
                         color: CWarning,
                         borderRadius: BorderRadius.circular(12.0),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: CWarning,
                             blurRadius: 4,
@@ -507,13 +503,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      child: Text(
+                      child: const Text(
                         "Anda Hari Ini Tidak Ada Kegiatan",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.white70, fontWeight: FontWeight.w600),
                       ),
                     ),
-                  Container(
+                  SizedBox(
                       width: double.infinity,
                       height: size.height * 0.3,
                       child: ListView.builder(
@@ -531,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       decoration: BoxDecoration(
         color: Colors.white70,
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.white70,
             blurRadius: 4,
@@ -551,47 +547,43 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(item['nama_kegiatan'],
                   style: const TextStyle(
                       color: CText, fontSize: 16, fontWeight: FontWeight.w800)),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Text(
                 (item['tanggal'] == item['tanggal_selesai'])
-                    ? "Pelaksanaan : " +
-                        formatDate(DateTime.parse(item['tanggal']),
-                            [dd, '-', mm, '-', yyyy])
-                    : "Pelaksanaan : " +
-                        formatDate(DateTime.parse(item['tanggal']),
-                            [dd, '-', mm, '-', yyyy]) +
-                        " s/d " +
-                        formatDate(DateTime.parse(item['tanggal_selesai']),
-                            [dd, '-', mm, '-', yyyy]),
+                    ? "Pelaksanaan : ${formatDate(DateTime.parse(item['tanggal']),
+                            [dd, '-', mm, '-', yyyy])}"
+                    : "Pelaksanaan : ${formatDate(DateTime.parse(item['tanggal']),
+                            [dd, '-', mm, '-', yyyy])} s/d ${formatDate(DateTime.parse(item['tanggal_selesai']),
+                            [dd, '-', mm, '-', yyyy])}",
                 style: const TextStyle(
                     color: kDarkPrimaryColor, fontWeight: FontWeight.w600),
               ),
               Row(
                 children: <Widget>[
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Jam Mulai",
-                        style: const TextStyle(fontSize: 12, color: CText),
+                        style: TextStyle(fontSize: 12, color: CText),
                       ),
                       Text("Jam Selesai",
-                          style: const TextStyle(fontSize: 12, color: CText)),
+                          style: TextStyle(fontSize: 12, color: CText)),
                       Text("Lokasi",
-                          style: const TextStyle(fontSize: 12, color: CText)),
+                          style: TextStyle(fontSize: 12, color: CText)),
                       Text("PIC",
-                          style: const TextStyle(fontSize: 12, color: CText)),
+                          style: TextStyle(fontSize: 12, color: CText)),
                       Text("Unit Pengadaan",
-                          style: const TextStyle(fontSize: 12, color: CText)),
+                          style: TextStyle(fontSize: 12, color: CText)),
                     ],
                   ),
                   Column(
@@ -603,9 +595,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           style: const TextStyle(fontSize: 12, color: CText)),
                       Text(
                           (item['nama_gedung'] != null)
-                              ? ": " +
-                                  item['nama_gedung'] +
-                                  ", " +
+                              ? "${": " +
+                                  item['nama_gedung']}, " +
                                   item['nama_kampus']
                               : ": " + item['nama_kampus'],
                           style: const TextStyle(fontSize: 12, color: CText)),
@@ -633,8 +624,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("Presensi Kegiatan"),
-            content: SingleChildScrollView(
+            title: const Text("Presensi Kegiatan"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("Pilih Lokasi Presensi Kegiatan !"),
@@ -643,7 +634,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Presensi Di Lokasi'),
+                child: const Text('Presensi Di Lokasi'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -658,7 +649,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 },
               ),
               TextButton(
-                child: Text('Presensi Online'),
+                child: const Text('Presensi Online'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -689,7 +680,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       child: AnimatedContainer(
         padding: const EdgeInsets.only(
             left: 20.0, right: 20.0, bottom: 10.0, top: 40.0),
-        margin: ssHeader ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 30),
+        margin: ssHeader ? const EdgeInsets.only(top: 0) : const EdgeInsets.only(top: 30),
         duration: const Duration(milliseconds: 500),
         curve: Curves.fastEaseInToSlowEaseOut,
         child: Column(
@@ -699,7 +690,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -707,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            const Text(
                               "Good Day!",
                               style: TextStyle(
                                 fontSize: 17,
@@ -715,19 +706,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 color: CText,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               Nama,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 23,
                                 fontWeight: FontWeight.w600,
                                 color: CText,
                               ),
                             ),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text(
                               (NIP == "") ? "-" : NIP,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: CText,
@@ -751,7 +742,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Row(
@@ -761,9 +752,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       child: Container(
                         height: 125,
                         width: size.width * 0.43,
-                        margin: EdgeInsets.only(right: 4),
+                        margin: const EdgeInsets.only(right: 4),
                         padding:
-                            EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                            const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
@@ -771,24 +762,24 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(
+                            const Icon(
                               Icons.watch_later_outlined,
                               color: Colors.blue,
                             ),
                             Text(
                               jam,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w500,
                                   color: CText),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Text(
                               formatDate(DateTime.now(),
                                   [D, ', ', dd, ' ', MM, ' ', yyyy]),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: CText),
@@ -808,8 +799,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           child: Container(
                             height: 125,
                             width: size.width * 0.43,
-                            margin: EdgeInsets.only(left: 4),
-                            padding: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.only(left: 4),
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 18, vertical: 12),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -818,22 +809,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(
+                                const Icon(
                                   Icons.location_on_outlined,
                                   color: Colors.blue,
                                 ),
                                 Text(
                                   LokasiAnda,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                       color: CText),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text(
+                                const Text(
                                   "Lokasi Anda",
                                   style: TextStyle(
                                       fontSize: 16,
@@ -867,7 +858,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             BoxShadow(
               color: color.withOpacity(0.8),
               blurRadius: 4,
-              offset: Offset(2, 4), // Shadow position
+              offset: const Offset(2, 4), // Shadow position
             ),
           ],
         ),
@@ -883,7 +874,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 1,
             ),
             Text(
@@ -903,7 +894,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ],
         ),
       ),
@@ -918,7 +909,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             duration: const Duration(milliseconds: 500),
             child: AnimatedContainer(
               margin:
-                  ssBody ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 30),
+                  ssBody ? const EdgeInsets.only(top: 0) : const EdgeInsets.only(top: 30),
               duration: const Duration(milliseconds: 500),
               curve: Curves.fastEaseInToSlowEaseOut,
               child: Container(
@@ -928,7 +919,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 decoration: BoxDecoration(
                   color: Colors.white70,
                   borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.white70,
                       blurRadius: 4,
@@ -939,9 +930,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Menu Presensi :',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -966,9 +957,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Semua\nMenu",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1019,9 +1010,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Presensi\nMasuk",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1058,9 +1049,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Istirahat\nKeluar",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1109,9 +1100,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Presensi\nPulang",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1148,9 +1139,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Istirahat\nMasuk",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1173,7 +1164,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             duration: const Duration(milliseconds: 500),
             child: AnimatedContainer(
               margin:
-                  ssBody ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 30),
+                  ssBody ? const EdgeInsets.only(top: 0) : const EdgeInsets.only(top: 30),
               duration: const Duration(milliseconds: 500),
               curve: Curves.fastEaseInToSlowEaseOut,
               child: Container(
@@ -1181,7 +1172,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 decoration: BoxDecoration(
                   color: Colors.white70,
                   borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.white70,
                       blurRadius: 4,
@@ -1192,9 +1183,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Menu Presensi :',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1219,9 +1210,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Semua\nMenu",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1264,9 +1255,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Presensi\nMulai WFH",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1315,9 +1306,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
-                                    Text(
+                                    const Text(
                                       "Presensi\nSelesai WFH",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -1352,13 +1343,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(context, link);
@@ -1389,7 +1380,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -1409,8 +1400,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("Perbarui Aplikasi"),
-            content: SingleChildScrollView(
+            title: const Text("Perbarui Aplikasi"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("Mohon Untuk Perbarui Aplikasi Anda Saat Ini."),
@@ -1419,7 +1410,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text(
+                child: const Text(
                   'Lanjut Tanpa Pembaharuan',
                   style: TextStyle(color: CWarning),
                 ),
@@ -1428,7 +1419,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 },
               ),
               TextButton(
-  child: Text('Perbarui Sekarang'),
+  child: const Text('Perbarui Sekarang'),
   onPressed: () async {
     final InAppReview inAppReview = InAppReview.instance;
     

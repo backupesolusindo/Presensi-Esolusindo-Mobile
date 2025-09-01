@@ -19,6 +19,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
@@ -30,14 +32,14 @@ class _Body extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.fetchUser();
+    fetchUser();
   }
 
   fetchUser() async {
     setState(() {
       isLoading = true;
     });
-    var response = await http.get(Uri.parse(Core().ApiUrl + "Kampus/get_list"));
+    var response = await http.get(Uri.parse("${Core().ApiUrl}Kampus/get_list"));
     print(response.body);
     if (response.statusCode == 200) {
       var items = json.decode(response.body)['data'];
@@ -63,7 +65,7 @@ class _Body extends State<Body> {
     if (users.contains(null) || users.length < 0 || isLoading) {
       return Center(
           child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     return ListView.builder(
@@ -113,7 +115,7 @@ class _Body extends State<Body> {
                         width: MediaQuery.of(context).size.width - 200,
                         child: Text(
                           NamaKampus,
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         )),
                   )
                 ],
