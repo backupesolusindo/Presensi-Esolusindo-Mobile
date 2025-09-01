@@ -30,9 +30,9 @@ class IzinPost {
     var request = http.MultipartRequest("POST", url);
 
     var stream =
-        new http.ByteStream(DelegatingStream.typed(filecuti.openRead()));
+        http.ByteStream(DelegatingStream.typed(filecuti.openRead()));
     var length = await filecuti.length();
-    var multipartFile = new http.MultipartFile("image", stream, length,
+    var multipartFile = http.MultipartFile("image", stream, length,
         filename: basename(filecuti.path));
     request.files.add(multipartFile);
   

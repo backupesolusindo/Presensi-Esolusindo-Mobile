@@ -55,8 +55,8 @@ class _StatsScreenState extends State<StatsScreen> {
               physics: const ClampingScrollPhysics(),
               slivers: <Widget>[
                 _buildHeader(),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                const SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   sliver: SliverToBoxAdapter(
                     child: StatsGrid(),
                   ),

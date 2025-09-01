@@ -20,7 +20,7 @@ class _ListJadwalWF_ScreenState extends State<ListJadwalWF_Screen> {
           ),
         ),
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

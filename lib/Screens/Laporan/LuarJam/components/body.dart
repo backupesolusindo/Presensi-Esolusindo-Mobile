@@ -199,9 +199,9 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     if (users.isEmpty) {
@@ -279,10 +279,10 @@ class _Body extends State<Body> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 90,
                         child:
-                            const Text("Waktu", style: TextStyle(fontSize: 12)),
+                            Text("Waktu", style: TextStyle(fontSize: 12)),
                       ),
                       SizedBox(
                         width: 120,
@@ -298,9 +298,9 @@ class _Body extends State<Body> {
                   ),
                   Row(
                     children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         width: 90,
-                        child: const Text("Tanggal",
+                        child: Text("Tanggal",
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.fade,

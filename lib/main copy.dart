@@ -54,7 +54,7 @@ Future<void> main() async {
     sound: true,
   );
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -157,12 +157,12 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
           context,
           PageTransition(
-              type: PageTransitionType.fade, child: DashboardScreen()));
+              type: PageTransitionType.fade, child: const DashboardScreen()));
     } else {
       print("StatusLogin : Logout");
       Navigator.pop(context);
       Navigator.push(context,
-          PageTransition(type: PageTransitionType.fade, child: LoginScreen()));
+          PageTransition(type: PageTransitionType.fade, child: const LoginScreen()));
     }
   }
 
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 

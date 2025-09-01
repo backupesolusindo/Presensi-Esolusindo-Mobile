@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/JadwalWF/components/background.dart';
 import 'package:mobile_presensi_kdtg/Screens/Login/post_login.dart';
-import 'package:mobile_presensi_kdtg/components/already_have_an_account_acheck.dart';
 import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
 import 'package:mobile_presensi_kdtg/components/rounded_date_field.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_input_field.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:mobile_presensi_kdtg/components/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});

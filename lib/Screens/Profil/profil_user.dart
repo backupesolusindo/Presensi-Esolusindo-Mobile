@@ -143,7 +143,7 @@ class _ProfilUserState extends State<ProfilUser> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return Foto_Profil();
+                                  return const Foto_Profil();
                                 }));
                               },
                               child: CircularProfileAvatar(

@@ -91,7 +91,7 @@ class _AktifGPSState extends State<AktifGPS> {
                     if (status) {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
-                        return DashboardScreen();
+                        return const DashboardScreen();
                       }));
                     } else {
                       _showMyDialog();

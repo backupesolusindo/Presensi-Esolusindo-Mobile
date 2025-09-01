@@ -156,12 +156,12 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
         ),
         markers: <Marker>{
             Marker(
-              markerId: MarkerId('marker_1'),
+              markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
@@ -171,7 +171,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
         mapType: MapType.hybrid,
         circles: {
           Circle(
-              circleId: CircleId("Area Polije"),
+              circleId: const CircleId("Area Polije"),
               center: LatLng(la_polije, lo_polije),
               radius: radius,
               strokeWidth: 2,
@@ -180,14 +180,14 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
         },
         polygons: <Polygon>{
           Polygon(
-              polygonId: PolygonId("Area Polije"),
+              polygonId: const PolygonId("Area Polije"),
               points: const <LatLng>[
-                const LatLng(-8.159848, 113.720521),
-                const LatLng(-8.161228, 113.723176),
-                const LatLng(-8.160425, 113.723687),
-                const LatLng(-8.161215, 113.725171),
-                const LatLng(-8.154612, 113.725997),
-                const LatLng(-8.153624, 113.723426),
+                LatLng(-8.159848, 113.720521),
+                LatLng(-8.161228, 113.723176),
+                LatLng(-8.160425, 113.723687),
+                LatLng(-8.161215, 113.725171),
+                LatLng(-8.154612, 113.725997),
+                LatLng(-8.153624, 113.723426),
               ],
               strokeWidth: 2,
               strokeColor: Colors.blue,
@@ -308,7 +308,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                 items: DataJadwal.map((item) {
                                   return DropdownMenuItem(
                                     value: item['idjadwal_masuk'].toString(),
-                                    child: new Text(item['nama']),
+                                    child: Text(item['nama']),
                                   );
                                 }).toList(),
                                 onChanged: (newVal) {
@@ -360,7 +360,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                           Navigator.pushReplacement(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return DashboardScreen();
+                                            return const DashboardScreen();
                                           }));
                                         } else {
                                           _showMyDialog(
@@ -404,7 +404,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                               Navigator.pushReplacement(context,
                                                   MaterialPageRoute(
                                                       builder: (context) {
-                                                return DashboardScreen();
+                                                return const DashboardScreen();
                                               }));
                                             } else {
                                               _showMyDialog("Absensi Harian",

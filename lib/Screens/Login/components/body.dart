@@ -140,7 +140,7 @@ Widget build(BuildContext context) {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              child: DashboardScreen(),
+                              child: const DashboardScreen(),
                             ),
                           );
                         }

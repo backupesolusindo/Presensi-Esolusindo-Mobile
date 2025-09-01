@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     bool status = await Geolocator.isLocationServiceEnabled();
     if (!status) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return AktifGPS();
+        return const AktifGPS();
       }));
     }
 
@@ -808,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return LokasiKampusScreen();
+                              return const LokasiKampusScreen();
                             }));
                           },
                           child: Container(
@@ -969,7 +969,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return SemuaMenu();
+                                    return const SemuaMenu();
                                   }));
                                 },
                                 child: Column(
@@ -995,7 +995,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     if (DataAbsen == null) {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenHarianScreen();
+                                        return const AbsenHarianScreen();
                                       }));
                                     } else {
                                       if (DataAbsenPulang == null) {
@@ -1003,14 +1003,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             "Anda belum melakukan Presensi Pulang Harian. Silakan Presensi Pulang Harian terlebih dahulu !",
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenPulangHarianScreen();
+                                          return const AbsenPulangHarianScreen();
                                         }));
                                       } else {
                                         if (status_lintashari == 1) {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return AbsenHarianScreen();
+                                            return const AbsenHarianScreen();
                                           }));
                                         } else {
                                           _showNotif("Presensi Harian",
@@ -1048,13 +1048,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     if (DataIstirahat == null) {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenIstirahatScreen();
+                                        return const AbsenIstirahatScreen();
                                       }));
                                     } else {
                                       _showMyDialog("Presensi Istirahat",
                                           "Anda belum melakukan Presensi Selesai Istirahat. Silakan Presensi Selesai Istirahat terlebih dahulu !",
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenSelesaiIstirahatScreen();
+                                        return const AbsenSelesaiIstirahatScreen();
                                       }));
                                     }
                                   } else {
@@ -1088,21 +1088,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       _showMyDialog("Presensi Harian",
                                           "Anda belum melakukan Presensi Harian. Silakan Presensi Harian terlebih dahulu !",
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenHarianScreen();
+                                        return const AbsenHarianScreen();
                                       }));
                                     } else {
                                       if (DataAbsenPulang == null) {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenPulangHarianScreen();
+                                          return const AbsenPulangHarianScreen();
                                         }));
                                       } else {
                                         _showMyDialog("Presensi Harian",
                                             "Apakah Anda Membatalkan Pulang Sebelumnya ?",
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenPulangHarianScreen();
+                                          return const AbsenPulangHarianScreen();
                                         }));
                                       }
                                     }
@@ -1139,12 +1139,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       _showMyDialog("Presensi Istirahat",
                                           "Anda belum melakukan Presensi Istirahat. Silakan Presensi Istirahat terlebih dahulu !",
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenIstirahatScreen();
+                                        return const AbsenIstirahatScreen();
                                       }));
                                     } else {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenSelesaiIstirahatScreen();
+                                        return const AbsenSelesaiIstirahatScreen();
                                       }));
                                     }
                                   } else {
@@ -1222,7 +1222,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return SemuaMenu();
+                                    return const SemuaMenu();
                                   }));
                                 },
                                 child: Column(
@@ -1248,7 +1248,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     if (DataAbsen == null) {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenWFScreen();
+                                        return const AbsenWFScreen();
                                       }));
                                     } else {
                                       if (DataAbsenPulang == null) {
@@ -1256,7 +1256,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenSelesaiWFScreen();
+                                          return const AbsenSelesaiWFScreen();
                                         }));
                                       } else {
                                         _showNotif("Presensi WFH",
@@ -1294,21 +1294,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       _showMyDialog("Presensi WFH",
                                           "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
                                           MaterialPageRoute(builder: (context) {
-                                        return AbsenWFScreen();
+                                        return const AbsenWFScreen();
                                       }));
                                     } else {
                                       if (DataAbsenPulang == null) {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenSelesaiWFScreen();
+                                          return const AbsenSelesaiWFScreen();
                                         }));
                                       } else {
                                         _showMyDialog("Presensi WFH",
                                             "Apakah Anda Membatalkan Selesai WFH Sebelumnya ?",
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AbsenSelesaiWFScreen();
+                                          return const AbsenSelesaiWFScreen();
                                         }));
                                       }
                                     }

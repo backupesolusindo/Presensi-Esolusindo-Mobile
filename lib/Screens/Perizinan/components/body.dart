@@ -119,7 +119,7 @@ class _Body extends State<Body> {
                 items: data.map((item) {
                   return DropdownMenuItem(
                     value: item['idjenis_perizinan'].toString(),
-                    child: new Text(item['jenis_izin']),
+                    child: Text(item['jenis_izin']),
                   );
                 }).toList(),
                 onChanged: (newVal) {
@@ -154,7 +154,7 @@ class _Body extends State<Body> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return LaporanCutiScreen();
+                          return const LaporanCutiScreen();
                         },
                       ),
                     );

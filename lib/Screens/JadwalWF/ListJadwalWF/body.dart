@@ -128,7 +128,7 @@ class _Body extends State<Body> {
                           items: dataTahun.map((item) {
                             return DropdownMenuItem(
                               value: item['tahun'].toString(),
-                              child: new Text(item['tahun']),
+                              child: Text(item['tahun']),
                             );
                           }).toList(),
                           onChanged: (newVal) {
@@ -161,7 +161,7 @@ class _Body extends State<Body> {
                           items: dataBulan.map((item) {
                             return DropdownMenuItem(
                               value: item['kode'].toString(),
-                              child: new Text(item['bulan']),
+                              child: Text(item['bulan']),
                             );
                           }).toList(),
                           onChanged: (newVal) {
@@ -231,9 +231,9 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (jadwal.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     if (jadwal.isEmpty) {

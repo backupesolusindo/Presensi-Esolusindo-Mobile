@@ -245,24 +245,24 @@ class _AbsenKegiatanWFHScreenState extends State<AbsenKegiatanWFHScreen> {
         ),
         markers: <Marker>{
             Marker(
-              markerId: MarkerId('marker_1'),
+              markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
               },
             ),
             Marker(
-              markerId: MarkerId('marker_2'),
+              markerId: const MarkerId('marker_2'),
               position: LatLng(la_polije, lo_polije),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Kegiatan',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
@@ -501,7 +501,7 @@ class _AbsenKegiatanWFHScreenState extends State<AbsenKegiatanWFHScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return LaporanKegiatanScreen();
+                                        return const LaporanKegiatanScreen();
                                       },
                                     ),
                                   );

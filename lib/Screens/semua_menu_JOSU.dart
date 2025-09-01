@@ -157,14 +157,14 @@ class _SemuaMenu extends State<SemuaMenu> {
                             if (DataAbsen == null) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenHarianScreen();
+                                return const AbsenHarianScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 _showMyDialog("Presensi Harian",
                                     "Anda belum melakukan Presensi Pulang Harian. Silakan Presensi Pulang Harian terlebih dahulu !",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenPulangHarianScreen();
+                                  return const AbsenPulangHarianScreen();
                                 }));
                               } else {
                                 _showNotif("Presensi Harian",
@@ -208,19 +208,19 @@ class _SemuaMenu extends State<SemuaMenu> {
                               _showMyDialog("Presensi Harian",
                                   "Anda belum melakukan Presensi Harian. Silakan Presensi Harian terlebih dahulu !",
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenHarianScreen();
+                                return const AbsenHarianScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenPulangHarianScreen();
+                                  return const AbsenPulangHarianScreen();
                                 }));
                               } else {
                                 _showMyDialog("Presensi Harian",
                                     "Apakah Anda Memperbarui Pulang Sebelumnya ?",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenPulangHarianScreen();
+                                  return const AbsenPulangHarianScreen();
                                 }));
                               }
                             }
@@ -258,13 +258,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                         if (DataIstirahat == null) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return AbsenIstirahatScreen();
+                            return const AbsenIstirahatScreen();
                           }));
                         } else {
                           _showMyDialog("Presensi Istirahat",
                               "Anda belum melakukan Presensi Selesai Istirahat. Silakan Presensi Selesai Istirahat terlebih dahulu !",
                               MaterialPageRoute(builder: (context) {
-                            return AbsenSelesaiIstirahatScreen();
+                            return const AbsenSelesaiIstirahatScreen();
                           }));
                         }
                       },
@@ -294,12 +294,12 @@ class _SemuaMenu extends State<SemuaMenu> {
                           _showMyDialog("Presensi Istirahat",
                               "Anda belum melakukan Presensi Istirahat. Silakan Presensi Istirahat terlebih dahulu !",
                               MaterialPageRoute(builder: (context) {
-                            return AbsenIstirahatScreen();
+                            return const AbsenIstirahatScreen();
                           }));
                         } else {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return AbsenSelesaiIstirahatScreen();
+                            return const AbsenSelesaiIstirahatScreen();
                           }));
                         }
                       },
@@ -333,14 +333,14 @@ class _SemuaMenu extends State<SemuaMenu> {
                             if (DataAbsen == null) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenWFScreen();
+                                return const AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 _showMyDialog("Presensi WFH",
                                     "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showNotif("Presensi WFH",
@@ -384,19 +384,19 @@ class _SemuaMenu extends State<SemuaMenu> {
                               _showMyDialog("Presensi WFH",
                                   "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenWFScreen();
+                                return const AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showMyDialog("Presensi WFH",
                                     "Apakah Anda Memperbarui Pulang Sebelumnya ?",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               }
                             }
@@ -437,7 +437,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ListKegiatanScreen();
+                          return const ListKegiatanScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -464,7 +464,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return PresensiLokasiScreen();
+                          return const PresensiLokasiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -500,7 +500,7 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            OrDivider(),
+            const OrDivider(),
             const Text(
               'Menu Cuti',
               style: TextStyle(
@@ -519,7 +519,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return IzinScreen();
+                              return const IzinScreen();
                             }));
                           },
                           // // minWidth: 0,
@@ -555,7 +555,7 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            OrDivider(),
+            const OrDivider(),
             const Text(
               'Menu Laporan',
               style: TextStyle(
@@ -572,7 +572,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LaporanCutiScreen();
+                          return const LaporanCutiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -599,7 +599,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LaporanPresensiScreen();
+                          return const LaporanPresensiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -626,7 +626,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LaporanKegiatanScreen();
+                          return const LaporanKegiatanScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -653,7 +653,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LaporanLuarJamScreen();
+                          return const LaporanLuarJamScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -689,7 +689,7 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            OrDivider(),
+            const OrDivider(),
             const Text(
               'Menu Profil User',
               style: TextStyle(
@@ -706,7 +706,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LokasiKampusScreen();
+                          return const LokasiKampusScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -733,7 +733,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ListJadwalWF_Screen();
+                          return const ListJadwalWF_Screen();
                         }));
                       },
                       // // minWidth: 0,
@@ -760,7 +760,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ProfilUser();
+                          return const ProfilUser();
                         }));
                       },
                       // // minWidth: 0,
@@ -787,7 +787,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ResetPasswordScreen();
+                          return const ResetPasswordScreen();
                         }));
                       },
                       // minWidth: 0,

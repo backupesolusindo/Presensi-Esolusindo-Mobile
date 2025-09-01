@@ -63,9 +63,9 @@ class _Body extends State<Body> {
 
   Widget getBody() {
     if (users.contains(null) || users.length < 0 || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     return ListView.builder(
@@ -108,7 +108,7 @@ class _Body extends State<Body> {
                       Navigator.pop(context);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return DashboardScreen();
+                        return const DashboardScreen();
                       }));
                     },
                     child: SizedBox(

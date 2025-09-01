@@ -31,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BottomNavScreen(),
+      home: const BottomNavScreen(),
     );
   }
 }

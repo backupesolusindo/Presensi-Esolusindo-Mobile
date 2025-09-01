@@ -28,7 +28,7 @@ class AbsenSelesaiIstirahatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: AbsenPage(),
     );
   }
@@ -254,12 +254,12 @@ class _AbsenPage extends State<AbsenPage> {
           ),
           markers: <Marker>{
               Marker(
-                markerId: MarkerId('marker_1'),
+                markerId: const MarkerId('marker_1'),
                 position: LatLng(la, lo),
                 consumeTapEvents: true,
                 infoWindow: InfoWindow(
                   title: 'Lokasi Anda',
-                  snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                  snippet: "Jarak : ${Jarak.toInt()} M",
                 ),
                 onTap: () {
                   print("Marker tapped");
@@ -269,7 +269,7 @@ class _AbsenPage extends State<AbsenPage> {
           mapType: MapType.normal,
           circles: {
             Circle(
-                circleId: CircleId("Area Polije"),
+                circleId: const CircleId("Area Polije"),
                 center: LatLng(la_polije, lo_polije),
                 radius: radius,
                 strokeWidth: 2,
@@ -504,7 +504,7 @@ class _AbsenPage extends State<AbsenPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return DashboardScreen();
+                                        return const DashboardScreen();
                                       },
                                     ),
                                   );
@@ -536,7 +536,7 @@ class _AbsenPage extends State<AbsenPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return DashboardScreen();
+                                          return const DashboardScreen();
                                         },
                                       ),
                                     );

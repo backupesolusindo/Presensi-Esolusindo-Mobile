@@ -26,7 +26,7 @@ class AbsenSelesaiWFScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: AbsenPage(),
     );
   }
@@ -241,12 +241,12 @@ class _AbsenPage extends State<AbsenPage> {
         ),
         markers: <Marker>{
             Marker(
-              markerId: MarkerId('marker_1'),
+              markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
@@ -256,14 +256,14 @@ class _AbsenPage extends State<AbsenPage> {
         mapType: MapType.hybrid,
         polygons: <Polygon>{
           Polygon(
-              polygonId: PolygonId("Area Polije"),
+              polygonId: const PolygonId("Area Polije"),
               points: const <LatLng>[
-                const LatLng(-8.159848, 113.720521),
-                const LatLng(-8.161228, 113.723176),
-                const LatLng(-8.160425, 113.723687),
-                const LatLng(-8.161215, 113.725171),
-                const LatLng(-8.154612, 113.725997),
-                const LatLng(-8.153624, 113.723426),
+                LatLng(-8.159848, 113.720521),
+                LatLng(-8.161228, 113.723176),
+                LatLng(-8.160425, 113.723687),
+                LatLng(-8.161215, 113.725171),
+                LatLng(-8.154612, 113.725997),
+                LatLng(-8.153624, 113.723426),
               ],
               strokeWidth: 2,
               strokeColor: Colors.blue,
@@ -405,7 +405,7 @@ class _AbsenPage extends State<AbsenPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              return DashboardScreen();
+                                              return const DashboardScreen();
                                             },
                                           ),
                                         );

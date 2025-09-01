@@ -15,7 +15,7 @@ class ListLemburScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

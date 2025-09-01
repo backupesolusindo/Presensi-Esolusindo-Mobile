@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
 
 class OrDivider extends StatelessWidget {
   const OrDivider({super.key});

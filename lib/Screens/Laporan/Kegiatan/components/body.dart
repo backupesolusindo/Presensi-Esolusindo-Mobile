@@ -200,9 +200,9 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     if (users.isEmpty) {

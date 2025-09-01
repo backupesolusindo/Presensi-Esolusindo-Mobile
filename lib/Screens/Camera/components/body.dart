@@ -116,7 +116,7 @@ class _Body extends State<Body> {
                 return DropdownMenuItem(
                   value: item.toString(),
                   child:
-                      new Text("Setting Camera ke - " + (item + 1).toString()),
+                      Text("Setting Camera ke - ${item + 1}"),
                 );
               }).toList(),
               onChanged: (newVal) {

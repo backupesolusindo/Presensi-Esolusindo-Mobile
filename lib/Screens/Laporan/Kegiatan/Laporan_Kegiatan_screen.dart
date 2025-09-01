@@ -15,7 +15,7 @@ class LaporanKegiatanScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

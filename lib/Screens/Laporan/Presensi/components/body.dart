@@ -203,9 +203,9 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: const AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     if (users.isEmpty) {
@@ -283,9 +283,9 @@ class _Body extends State<Body> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 90,
-                        child: const Text("Presensi Datang",
+                        child: Text("Presensi Datang",
                             style: TextStyle(fontSize: 12)),
                       ),
                       SizedBox(
@@ -302,9 +302,9 @@ class _Body extends State<Body> {
                   ),
                   Row(
                     children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         width: 90,
-                        child: const Text("Istirahat",
+                        child: Text("Istirahat",
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.fade,
@@ -317,7 +317,7 @@ class _Body extends State<Body> {
                       SizedBox(
                         width: 120,
                         child: Text(
-                          ": " + waktuIstirahat.toString(),
+                          ": $waktuIstirahat",
                           style: const TextStyle(fontSize: 12),
                         ),
                       )
@@ -328,15 +328,15 @@ class _Body extends State<Body> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 90,
-                        child: const Text("Presensi Pulang",
+                        child: Text("Presensi Pulang",
                             style: TextStyle(fontSize: 12)),
                       ),
                       SizedBox(
                         width: 120,
                         child: Text(
-                          ": " + waktuPulang.toString(),
+                          ": $waktuPulang",
                           style: const TextStyle(fontSize: 13),
                         ),
                       )

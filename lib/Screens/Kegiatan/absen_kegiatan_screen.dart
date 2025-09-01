@@ -251,12 +251,12 @@ class _AbsenKegiatanScreenState extends State<AbsenKegiatanScreen> {
           ),
           markers: <Marker>{
               Marker(
-                markerId: MarkerId('marker_1'),
+                markerId: const MarkerId('marker_1'),
                 position: LatLng(la, lo),
                 consumeTapEvents: true,
                 infoWindow: InfoWindow(
                   title: 'Lokasi Anda',
-                  snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                  snippet: "Jarak : ${Jarak.toInt()} M",
                 ),
                 onTap: () {
                   print("Marker tapped");
@@ -266,7 +266,7 @@ class _AbsenKegiatanScreenState extends State<AbsenKegiatanScreen> {
           mapType: MapType.normal,
           circles: {
             Circle(
-                circleId: CircleId("Area Polije"),
+                circleId: const CircleId("Area Polije"),
                 center: LatLng(la_polije, lo_polije),
                 radius: PembatasJarak,
                 strokeWidth: 2,
@@ -506,7 +506,7 @@ class _AbsenKegiatanScreenState extends State<AbsenKegiatanScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return LaporanKegiatanScreen();
+                                          return const LaporanKegiatanScreen();
                                         },
                                       ),
                                     );

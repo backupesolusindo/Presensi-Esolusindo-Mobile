@@ -220,12 +220,12 @@ class _AbsenIstirahatScreenState extends State<AbsenIstirahatScreen> {
           ),
           markers: <Marker>{
               Marker(
-                markerId: MarkerId('marker_1'),
+                markerId: const MarkerId('marker_1'),
                 position: LatLng(la, lo),
                 consumeTapEvents: true,
                 infoWindow: InfoWindow(
                   title: 'Lokasi Anda',
-                  snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                  snippet: "Jarak : ${Jarak.toInt()} M",
                 ),
                 onTap: () {
                   print("Marker tapped");
@@ -235,7 +235,7 @@ class _AbsenIstirahatScreenState extends State<AbsenIstirahatScreen> {
           mapType: MapType.normal,
           circles: {
             Circle(
-                circleId: CircleId("Area Polije"),
+                circleId: const CircleId("Area Polije"),
                 center: LatLng(la_polije, lo_polije),
                 radius: radius,
                 strokeWidth: 2,
@@ -468,7 +468,7 @@ class _AbsenIstirahatScreenState extends State<AbsenIstirahatScreen> {
                                 if (value!.status_kode == 200) {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return DashboardScreen();
+                                    return const DashboardScreen();
                                   }));
                                 }
                                 setState(() {
@@ -495,7 +495,7 @@ class _AbsenIstirahatScreenState extends State<AbsenIstirahatScreen> {
                                   if (value!.status_kode == 200) {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return DashboardScreen();
+                                      return const DashboardScreen();
                                     }));
                                   }
                                   setState(() {

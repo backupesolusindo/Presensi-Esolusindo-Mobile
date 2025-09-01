@@ -15,7 +15,7 @@ class ListKegiatanScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

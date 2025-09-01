@@ -235,24 +235,24 @@ class _AbsenLemburScreenState extends State<AbsenLemburScreen> {
         ),
         markers: <Marker>{
             Marker(
-              markerId: MarkerId('marker_1'),
+              markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
               },
             ),
             Marker(
-              markerId: MarkerId('marker_2'),
+              markerId: const MarkerId('marker_2'),
               position: LatLng(la_polije, lo_polije),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Kegiatan',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
@@ -262,7 +262,7 @@ class _AbsenLemburScreenState extends State<AbsenLemburScreen> {
         mapType: MapType.normal,
         circles: {
           Circle(
-              circleId: CircleId("Area Polije"),
+              circleId: const CircleId("Area Polije"),
               center: LatLng(la_polije, lo_polije),
               radius: PembatasJarak,
               strokeWidth: 2,
@@ -497,7 +497,7 @@ class _AbsenLemburScreenState extends State<AbsenLemburScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return LaporanLemburScreen();
+                                        return const LaporanLemburScreen();
                                       },
                                     ),
                                   );
