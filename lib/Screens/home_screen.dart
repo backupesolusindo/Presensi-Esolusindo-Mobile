@@ -2,37 +2,31 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:date_format/date_format.dart';
 import 'package:mobile_presensi_kdtg/Screens/Absen/Harian/absen_harian_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Absen/Harian/absen_pulang_harian_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Absen/Istirahat/absen_istirahat_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Absen/Istirahat/absen_selesai_istirahat_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/Istirahat/istirahat_post.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/AktifGPS/aktifgps_screen.dart';
+import 'package:mobile_presensi_kdtg/Screens/Absen/WorkFrom/absen_selesai_wf_screen.dart';
+import 'package:mobile_presensi_kdtg/Screens/Absen/WorkFrom/absen_wf_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Kegiatan/absen_kegiatan_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Kegiatan/absen_kegiatan_wfh_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/LokasiKampus/lokasi_kampus_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/semua_menu.dart';
-import 'package:mobile_presensi_kdtg/config/palette.dart';
-import 'package:mobile_presensi_kdtg/config/styles.dart';
 import 'package:mobile_presensi_kdtg/constants.dart';
 import 'package:mobile_presensi_kdtg/core.dart';
-import 'package:mobile_presensi_kdtg/data/data.dart';
-import 'package:mobile_presensi_kdtg/widgets/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_presensi_kdtg/Screens/AktifGPS/aktifgps_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:trust_location/trust_location.dart';
-import 'package:launch_review/launch_review.dart';
-
-import 'Absen/WorkFrom/absen_selesai_wf_screen.dart';
-import 'Absen/WorkFrom/absen_wf_screen.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
@@ -73,15 +67,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     ssFooter = false;
     WidgetsBinding.instance.addObserver(this);
     getPref();
-    cekFakeGPS();
+    // cekFakeGPS();
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
   }
 
-  cekFakeGPS() async {
-    bool _isMockLocation = await TrustLocation.isMockLocation;
-    print("fake GPS :");
-    print(_isMockLocation);
-  }
+  // cekFakeGPS() async {
+  //   bool _isMockLocation = await TrustLocation.isMockLocation;
+  //   print("fake GPS :");
+  //   print(_isMockLocation);
+  // }
 
   _getTime() {
     setState(() {
@@ -99,12 +93,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       prefs.setInt("CameraSelect", 1);
     }
 
-    bool status = await Geolocator.isLocationServiceEnabled();
-    if (!status) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return AktifGPS();
-      }));
-    }
+    // bool status = await Geolocator.isLocationServiceEnabled();
+    // if (!status) {
+    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+    //     return AktifGPS();
+    //   }));
+    // }
 
     var url = Uri.parse(Core().ApiUrl + "Login/set_token");
     var response = await http.post(url, body: {
@@ -114,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     print(response.body);
     print("Login Pref :" + UUID);
     getDataDash();
-    fetchKegiatan();
+    // fetchKegiatan();
   }
 
   Future<String> getDataDash() async {
@@ -133,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       });
 
       DataPegawai = resBody['data']["pegawai"];
+      print("Data Pegawai : " + DataPegawai.toString());
       DataLokasi = resBody['data']["lokasi"];
       DataAbsen = resBody['data']["absen"];
       DataAbsenPulang = resBody['data']["absensi_pulang"];
@@ -217,7 +212,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     Size size = MediaQuery.of(context).size;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      // appBar: CustomAppBar(),
+      // appBar: AppBar(
+      //   title: Text("Dashboard"),
+      // ),
       body: Container(
         color: CBackground,
         child: Stack(children: [
@@ -233,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             bottom: 0,
             left: 0,
             child: Image.asset(
-              "assets/images/dash_bl.png",
+              "assets/images/vector_kecil_kanan.png",
               // height: size.height * 0.3,
               width: size.width,
               fit: BoxFit.fill,
@@ -256,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ? _buildMenuWFO(screenHeight)
                   : _buildMenuWFH(screenHeight),
               _buildBox(screenHeight),
-              _buildKegiatanTerkini(screenHeight),
+              // _buildKegiatanTerkini(screenHeight),
             ],
           ),
         ]),
@@ -703,62 +700,59 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white70,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white70,
-                        blurRadius: 4,
-                        offset: Offset(2, 4), // Shadow position
-                      ),
-                    ],
-                  ),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        height: 59,
-                        width: 59,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          image: DecorationImage(
-                              image: NetworkImage(Core().Url + Foto)),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Good Day!",
-                            style: TextStyle(
-                                fontSize: 24,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Good Day!",
+                              style: TextStyle(
+                                fontSize: 17,
                                 fontWeight: FontWeight.w500,
-                                color: CText),
-                          ),
-                          Text(
-                            Nama,
-                            style: TextStyle(
-                                fontSize: 18,
+                                color: CText,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              Nama,
+                              style: TextStyle(
+                                fontSize: 23,
                                 fontWeight: FontWeight.w600,
-                                color: CText),
-                          ),
-                          Text(
-                            (NIP == "") ? "-" : NIP,
-                            style: TextStyle(
+                                color: CText,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              (NIP == "") ? "-" : NIP,
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: CText),
-                          )
-                        ],
+                                color: CText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(Core().Url + Foto),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -771,15 +765,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         padding:
                             EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white70,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white70,
-                              blurRadius: 4,
-                              offset: Offset(4, 4), // Shadow position
-                            ),
-                          ],
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -825,15 +812,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 18, vertical: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white70,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white70,
-                                  blurRadius: 4,
-                                  offset: Offset(4, 4), // Shadow position
-                                ),
-                              ],
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -1448,11 +1428,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 },
               ),
               TextButton(
-                child: Text('Perbarui Sekarang'),
-                onPressed: () {
-                  LaunchReview.launch();
-                },
-              )
+  child: Text('Perbarui Sekarang'),
+  onPressed: () async {
+    final InAppReview inAppReview = InAppReview.instance;
+    
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    } else {
+      // Fallback jika in-app review tidak tersedia
+      inAppReview.openStoreListing();
+    }
+  },
+)
             ],
           ),
         );

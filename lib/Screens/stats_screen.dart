@@ -20,19 +20,30 @@ class _StatsScreenState extends State<StatsScreen> {
         // appBar: CustomAppBar(),
         body: Stack(
           children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Image.asset(
-                "assets/images/dash_tr.png",
-                height: size.height * 0.4,
-              ),
-            ),
+            // Positioned(
+            //   top: 0,
+            //   right: 0,
+            //   child: Image.asset(
+            //     "assets/images/dash_tr.png",
+            //     height: size.height * 0.4,
+            //   ),
+            // ),
             Positioned(
               bottom: 0,
               left: 0,
               child: Image.asset(
-                "assets/images/dash_bl.png",
+                "assets/images/vector_kecil_kanan.png",
+                height: size.height * 0.4,
+                width: size.width,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Image.asset(
+                "assets/images/main_top.png",
+                color: Colors.blue[200],
                 height: size.height * 0.4,
                 width: size.width,
                 fit: BoxFit.fill,

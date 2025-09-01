@@ -16,15 +16,15 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "PRESENSI ONLINE",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "PMI Kab.Jember",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: size.height * 0.05),
+            // Text(
+            //   "PRESENSI ONLINE",
+            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // ),
+            // Text(
+            //   "PMI Kab.Jember",
+            //   style: TextStyle(fontWeight: FontWeight.bold),
+            // ),
+            // SizedBox(height: size.height * 0.05),
             Container(
               child: Lottie.asset('assets/lottie/Logo.json'),
               // child: Image.asset(

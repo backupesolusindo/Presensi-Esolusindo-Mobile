@@ -13,6 +13,7 @@ class Background extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: size.height,
+      color: Colors.blue[700],
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
@@ -21,31 +22,18 @@ class Background extends StatelessWidget {
             left: 0,
             child: Image.asset(
               "assets/images/blob_left.png",
-              width: size.width * 0.35,
-            ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/images/blob_right.png",
-              width: size.width * 0.35,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/images/main_bottom_right.png",
-              width: size.width * 0.25,
+              width: size.width * 0.5,
+              color: Colors.blue[600],
             ),
           ),
           Positioned(
             bottom: 0,
             left: 0,
+            right: 0,
             child: Image.asset(
-              "assets/images/main_bottom_left.png",
-              width: size.width * 0.25,
+              "assets/images/vector_kecil_kanan.png",
+              width: size.width * 0.5,
+              fit: BoxFit.cover,
             ),
           ),
           child,

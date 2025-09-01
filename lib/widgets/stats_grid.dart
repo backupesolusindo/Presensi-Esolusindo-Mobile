@@ -80,7 +80,7 @@ class _StatsGridState extends State<StatsGrid> {
               Icon(
                 Icons.alarm_on,
                 size: 40.0,
-                color: approval_presensi,
+                color: CSuccess,
               )),
           _CartItem(
               "Jumlah Kegiatan Bulan Ini",
@@ -156,9 +156,10 @@ class _StatsGridState extends State<StatsGrid> {
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.8),
-            blurRadius: 4,
-            offset: Offset(4, 4), // Shadow position
+            color: Colors.black.withOpacity(0.08),
+            spreadRadius: 1,
+            blurRadius: 12,
+            offset: Offset(0, 6), // Shadow position
           ),
         ],
       ),

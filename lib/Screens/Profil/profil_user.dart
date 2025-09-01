@@ -61,140 +61,373 @@ class _ProfilUserState extends State<ProfilUser> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: CBackground,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300.0,
-              width: size.width,
-              child: Stack(
-                children: <Widget>[
-                  Container(),
-                  ClipPath(
-                    clipper: MyCustomClipper(),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/gedung.jpg'),
-                          fit: BoxFit.cover,
+      // Background gradient
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF8F9FA),
+              Color(0xFFE9ECEF),
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              // Header tak besarin
+              Container(
+                height: 320.0, // Tinggi tambah 20
+                width: size.width,
+                child: Stack(
+                  children: <Widget>[
+                    Container(),
+                    ClipPath(
+                      clipper: MyCustomClipper(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(234, 14, 100, 230), // Biru tua
+                              Color.fromARGB(223, 56, 143, 230),
+                              Color.fromARGB(255, 122, 182, 231),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.apartment_rounded,
+                                size: 64,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                "Kantor",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white.withOpacity(0.9),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
+                    Align(
+                      alignment: Alignment(0, 1),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          // Profile avatar shadow overlay
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 20,
+                                  offset: Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return Foto_Profil();
+                                }));
+                              },
+                              child: CircularProfileAvatar(
+                                Core().Url + Foto,
+                                borderWidth: 6.0, // Border dibesarin
+                                borderColor: Colors.white,
+                                radius: 65.0, // Radius dibesarin sedikit
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 12.0),
+                          //
+                          Text(
+                            NamaPegawai,
+                            style: TextStyle(
+                              fontSize: 24.0, // Font size dibesarin
+                              fontWeight: FontWeight.w800, // Weight diperberat
+                              color: Colors.black87,
+                              shadows: [
+                                Shadow(
+                                    blurRadius: 4,
+                                    color: Colors.white.withOpacity(0.8),
+                                    offset: Offset(0, 1)),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 6.0),
+                          // NIP dengan background chip
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              NIP,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 24),
+
+              // Card informasi
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  children: [
+                    //  informasi personal
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 4, bottom: 12),
+                        child: Text(
+                          'Informasi Personal',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                    _ModernCartItem("Email", Email, Icons.mail_outline_rounded,
+                        kPrimaryColor),
+                    _ModernCartItem("Unit", Unit, Icons.location_city_rounded,
+                        kPrimaryColor),
+
+                    SizedBox(height: 24),
+
+                    //  statistik bulanan
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 4, bottom: 12),
+                        child: Text(
+                          'Statistik Bulan Ini',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Card statistik
+                    _ModernCartItem("Jumlah Presensi", jmlPre.toString(),
+                        Icons.alarm_on_outlined, kPrimaryColor),
+
+                    _ModernCartItem("Jumlah Kegiatan", jmlKegiatan.toString(),
+                        Icons.directions_walk_outlined, kPrimaryColor),
+
+                    _ModernCartItem("Jumlah Cuti", jmlCuti.toString(),
+                        Icons.home_work_rounded, kPrimaryColor),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 40), //
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Desain card modern untuk informasi personal
+  Container _ModernCartItem(
+      String title, String value, IconData iconData, Color iconColor) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0), //
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08), //
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0), // P
+        child: Row(
+          children: <Widget>[
+            //
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                iconData,
+                size: 24.0,
+                color: iconColor,
+              ),
+            ),
+            SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    value.isEmpty ? "-" : value,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black87,
+                    ),
                   ),
-                  Align(
-                    alignment: Alignment(0, 1),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return Foto_Profil();
-                              }));
-                            },
-                            child: CircularProfileAvatar(
-                              Core().Url + Foto,
-                              borderWidth: 4.0,
-                              radius: 60.0,
-                            )),
-                        SizedBox(height: 4.0),
-                        Text(
-                          NamaPegawai,
-                          style: TextStyle(
-                            fontSize: 21.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        Text(
-                          NIP,
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ],
+                  SizedBox(height: 4.0),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16),
-            _CartItem(
-                "Email",
-                Email,
-                Icon(
-                  Icons.mail_outline_rounded,
-                  size: 40.0,
-                  color: kPrimaryColor,
-                )),
-            _CartItem(
-                "Unit",
-                Unit,
-                Icon(
-                  Icons.location_city_rounded,
-                  size: 40.0,
-                  color: kPrimaryColor,
-                )),
-            _CartItem(
-                "Jumlah Presensi Bulan Ini",
-                jmlPre.toString() + " Presensi",
-                Icon(
-                  Icons.alarm_on,
-                  size: 40.0,
-                  color: approval_presensi,
-                )),
-            _CartItem(
-                "Jumlah Kegiatan Bulan Ini",
-                jmlKegiatan.toString() + " Kegiatan",
-                Icon(
-                  Icons.directions_walk_outlined,
-                  size: 40.0,
-                  color: approval_kegiatan,
-                )),
-            _CartItem(
-                "Jumlah Cuti Bulan Ini",
-                jmlCuti.toString() + " Cuti",
-                Icon(
-                  Icons.home_work_rounded,
-                  size: 40.0,
-                  color: approval_cuti,
-                )),
-            // SizedBox(height: 30,),
-            // TextButton(onPressed: ()async{
-            //   SharedPreferences prefs = await SharedPreferences.getInstance();
-            //   print("Logout");
-            //   PostLogout.connectToApi(prefs.getString("ID")).then((value) {
-            //     setState(() {
-            //       // pesan = "tes api";
-            //       // pesan = value.message;
-            //       statusLoading = 0;
-            //     });
-            //       prefs.clear();
-            //       Navigator.of(context).pop();
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) {
-            //             return LoginScreen();
-            //           },
-            //         ),
-            //       );
-            //     });
-            // }, child: (statusLoading == 1) ? CircularProgressIndicator() : _CartItem("Log Out Aplikasi Monitoring", "LOG OUT",
-            //     Icon(
-            //       Icons.logout,
-            //       size: 40.0,
-            //       color: CDanger,
-            //     ))),
           ],
         ),
       ),
     );
   }
 
+  //
+  Container _cartItem(String title, String number, String unit,
+      IconData iconData, Color color) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1.5,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    color.withOpacity(0.8),
+                    color.withOpacity(0.6),
+                  ],
+                ),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                iconData,
+                size: 26.0,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: [
+                      Text(
+                        number,
+                        style: TextStyle(
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.w800,
+                          color: color,
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        unit,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Method lama untuk referensi (tidak dipakai di desain baru)
   Container _CartItem(String Title, String Ket, Icon _icon) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0),

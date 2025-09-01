@@ -24,6 +24,7 @@ import 'package:mobile_presensi_kdtg/Screens/LokasiKampus/lokasi_kampus_screen.d
 import 'package:mobile_presensi_kdtg/Screens/Perizinan/izin_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Profil/profil_user.dart';
 import 'package:mobile_presensi_kdtg/Screens/ResetPassword/reset_password.dart';
+import 'package:mobile_presensi_kdtg/constants.dart';
 import 'package:mobile_presensi_kdtg/core.dart';
 import 'package:mobile_presensi_kdtg/components/or_divider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,7 +113,7 @@ class _SemuaMenu extends State<SemuaMenu> {
         title: Text(
           "Semua Menu",
           style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
+            color: kPrimaryColor,
           ),
         ),
         leading: GestureDetector(
@@ -121,7 +122,7 @@ class _SemuaMenu extends State<SemuaMenu> {
           },
           child: Icon(
             Icons.arrow_back_ios_rounded,
-            color: Colors.white, // add custom icons also
+            color: kPrimaryColor, // add custom icons also
           ),
         ),
       ),
@@ -869,7 +870,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                         child: Column(
                           children: <Widget>[
                             Image.asset(
-                              "assets/icons/atur-kamera.png",
+                              "assets/icons/atur-camera.png",
                               height: screenHeight * 0.06,
                             ),
                             SizedBox(height: screenHeight * 0.003),

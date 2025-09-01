@@ -27,7 +27,8 @@ class _FlatDateField extends State<FlatDateField> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+ 
+     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: widget.width > 0 ? widget.width : size.width * 0.8,
       child: TextFormField(
