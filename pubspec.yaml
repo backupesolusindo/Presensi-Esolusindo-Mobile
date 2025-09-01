@@ -80,6 +80,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons/icons_biru/
     - assets/ilustrasi/
     - assets/lottie/
     - assets/images/logo_esolusindo.png

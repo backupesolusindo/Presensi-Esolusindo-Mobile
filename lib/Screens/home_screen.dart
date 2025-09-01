@@ -953,7 +953,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 child: Column(
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/icons/semua_menu.png",
+                                      "assets/icons/icons_biru/semua_menu.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1005,8 +1005,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/presensi_datang_warna.png"
-                                          : "assets/icons/presensi_datang_monokrom.png",
+                                          ? "assets/icons/icons_biru/presensi_datang_warna.png"
+                                          : "assets/icons/icons_biru/presensi_datang_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1044,8 +1044,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/istirahat_keluar_warna.png"
-                                          : "assets/icons/istirahat_keluar_monokrom.png",
+                                          ? "assets/icons/icons_biru/istirahat_keluar_warna.png"
+                                          : "assets/icons/icons_biru/istirahat_keluar_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1095,8 +1095,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/presensi_pulang_warna.png"
-                                          : "assets/icons/presensi_pulang_monokrom.png",
+                                          ? "assets/icons/icons_biru/presensi_pulang_warna.png"
+                                          : "assets/icons/icons_biru/presensi_pulang_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1134,8 +1134,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/istirahat_masuk_warna.png"
-                                          : "assets/icons/istirahat_masuk_monokrom.png",
+                                          ? "assets/icons/icons_biru/istirahat_masuk_warna.png"
+                                          : "assets/icons/icons_biru/istirahat_masuk_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1206,7 +1206,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 child: Column(
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/icons/semua_menu.png",
+                                      "assets/icons/icons_biru/semua_menu.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1250,8 +1250,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/mulai_wfh_warna.png"
-                                          : "assets/icons/mulai_wfh_monokrom.png",
+                                          ? "assets/icons/icons_biru/mulai_wfh_warna.png"
+                                          : "assets/icons/icons_biru/mulai_wfh_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),
@@ -1301,8 +1301,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   children: <Widget>[
                                     Image.asset(
                                       (StatusDinasLuar == 1)
-                                          ? "assets/icons/selesai_wfh_warna.png"
-                                          : "assets/icons/selesai_wfh_monokrom.png",
+                                          ? "assets/icons/icons_biru/selesai_wfh_warna.png"
+                                          : "assets/icons/icons_biru/selesai_wfh_monokrom.png",
                                       height: screenHeight * 0.07,
                                     ),
                                     SizedBox(height: screenHeight * 0.003),

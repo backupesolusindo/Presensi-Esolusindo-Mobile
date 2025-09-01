@@ -24,11 +24,11 @@ class Body extends StatelessWidget {
             // ),
             // SizedBox(height: size.height * 0.05),
             Container(
-              child: Lottie.asset('assets/lottie/Logo.json'),
-              // child: Image.asset(
-              //   "assets/images/splash_screen.png",
-              //   width: size.width * 0.6, //ukuran gambar
-              // ),
+              //child: Lottie.asset('assets/lottie/Logo.json'),
+              child: Image.asset(
+                 "assets/images/logo_esolusindo.png",
+                 width: size.width * 0.5, //ukuran gambar
+               ),
             ),
             SizedBox(height: size.height * 0.05),
           ],

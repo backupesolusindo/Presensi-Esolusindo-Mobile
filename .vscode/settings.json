@@ -1,5 +1,6 @@
 {
   "cmake.sourceDirectory": "C:/Users/Ghiyazt/Documents/baru-flutter-smt4/barubangetgaul/Presensi-Esolusindo-Mobile/linux",
   "java.configuration.updateBuildConfiguration": "interactive",
-  "dart.flutterSdkPath": ".fvm/versions/3.24.0"
+  "dart.flutterSdkPath": ".fvm/versions/3.24.0",
+  "java.compile.nullAnalysis.mode": "automatic"
 }
