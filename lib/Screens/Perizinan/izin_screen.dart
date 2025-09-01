@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_presensi_kdtg/Screens/Perizinan/components/body.dart';
 
 class IzinScreen extends StatelessWidget {
-  const IzinScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,13 +16,13 @@ class IzinScreen extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.white, // add custom icons also
           ),
         ),
       ),
-      body: const Body(),
+      body: Body(),
     );
   }
 }

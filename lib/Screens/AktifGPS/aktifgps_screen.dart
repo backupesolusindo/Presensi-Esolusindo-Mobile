@@ -8,8 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 
 class AktifGPS extends StatefulWidget {
-  const AktifGPS({super.key});
-
   @override
   _AktifGPSState createState() => _AktifGPSState();
 }
@@ -43,7 +41,7 @@ class _AktifGPSState extends State<AktifGPS> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "GUNAKAN LOKASI ANDA",
                 style: TextStyle(
                     color: Colors.black,
@@ -51,11 +49,11 @@ class _AktifGPSState extends State<AktifGPS> {
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.none),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Text(
                   "Aplikasi ini mengumpulkan data lokasi untuk mengaktifkan Presensi Masuk, Presensi Pulang, Istirahat Keluar, Istirahat Masuk, Mulai WFH, Selesai WFH, Presensi Kegiatan, & Presensi Diluar Jam Kerja.",
                   style: TextStyle(
@@ -68,14 +66,14 @@ class _AktifGPSState extends State<AktifGPS> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 60,
               ),
               Image.asset(
                 "assets/ilustrasi/laporankegiatan.png",
                 width: size.width * 0.7,
               ),
-              const SizedBox(
+              SizedBox(
                 height: 60,
               )
             ],
@@ -91,13 +89,13 @@ class _AktifGPSState extends State<AktifGPS> {
                     if (status) {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
-                        return const DashboardScreen();
+                        return DashboardScreen();
                       }));
                     } else {
                       _showMyDialog();
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     "Turn On",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
@@ -113,7 +111,7 @@ class _AktifGPSState extends State<AktifGPS> {
                   onPressed: () {
                     exit(0);
                   },
-                  child: const Text(
+                  child: Text(
                     "Keluar",
                     style: TextStyle(color: Colors.black54),
                   ),
@@ -132,8 +130,8 @@ class _AktifGPSState extends State<AktifGPS> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: const Text("GUNAKAN LOKASI ANDA"),
-            content: const SingleChildScrollView(
+            title: Text("GUNAKAN LOKASI ANDA"),
+            content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text(
@@ -143,16 +141,17 @@ class _AktifGPSState extends State<AktifGPS> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('OK'),
+                child: Text('OK'),
                 onPressed: () {
                   Geolocator.checkPermission().then((value) {
-                    if (value == LocationPermission.denied ||
+                    if (value == null ||
+                        value == LocationPermission.denied ||
                         value == LocationPermission.deniedForever) {
                       Geolocator.requestPermission();
                       Navigator.of(context).pop();

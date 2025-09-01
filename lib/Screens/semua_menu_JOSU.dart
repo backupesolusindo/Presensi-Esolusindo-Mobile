@@ -28,8 +28,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SemuaMenu extends StatefulWidget {
-  const SemuaMenu({super.key});
-
   @override
   _SemuaMenu createState() => _SemuaMenu();
 }
@@ -52,7 +50,7 @@ class _SemuaMenu extends State<SemuaMenu> {
     // TODO: implement initState
     super.initState();
     getPref();
-    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
   }
 
   _getTime() {
@@ -66,13 +64,13 @@ class _SemuaMenu extends State<SemuaMenu> {
     UUID = prefs.getString("ID")!;
     NIP = prefs.getString("NIP")!;
     Nama = prefs.getString("Nama")!;
-    print("Login Pref :$UUID");
+    print("Login Pref :" + UUID);
     getDataDash();
   }
 
   Future<String> getDataDash() async {
     print("getJenis");
-    var res = await http.get(Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
+    var res = await http.get(Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     print(resBody);
@@ -87,8 +85,8 @@ class _SemuaMenu extends State<SemuaMenu> {
       if (DataAbsen != null) {
         JenisAbsen = int.parse(DataAbsen["jenis_absen"]);
       }
-      print("Jenis Absens : $JenisAbsen");
-      print("Dinas Luar : $StatusDinasLuar");
+      print("Jenis Absens : " + JenisAbsen.toString());
+      print("Dinas Luar : " + StatusDinasLuar.toString());
       if (DataAbsenPulang != null) {
         jam_pulang = formatDate(
             DateTime.parse(DataAbsenPulang['waktu']), [hh, ':', nn, ':', ss]);
@@ -112,14 +110,14 @@ class _SemuaMenu extends State<SemuaMenu> {
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.white, // add custom icons also
           ),
         ),
       ),
       body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: ClampingScrollPhysics(),
         slivers: <Widget>[
           _presensi(screenHeight),
           _perijinan(screenHeight),
@@ -138,9 +136,9 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
+            Text(
               'Menu Presensi',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
                 color: Colors.lightBlue,
                 fontWeight: FontWeight.w600,
@@ -148,7 +146,7 @@ class _SemuaMenu extends State<SemuaMenu> {
             ),
             const SizedBox(height: 10.0),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -157,14 +155,14 @@ class _SemuaMenu extends State<SemuaMenu> {
                             if (DataAbsen == null) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const AbsenHarianScreen();
+                                return AbsenHarianScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 _showMyDialog("Presensi Harian",
                                     "Anda belum melakukan Presensi Pulang Harian. Silakan Presensi Pulang Harian terlebih dahulu !",
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenPulangHarianScreen();
+                                  return AbsenPulangHarianScreen();
                                 }));
                               } else {
                                 _showNotif("Presensi Harian",
@@ -188,9 +186,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Presensi\nMasuk",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -198,7 +196,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -208,19 +206,19 @@ class _SemuaMenu extends State<SemuaMenu> {
                               _showMyDialog("Presensi Harian",
                                   "Anda belum melakukan Presensi Harian. Silakan Presensi Harian terlebih dahulu !",
                                   MaterialPageRoute(builder: (context) {
-                                return const AbsenHarianScreen();
+                                return AbsenHarianScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenPulangHarianScreen();
+                                  return AbsenPulangHarianScreen();
                                 }));
                               } else {
                                 _showMyDialog("Presensi Harian",
                                     "Apakah Anda Memperbarui Pulang Sebelumnya ?",
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenPulangHarianScreen();
+                                  return AbsenPulangHarianScreen();
                                 }));
                               }
                             }
@@ -241,9 +239,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Presensi\nPulang",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -251,20 +249,20 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         if (DataIstirahat == null) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return const AbsenIstirahatScreen();
+                            return AbsenIstirahatScreen();
                           }));
                         } else {
                           _showMyDialog("Presensi Istirahat",
                               "Anda belum melakukan Presensi Selesai Istirahat. Silakan Presensi Selesai Istirahat terlebih dahulu !",
                               MaterialPageRoute(builder: (context) {
-                            return const AbsenSelesaiIstirahatScreen();
+                            return AbsenSelesaiIstirahatScreen();
                           }));
                         }
                       },
@@ -276,9 +274,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Istirahat Keluar",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -286,7 +284,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -294,12 +292,12 @@ class _SemuaMenu extends State<SemuaMenu> {
                           _showMyDialog("Presensi Istirahat",
                               "Anda belum melakukan Presensi Istirahat. Silakan Presensi Istirahat terlebih dahulu !",
                               MaterialPageRoute(builder: (context) {
-                            return const AbsenIstirahatScreen();
+                            return AbsenIstirahatScreen();
                           }));
                         } else {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return const AbsenSelesaiIstirahatScreen();
+                            return AbsenSelesaiIstirahatScreen();
                           }));
                         }
                       },
@@ -311,9 +309,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Istirahat Masuk",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -322,9 +320,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                         ],
                       ))),
             ]),
-            const SizedBox(height: 15.0),
+            SizedBox(height: 15.0),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -333,14 +331,14 @@ class _SemuaMenu extends State<SemuaMenu> {
                             if (DataAbsen == null) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const AbsenWFScreen();
+                                return AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 _showMyDialog("Presensi WFH",
                                     "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenSelesaiWFScreen();
+                                  return AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showNotif("Presensi WFH",
@@ -364,9 +362,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Mulai WFH",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -374,7 +372,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -384,19 +382,19 @@ class _SemuaMenu extends State<SemuaMenu> {
                               _showMyDialog("Presensi WFH",
                                   "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
                                   MaterialPageRoute(builder: (context) {
-                                return const AbsenWFScreen();
+                                return AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenSelesaiWFScreen();
+                                  return AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showMyDialog("Presensi WFH",
                                     "Apakah Anda Memperbarui Pulang Sebelumnya ?",
                                     MaterialPageRoute(builder: (context) {
-                                  return const AbsenSelesaiWFScreen();
+                                  return AbsenSelesaiWFScreen();
                                 }));
                               }
                             }
@@ -421,9 +419,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Selesai WFH",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -431,13 +429,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const ListKegiatanScreen();
+                          return ListKegiatanScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -448,9 +446,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Presensi Kegiatan",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -458,13 +456,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const PresensiLokasiScreen();
+                          return PresensiLokasiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -475,9 +473,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.06,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Presensi Di Luar Jam Kerja",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 10.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -500,10 +498,10 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const OrDivider(),
-            const Text(
+            OrDivider(),
+            Text(
               'Menu Cuti',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
                 color: Colors.lightBlue,
                 fontWeight: FontWeight.w600,
@@ -513,13 +511,13 @@ class _SemuaMenu extends State<SemuaMenu> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
+                  Container(
                       width: width_menu,
                       child: TextButton(
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const IzinScreen();
+                              return IzinScreen();
                             }));
                           },
                           // // minWidth: 0,
@@ -530,9 +528,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                                 height: screenHeight * 0.07,
                               ),
                               SizedBox(height: screenHeight * 0.003),
-                              const Text(
+                              Text(
                                 "Cuti Pegawai",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -555,10 +553,10 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const OrDivider(),
-            const Text(
+            OrDivider(),
+            Text(
               'Menu Laporan',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
                 color: Colors.lightBlue,
                 fontWeight: FontWeight.w600,
@@ -566,13 +564,13 @@ class _SemuaMenu extends State<SemuaMenu> {
             ),
             const SizedBox(height: 10.0),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const LaporanCutiScreen();
+                          return LaporanCutiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -583,9 +581,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Laporan\nCuti",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -593,13 +591,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const LaporanPresensiScreen();
+                          return LaporanPresensiScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -610,9 +608,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Laporan\nPresensi",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -620,13 +618,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const LaporanKegiatanScreen();
+                          return LaporanKegiatanScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -637,9 +635,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Laporan\nKegiatan",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -647,13 +645,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const LaporanLuarJamScreen();
+                          return LaporanLuarJamScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -664,9 +662,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.055,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Laporan\nLuar Jam Kerja",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -689,10 +687,10 @@ class _SemuaMenu extends State<SemuaMenu> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const OrDivider(),
-            const Text(
+            OrDivider(),
+            Text(
               'Menu Profil User',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
                 color: Colors.lightBlue,
                 fontWeight: FontWeight.w600,
@@ -700,13 +698,13 @@ class _SemuaMenu extends State<SemuaMenu> {
             ),
             const SizedBox(height: 10.0),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const LokasiKampusScreen();
+                          return LokasiKampusScreen();
                         }));
                       },
                       // // minWidth: 0,
@@ -717,9 +715,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Lokasi\nKampus",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -727,13 +725,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const ListJadwalWF_Screen();
+                          return ListJadwalWF_Screen();
                         }));
                       },
                       // // minWidth: 0,
@@ -744,9 +742,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Jadwal\nKerja",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -754,13 +752,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const ProfilUser();
+                          return ProfilUser();
                         }));
                       },
                       // // minWidth: 0,
@@ -771,9 +769,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Profil\nUser",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -781,13 +779,13 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              SizedBox(
+              Container(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const ResetPasswordScreen();
+                          return ResetPasswordScreen();
                         }));
                       },
                       // minWidth: 0,
@@ -798,9 +796,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          const Text(
+                          Text(
                             "Reset\nPassword",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -834,13 +832,13 @@ class _SemuaMenu extends State<SemuaMenu> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('OK'),
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(context, link);
@@ -871,7 +869,7 @@ class _SemuaMenu extends State<SemuaMenu> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

@@ -10,8 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
-
   @override
   _Body createState() => _Body();
 }
@@ -37,7 +35,7 @@ class _Body extends State<Body> {
       isLoading = true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse("${Core().ApiUrl}RiwayatAbsen/laporan_luarjam");
+    var url = Uri.parse(Core().ApiUrl + "RiwayatAbsen/laporan_luarjam");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
       "status": warnaPilih,
@@ -79,7 +77,7 @@ class _Body extends State<Body> {
                     IdCon: txtTanggalAkhir,
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 12, right: 6),
+                    margin: EdgeInsets.only(top: 12, right: 6),
                     width: size.width * 0.15,
                     decoration: BoxDecoration(
                       color: kPrimaryLightColor,
@@ -89,14 +87,14 @@ class _Body extends State<Body> {
                         onPressed: () {
                           fetchUser();
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.filter_alt_rounded,
                           color: kPrimaryColor,
                         )),
                   )
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -104,7 +102,7 @@ class _Body extends State<Body> {
                     children: <Widget>[
                       Container(
                         margin:
-                            const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                         width: size.width * 0.3,
                         height: size.height * 0.05,
                         child: ClipRRect(
@@ -116,7 +114,7 @@ class _Body extends State<Body> {
                               warnaPilih = "";
                               fetchUser();
                             },
-                            child: const Text(
+                            child: Text(
                               "Semua",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -125,7 +123,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -137,7 +135,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: const Text(
+                            child: Text(
                               "Diterima",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -146,7 +144,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -158,7 +156,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: const Text(
+                            child: Text(
                               "Ditolak",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -167,7 +165,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -179,7 +177,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: const Text(
+                            child: Text(
                               "Menunggu Respon",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -199,12 +197,12 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return const Center(
+      return Center(
           child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
-    if (users.isEmpty) {
+    if (users.length <= 0) {
       return Container(
           child: Image.asset(
         "assets/ilustrasi/laporankegiatan.png",
@@ -223,7 +221,7 @@ class _Body extends State<Body> {
 
   Widget getCard(item) {
     var waktu = item['waktu'];
-    var statusAbsensi = item['status_absensi'];
+    var status_absensi = item['status_absensi'];
     var foto = item['foto'];
     var jam = item['jam_presensi'];
     var tgl = item['tgl_presensi'];
@@ -240,7 +238,7 @@ class _Body extends State<Body> {
                   : (item['status_absensi'] == "2")
                       ? Colors.redAccent.withOpacity(0.2)
                       : Colors.deepOrange.withOpacity(0.4),
-              offset: const Offset(1.0, 3), //(x,y)
+              offset: Offset(1.0, 3), //(x,y)
               blurRadius: 5.0,
             ),
           ]),
@@ -259,7 +257,7 @@ class _Body extends State<Body> {
                         fit: BoxFit.cover,
                         image: NetworkImage(Core().Url + foto))),
               ),
-              const SizedBox(
+              SizedBox(
                 width: 10,
               ),
               Column(
@@ -267,53 +265,53 @@ class _Body extends State<Body> {
                 children: <Widget>[
                   SizedBox(
                       width: MediaQuery.of(context).size.width - 140,
-                      child: const Text(
+                      child: Text(
                         "Presensi Di Luar Jam",
                         style: TextStyle(fontSize: 14),
                       )),
-                  const SizedBox(
+                  SizedBox(
                     height: 5,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: [
-                      const SizedBox(
+                      Container(
                         width: 90,
                         child:
-                            Text("Waktu", style: TextStyle(fontSize: 12)),
+                            Text("Waktu", style: const TextStyle(fontSize: 12)),
                       ),
-                      SizedBox(
+                      Container(
                         width: 120,
                         child: Text(
-                          ": $jam",
+                          ": " + jam.toString(),
                           style: const TextStyle(fontSize: 13),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: <Widget>[
-                      const SizedBox(
+                      Container(
                         width: 90,
                         child: Text("Tanggal",
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.fade,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 12,
                               wordSpacing: 10.0,
                             )),
                       ),
-                      SizedBox(
+                      Container(
                         width: 120,
                         child: Text(
-                          ": $tgl",
+                          ": " + tgl.toString(),
                           style: const TextStyle(fontSize: 12),
                         ),
                       )
@@ -322,7 +320,7 @@ class _Body extends State<Body> {
                   Container(
                     width: 80.0,
                     height: 30.0,
-                    margin: const EdgeInsets.only(left: 145, top: 10),
+                    margin: EdgeInsets.only(left: 145, top: 10),
                     decoration: BoxDecoration(
                       color: (item['status_absensi'] == "1")
                           ? softblue

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_presensi_kdtg/constants.dart';
 
 class ShowPeringatan extends StatelessWidget {
   final String text;
@@ -26,7 +27,7 @@ class ShowPeringatan extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('Keluar'),
+            child: Text('Keluar'),
             onPressed: () {
               Navigator.of(context).pop();
             },

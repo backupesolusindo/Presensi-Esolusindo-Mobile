@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mobile_presensi_kdtg/Screens/Login/login_screen.dart';
 import 'package:mobile_presensi_kdtg/Screens/Welcome/components/background.dart';
+import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
+import 'package:mobile_presensi_kdtg/constants.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,9 +28,9 @@ class Body extends StatelessWidget {
             Container(
               //child: Lottie.asset('assets/lottie/Logo.json'),
               child: Image.asset(
-                 "assets/images/logo_esolusindo.png",
-                 width: size.width * 0.5, //ukuran gambar
-               ),
+                "assets/images/logo_esolusindo.png",
+                width: size.width * 0.6, //ukuran gambar
+              ),
             ),
             SizedBox(height: size.height * 0.05),
           ],

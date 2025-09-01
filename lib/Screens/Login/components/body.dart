@@ -16,14 +16,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
-
   @override
   _Body createState() => _Body();
 }
 
 class _Body extends State<Body> {
-  PostLogin postLogin = PostLogin();
+  PostLogin postLogin = new PostLogin();
   String pesan = "";
   final txtUsername = TextEditingController();
   final txtPassword = TextEditingController();
@@ -38,9 +36,9 @@ class _Body extends State<Body> {
   }
 
   cekFakeGPS() async {
-    bool isMockLocation = await TrustLocation.isMockLocation;
+    bool _isMockLocation = await TrustLocation.isMockLocation;
     print("fake GPS :");
-    print(isMockLocation);
+    print(_isMockLocation);
   }
 
   void getToken() async {
@@ -58,7 +56,7 @@ Widget build(BuildContext context) {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -69,7 +67,7 @@ Widget build(BuildContext context) {
                   width: size.width * 0.3,
                 ),
                 SizedBox(height: size.height * 0.03),
-                const Text(
+                Text(
                   "HALAMAN LOGIN",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
@@ -89,9 +87,9 @@ Widget build(BuildContext context) {
                     color: Colors.redAccent.withOpacity(0.8),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 if (statusLoading == 1)
-                  const CircularProgressIndicator()
+                  CircularProgressIndicator()
                 else
                   RoundedButton(
                     text: "LOGIN",
@@ -140,7 +138,7 @@ Widget build(BuildContext context) {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              child: const DashboardScreen(),
+                              child: DashboardScreen(),
                             ),
                           );
                         }

@@ -7,8 +7,6 @@ import 'package:mobile_presensi_kdtg/data/data.dart';
 import 'package:mobile_presensi_kdtg/widgets/widgets.dart';
 
 class StatsScreen extends StatefulWidget {
-  const StatsScreen({super.key});
-
   @override
   _StatsScreenState createState() => _StatsScreenState();
 }
@@ -52,11 +50,11 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
             ),
             CustomScrollView(
-              physics: const ClampingScrollPhysics(),
+              physics: ClampingScrollPhysics(),
               slivers: <Widget>[
                 _buildHeader(),
-                const SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   sliver: SliverToBoxAdapter(
                     child: StatsGrid(),
                   ),
@@ -74,13 +72,13 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   SliverPadding _buildHeader() {
-    return const SliverPadding(
-      padding: EdgeInsets.only(
+    return SliverPadding(
+      padding: const EdgeInsets.only(
           left: 20.0, right: 20.0, bottom: 20.0, top: 40.0),
       sliver: SliverToBoxAdapter(
         child: Text(
           'Statistik Presensi',
-          style: TextStyle(
+          style: const TextStyle(
             color: CText,
             fontSize: 25.0,
             fontWeight: FontWeight.bold,

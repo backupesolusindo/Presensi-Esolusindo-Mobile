@@ -14,8 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilUser extends StatefulWidget {
-  const ProfilUser({super.key});
-
   @override
   _ProfilUserState createState() => _ProfilUserState();
 }
@@ -41,7 +39,7 @@ class _ProfilUserState extends State<ProfilUser> {
   Future<String> getDataDash() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UUID = prefs.getString("ID")!;
-    var res = await http.get(Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
+    var res = await http.get(Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
@@ -65,7 +63,7 @@ class _ProfilUserState extends State<ProfilUser> {
     return Scaffold(
       // Background gradient
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -79,7 +77,7 @@ class _ProfilUserState extends State<ProfilUser> {
           child: Column(
             children: <Widget>[
               // Header tak besarin
-              SizedBox(
+              Container(
                 height: 320.0, // Tinggi tambah 20
                 width: size.width,
                 child: Stack(
@@ -88,7 +86,7 @@ class _ProfilUserState extends State<ProfilUser> {
                     ClipPath(
                       clipper: MyCustomClipper(),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -108,7 +106,7 @@ class _ProfilUserState extends State<ProfilUser> {
                                 size: 64,
                                 color: Colors.white.withOpacity(0.8),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               Text(
                                 "Kantor",
                                 style: TextStyle(
@@ -123,7 +121,7 @@ class _ProfilUserState extends State<ProfilUser> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(0, 1),
+                      alignment: Alignment(0, 1),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -135,7 +133,7 @@ class _ProfilUserState extends State<ProfilUser> {
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   blurRadius: 20,
-                                  offset: const Offset(0, 8),
+                                  offset: Offset(0, 8),
                                 ),
                               ],
                             ),
@@ -143,7 +141,7 @@ class _ProfilUserState extends State<ProfilUser> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const Foto_Profil();
+                                  return Foto_Profil();
                                 }));
                               },
                               child: CircularProfileAvatar(
@@ -154,7 +152,7 @@ class _ProfilUserState extends State<ProfilUser> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12.0),
+                          SizedBox(height: 12.0),
                           //
                           Text(
                             NamaPegawai,
@@ -166,14 +164,14 @@ class _ProfilUserState extends State<ProfilUser> {
                                 Shadow(
                                     blurRadius: 4,
                                     color: Colors.white.withOpacity(0.8),
-                                    offset: const Offset(0, 1)),
+                                    offset: Offset(0, 1)),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 6.0),
+                          SizedBox(height: 6.0),
                           // NIP dengan background chip
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.9),
@@ -182,13 +180,13 @@ class _ProfilUserState extends State<ProfilUser> {
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.1),
                                   blurRadius: 4,
-                                  offset: const Offset(0, 2),
+                                  offset: Offset(0, 2),
                                 ),
                               ],
                             ),
                             child: Text(
                               NIP,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black87,
@@ -201,15 +199,15 @@ class _ProfilUserState extends State<ProfilUser> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // Card informasi
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
                     //  informasi personal
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: EdgeInsets.only(left: 4, bottom: 12),
@@ -228,10 +226,10 @@ class _ProfilUserState extends State<ProfilUser> {
                     _ModernCartItem("Unit", Unit, Icons.location_city_rounded,
                         kPrimaryColor),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
 
                     //  statistik bulanan
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: EdgeInsets.only(left: 4, bottom: 12),
@@ -259,7 +257,7 @@ class _ProfilUserState extends State<ProfilUser> {
                 ),
               ),
 
-              const SizedBox(height: 40), //
+              SizedBox(height: 40), //
             ],
           ),
         ),
@@ -271,7 +269,7 @@ class _ProfilUserState extends State<ProfilUser> {
   Container _ModernCartItem(
       String title, String value, IconData iconData, Color iconColor) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0), //
@@ -279,7 +277,7 @@ class _ProfilUserState extends State<ProfilUser> {
           BoxShadow(
             color: Colors.black.withOpacity(0.08), //
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
         border: Border.all(
@@ -293,7 +291,7 @@ class _ProfilUserState extends State<ProfilUser> {
           children: <Widget>[
             //
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -304,20 +302,20 @@ class _ProfilUserState extends State<ProfilUser> {
                 color: iconColor,
               ),
             ),
-            const SizedBox(width: 16.0),
+            SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     value.isEmpty ? "-" : value,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
                       color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 4.0),
+                  SizedBox(height: 4.0),
                   Text(
                     title,
                     style: TextStyle(
@@ -339,7 +337,7 @@ class _ProfilUserState extends State<ProfilUser> {
   Container _cartItem(String title, String number, String unit,
       IconData iconData, Color color) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
@@ -347,7 +345,7 @@ class _ProfilUserState extends State<ProfilUser> {
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
         border: Border.all(
@@ -360,7 +358,7 @@ class _ProfilUserState extends State<ProfilUser> {
         child: Row(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.all(14),
+              padding: EdgeInsets.all(14),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -373,7 +371,7 @@ class _ProfilUserState extends State<ProfilUser> {
                   BoxShadow(
                     color: color.withOpacity(0.3),
                     blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
@@ -383,7 +381,7 @@ class _ProfilUserState extends State<ProfilUser> {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(width: 16.0),
+            SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,7 +398,7 @@ class _ProfilUserState extends State<ProfilUser> {
                           color: color,
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       Text(
                         unit,
                         style: TextStyle(
@@ -411,7 +409,7 @@ class _ProfilUserState extends State<ProfilUser> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4.0),
+                  SizedBox(height: 4.0),
                   Text(
                     title,
                     style: TextStyle(
@@ -430,10 +428,10 @@ class _ProfilUserState extends State<ProfilUser> {
   }
 
   // Method lama untuk referensi (tidak dipakai di desain baru)
-  Container _CartItem(String Title, String Ket, Icon icon) {
+  Container _CartItem(String Title, String Ket, Icon _icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      margin: EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.8),
         borderRadius: BorderRadius.circular(12.0),
@@ -441,7 +439,7 @@ class _ProfilUserState extends State<ProfilUser> {
           BoxShadow(
             color: Colors.white.withOpacity(0.8),
             blurRadius: 4,
-            offset: const Offset(4, 4), // Shadow position
+            offset: Offset(4, 4), // Shadow position
           ),
         ],
       ),
@@ -453,17 +451,17 @@ class _ProfilUserState extends State<ProfilUser> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            icon,
-            const SizedBox(width: 24.0),
+            _icon,
+            SizedBox(width: 24.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
                   Ket,
-                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(height: 4.0),
+                SizedBox(height: 4.0),
                 Text(
                   Title,
                   style: TextStyle(

@@ -14,8 +14,6 @@ import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
 List<CameraDescription> cameras = [];
 
 class Body extends StatefulWidget {
-  const Body({super.key});
-
   @override
   _Body createState() => _Body();
 }
@@ -71,7 +69,7 @@ class _Body extends State<Body> {
     // 6
     try {
       await controller.initialize();
-    } on CameraException {
+    } on CameraException catch (e) {
       // _showCameraException(e);
     }
 
@@ -92,37 +90,37 @@ class _Body extends State<Body> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+            margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
             height: size.height * 0.6,
             width: size.width * 0.9,
             child:
                 (controller == null) ? Container() : CameraPreview(controller),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 16),
-            padding: const EdgeInsets.only(left: 18, right: 18),
+            margin: EdgeInsets.symmetric(horizontal: 36, vertical: 16),
+            padding: EdgeInsets.only(left: 18, right: 18),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey, width: 1),
                 borderRadius: BorderRadius.circular(45)),
             child: DropdownButton(
-              hint: const Text("Pilih Setting Camera : "),
+              hint: Text("Pilih Setting Camera : "),
               dropdownColor: Colors.white,
-              icon: const Icon(Icons.arrow_drop_down),
+              icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               isExpanded: true,
-              underline: const SizedBox(),
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              underline: SizedBox(),
+              style: TextStyle(color: Colors.black, fontSize: 16),
               items: Data.map((item) {
-                return DropdownMenuItem(
-                  value: item.toString(),
+                return new DropdownMenuItem(
                   child:
-                      Text("Setting Camera ke - ${item + 1}"),
+                      new Text("Setting Camera ke - " + (item + 1).toString()),
+                  value: item.toString(),
                 );
               }).toList(),
               onChanged: (newVal) {
                 setState(() {
                   selectedCameraIdx = int.parse(newVal.toString());
-                  print("Pilih Camera :$selectedCameraIdx");
+                  print("Pilih Camera :" + selectedCameraIdx.toString());
                   CameraDescription selectedCamera = cameras[selectedCameraIdx];
                   _initCameraController(selectedCamera);
                 });
@@ -160,7 +158,7 @@ class _Body extends State<Body> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Oke'),
+                child: Text('Oke'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

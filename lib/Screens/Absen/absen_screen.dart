@@ -12,25 +12,21 @@ import 'package:mobile_presensi_kdtg/components/text_style.dart';
 import 'package:mobile_presensi_kdtg/components/or_divider.dart';
 
 class AbsenScreen extends StatelessWidget {
-  const AbsenScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: AbsenPage(),
     );
   }
 }
 
 class AbsenPage extends StatefulWidget {
-  const AbsenPage({super.key});
-
   @override
   _AbsenPage createState() => _AbsenPage();
 }
 
 class _AbsenPage extends State<AbsenPage> {
-  final AbsenPost absenPost = AbsenPost();
+  final AbsenPost absenPost = new AbsenPost();
   double la_polije = -8.1594718;
   double lo_polije = 113.720271;
   double Jarak = 0;
@@ -110,15 +106,16 @@ class _AbsenPage extends State<AbsenPage> {
         body: Stack(children: <Widget>[
       GoogleMap(
         initialCameraPosition: CameraPosition(
-          target: LatLng(la, lo),
+          target: new LatLng(la, lo),
           zoom: 16.0,
         ),
-        markers: <Marker>{
+        markers: Set<Marker>.of(
+          [
             Marker(
-              markerId: const MarkerId('marker_1'),
+              markerId: MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
-              infoWindow: const InfoWindow(
+              infoWindow: InfoWindow(
                 title: 'PlatformMarker',
                 snippet: "Hi I'm a Platform Marker",
               ),
@@ -126,34 +123,35 @@ class _AbsenPage extends State<AbsenPage> {
                 print("Marker tapped");
               },
             ),
-          },
+          ],
+        ),
         mapType: MapType.hybrid,
-        polygons: <Polygon>{
+        polygons: Set<Polygon>.of([
           Polygon(
-              polygonId: const PolygonId("Area Polije"),
+              polygonId: PolygonId("Area Polije"),
               points: const <LatLng>[
-                LatLng(-8.159848, 113.720521),
-                LatLng(-8.161228, 113.723176),
-                LatLng(-8.160425, 113.723687),
-                LatLng(-8.161215, 113.725171),
-                LatLng(-8.154612, 113.725997),
-                LatLng(-8.153624, 113.723426),
+                const LatLng(-8.159848, 113.720521),
+                const LatLng(-8.161228, 113.723176),
+                const LatLng(-8.160425, 113.723687),
+                const LatLng(-8.161215, 113.725171),
+                const LatLng(-8.154612, 113.725997),
+                const LatLng(-8.153624, 113.723426),
               ],
               strokeWidth: 2,
               strokeColor: Colors.blue,
               fillColor: Colors.blue.withOpacity(0.1))
-        },
+        ]),
         onTap: (location) => print('onTap: $location'),
         onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
         compassEnabled: true,
         onMapCreated: (controller) {
-          Future.delayed(const Duration(seconds: 2)).then(
+          Future.delayed(Duration(seconds: 2)).then(
             (_) {
               controller.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
                     bearing: 0,
-                    target: LatLng(la, lo),
+                    target: new LatLng(la, lo),
                     tilt: 30.0,
                     zoom: 18,
                   ),
@@ -170,7 +168,7 @@ class _AbsenPage extends State<AbsenPage> {
           bottom: 10,
           width: size.width * 0.85,
           child: Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0),
+            margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -184,50 +182,50 @@ class _AbsenPage extends State<AbsenPage> {
                     children: [
                       (_image == null)
                           ? Container(
-                              margin: const EdgeInsets.only(
+                              margin: EdgeInsets.only(
                                   left: 10.0, right: 10.0, top: 10.0),
                               height: 59,
                               width: 59,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                image: const DecorationImage(
+                                image: DecorationImage(
                                   image: AssetImage(
                                       'assets/images/user_image.png'),
                                 ),
                               ),
                             )
                           : Padding(
-                              padding: const EdgeInsets.only(
+                              padding: EdgeInsets.only(
                                   left: 10.0, right: 10.0, top: 10.0),
                               child:
                                   Image.file(_image, width: 70, height: 100)),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 5, top: 10, right: 0),
+                        padding: EdgeInsets.only(bottom: 5, top: 10, right: 0),
                         child: Column(
                           children: <Widget>[
-                            const Text(
+                            Text(
                               'Elsa Manora Ramadania',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.blue),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 5,
                             ),
-                            const Text(
+                            Text(
                               '082128767898',
                               style:
                                   TextStyle(fontSize: 15, color: Colors.blue),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 5,
                             ),
-                            const Text("Jarak Anda Menuju Kantor : "),
-                            const SizedBox(
+                            Text("Jarak Anda Menuju Kantor : "),
+                            SizedBox(
                               height: 5,
                             ),
-                            Text("${Jarak.toInt()} Meter",
+                            Text(Jarak.toInt().toString() + " Meter",
                                 style: keterangan),
                           ],
                         ),
@@ -240,7 +238,7 @@ class _AbsenPage extends State<AbsenPage> {
                           children: <Widget>[
                         ElevatedButton(
                           onPressed: getImage,
-                          child: const Text("Ambil Foto"),
+                          child: Text("Ambil Foto"),
                         ),
                         RoundedButtonSmall(
                           text: "Upload",

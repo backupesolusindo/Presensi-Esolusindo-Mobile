@@ -7,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsGrid extends StatefulWidget {
-  const StatsGrid({super.key});
-
   @override
   _StatsGridState createState() => _StatsGridState();
 }
@@ -34,7 +32,7 @@ class _StatsGridState extends State<StatsGrid> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UUID = prefs.getString("ID")!;
     var res = await http.get(
-        Uri.parse("${Core().ApiUrl}Dash/getStatus/$UUID"),
+        Uri.parse(Core().ApiUrl + "Dash/getStatus/" + UUID),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
@@ -49,7 +47,7 @@ class _StatsGridState extends State<StatsGrid> {
   Future<String> getProfil() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UUID = prefs.getString("ID")!;
-    var res = await http.get(Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
+    var res = await http.get(Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
@@ -63,7 +61,7 @@ class _StatsGridState extends State<StatsGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
@@ -78,24 +76,24 @@ class _StatsGridState extends State<StatsGrid> {
           ),
           _CartItem(
               "Jumlah Presensi Bulan Ini",
-              "$jmlPre Presensi",
-              const Icon(
+              jmlPre.toString() + " Presensi",
+              Icon(
                 Icons.alarm_on,
                 size: 40.0,
                 color: CSuccess,
               )),
           _CartItem(
               "Jumlah Kegiatan Bulan Ini",
-              "$jmlKegiatan Kegiatan",
-              const Icon(
+              jmlKegiatan.toString() + " Kegiatan",
+              Icon(
                 Icons.directions_walk_outlined,
                 size: 40.0,
                 color: approval_kegiatan,
               )),
           _CartItem(
               "Jumlah Cuti Bulan Ini",
-              "$jmlCuti Cuti",
-              const Icon(
+              jmlCuti.toString() + " Cuti",
+              Icon(
                 Icons.home_work_rounded,
                 size: 40.0,
                 color: approval_cuti,
@@ -119,7 +117,7 @@ class _StatsGridState extends State<StatsGrid> {
             BoxShadow(
               color: color.withOpacity(0.8),
               blurRadius: 4,
-              offset: const Offset(4, 4), // Shadow position
+              offset: Offset(4, 4), // Shadow position
             ),
           ],
         ),
@@ -149,10 +147,10 @@ class _StatsGridState extends State<StatsGrid> {
     );
   }
 
-  Container _CartItem(String Title, String Ket, Icon icon) {
+  Container _CartItem(String Title, String Ket, Icon _icon) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.8),
         borderRadius: BorderRadius.circular(12.0),
@@ -161,7 +159,7 @@ class _StatsGridState extends State<StatsGrid> {
             color: Colors.black.withOpacity(0.08),
             spreadRadius: 1,
             blurRadius: 12,
-            offset: const Offset(0, 6), // Shadow position
+            offset: Offset(0, 6), // Shadow position
           ),
         ],
       ),
@@ -173,17 +171,17 @@ class _StatsGridState extends State<StatsGrid> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            icon,
-            const SizedBox(width: 24.0),
+            _icon,
+            SizedBox(width: 24.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
                   Ket,
-                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(height: 4.0),
+                SizedBox(height: 4.0),
                 Text(
                   Title,
                   style: TextStyle(

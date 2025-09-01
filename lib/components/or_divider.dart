@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_presensi_kdtg/constants.dart';
 
 class OrDivider extends StatelessWidget {
-  const OrDivider({super.key});
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -18,7 +17,7 @@ class OrDivider extends StatelessWidget {
   }
 
   Expanded buildDivider() {
-    return const Expanded(
+    return Expanded(
       child: Divider(
         color: Color(0xFFD9D9D9),
         height: 1.5,

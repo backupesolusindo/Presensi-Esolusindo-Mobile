@@ -20,8 +20,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
-
   @override
   _Body createState() => _Body();
 }
@@ -38,7 +36,7 @@ class _Body extends State<Body> {
 
   File? _file;
 
-  var url = Uri.parse("${Core().ApiUrl}Izin/get_jenis");
+  var url = Uri.parse(Core().ApiUrl + "Izin/get_jenis");
   List data = []; //edited line
   Future<String> getJenisData() async {
     print("getJenis");
@@ -103,23 +101,23 @@ class _Body extends State<Body> {
 
             //dropdown
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
-              padding: const EdgeInsets.only(left: 18, right: 18),
+              margin: EdgeInsets.symmetric(horizontal: 36, vertical: 8),
+              padding: EdgeInsets.only(left: 18, right: 18),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 1),
                   borderRadius: BorderRadius.circular(45)),
               child: DropdownButton(
-                hint: const Text("Pilih Jenis Cuti : "),
+                hint: Text("Pilih Jenis Cuti : "),
                 dropdownColor: Colors.white,
-                icon: const Icon(Icons.arrow_drop_down),
+                icon: Icon(Icons.arrow_drop_down),
                 iconSize: 24,
                 isExpanded: true,
-                underline: const SizedBox(),
-                style: const TextStyle(color: Colors.black, fontSize: 16),
+                underline: SizedBox(),
+                style: TextStyle(color: Colors.black, fontSize: 16),
                 items: data.map((item) {
-                  return DropdownMenuItem(
+                  return new DropdownMenuItem(
+                    child: new Text(item['jenis_izin']),
                     value: item['idjenis_perizinan'].toString(),
-                    child: Text(item['jenis_izin']),
                   );
                 }).toList(),
                 onChanged: (newVal) {
@@ -130,10 +128,10 @@ class _Body extends State<Body> {
                 value: _mySelection,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text(namaFile),
-            ElevatedButton(onPressed: getFile, child: const Text("Upload File")),
-            const SizedBox(
+            ElevatedButton(onPressed: getFile, child: Text("Upload File")),
+            SizedBox(
               height: 24,
             ),
             RoundedButton(
@@ -154,7 +152,7 @@ class _Body extends State<Body> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const LaporanCutiScreen();
+                          return LaporanCutiScreen();
                         },
                       ),
                     );

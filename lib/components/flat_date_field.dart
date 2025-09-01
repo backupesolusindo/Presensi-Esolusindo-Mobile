@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_presensi_kdtg/components/text_field_container.dart';
 import 'package:mobile_presensi_kdtg/constants.dart';
 import 'package:date_format/date_format.dart';
 
@@ -27,7 +28,7 @@ class _FlatDateField extends State<FlatDateField> {
     Size size = MediaQuery.of(context).size;
     return Container(
  
-     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: widget.width > 0 ? widget.width : size.width * 0.8,
       child: TextFormField(
@@ -35,7 +36,7 @@ class _FlatDateField extends State<FlatDateField> {
           cursorColor: kPrimaryColor,
           showCursor: true,
           readOnly: true,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
           ),
           onTap: () {
@@ -54,20 +55,20 @@ class _FlatDateField extends State<FlatDateField> {
           },
           decoration: InputDecoration(
             labelText: widget.hintText,
-            focusedBorder: const OutlineInputBorder(
+            focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: kPrimaryColor),
             ),
-            enabledBorder: const OutlineInputBorder(
+            enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: softblue),
             ),
-            suffixIcon: const Icon(
+            suffixIcon: Icon(
               Icons.date_range,
               color: kPrimaryColor,
             ),
           ),
           validator: (String? value) {
             if (value == null || value.isEmpty) {
-              return "${widget.hintText} Harus Diisi";
+              return widget.hintText + " Harus Diisi";
             }
             return null;
           }),

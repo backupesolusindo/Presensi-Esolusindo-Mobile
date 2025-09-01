@@ -21,26 +21,28 @@ class IzinPost {
 
   static Future<IzinPost?> connectToApi(
       String id,
-      String tanggalMulai,
-      String tanggalAkhir,
+      String tanggal_mulai,
+      String tanggal_akhir,
       String alasan,
-      String jenisPerizinan,
+      String jenis_perizinan,
       File filecuti) async {
-    var url = Uri.parse("${Core().ApiUrl}Izin/insert_izin");
-    var request = http.MultipartRequest("POST", url);
+    var url = Uri.parse(Core().ApiUrl + "Izin/insert_izin");
+    var request = new http.MultipartRequest("POST", url);
 
-    var stream =
-        http.ByteStream(DelegatingStream.typed(filecuti.openRead()));
-    var length = await filecuti.length();
-    var multipartFile = http.MultipartFile("image", stream, length,
-        filename: basename(filecuti.path));
-    request.files.add(multipartFile);
-  
+    if (filecuti != null) {
+      var stream =
+          new http.ByteStream(DelegatingStream.typed(filecuti.openRead()));
+      var length = await filecuti.length();
+      var multipartFile = new http.MultipartFile("image", stream, length,
+          filename: basename(filecuti.path));
+      request.files.add(multipartFile);
+    }
+
     request.fields['id'] = id;
-    request.fields['tanggal_mulai'] = tanggalMulai;
-    request.fields['tanggal_akhir'] = tanggalAkhir;
+    request.fields['tanggal_mulai'] = tanggal_mulai;
+    request.fields['tanggal_akhir'] = tanggal_akhir;
     request.fields['alasan'] = alasan;
-    request.fields['jenis_perizinan'] = jenisPerizinan;
+    request.fields['jenis_perizinan'] = jenis_perizinan;
 
     http.Response response =
         await http.Response.fromStream(await request.send());

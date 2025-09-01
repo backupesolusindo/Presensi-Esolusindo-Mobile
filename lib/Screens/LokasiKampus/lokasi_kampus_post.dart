@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:mobile_presensi_kdtg/core.dart';
+import 'package:async/async.dart';
+import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,9 +23,9 @@ class LokasiKampusPost {
   static Future<LokasiKampusPost?> connectToApi(String idkampus) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var url = Uri.parse("${Core().ApiUrl}Pegawai/set_lokasi");
+    var url = Uri.parse(Core().ApiUrl + "Pegawai/set_lokasi");
 
-    var request = http.MultipartRequest("POST", url);
+    var request = new http.MultipartRequest("POST", url);
     request.fields['uuid'] = prefs.getString("ID")!;
     request.fields['idkampus'] = idkampus;
 

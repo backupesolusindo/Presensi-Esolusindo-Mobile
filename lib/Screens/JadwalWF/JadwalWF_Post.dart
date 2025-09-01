@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile_presensi_kdtg/core.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,12 +18,12 @@ class JadwalWFPost {
   }
 
   static Future<JadwalWFPost?> connectToApi(
-      String Tanggal, String UUID, String kodeJenis) async {
-    var url = Uri.parse("${Core().ApiUrl}JadwalWF/insert_JadwalWF");
+      String Tanggal, String UUID, String kode_jenis) async {
+    var url = Uri.parse(Core().ApiUrl + "JadwalWF/insert_JadwalWF");
     var apiResult = await http.post(url, body: {
       "tanggal": Tanggal,
       "uuid": UUID,
-      "kode_jenis": kodeJenis,
+      "kode_jenis": kode_jenis,
     });
     if (apiResult.statusCode == 200) {
       print(apiResult.body);

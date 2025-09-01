@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -16,13 +14,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'DropDown'),
+      home: MyHomePage(title: 'DropDown'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -44,18 +42,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.only(left: 16, right: 16),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey, width: 1),
                 borderRadius: BorderRadius.circular(15)),
             child: DropdownButton(
-              hint: const Text("Select Items : "),
+              hint: Text("Select Items : "),
               dropdownColor: Colors.white,
-              icon: const Icon(Icons.arrow_drop_down),
+              icon: Icon(Icons.arrow_drop_down),
               iconSize: 36,
               isExpanded: true,
-              underline: const SizedBox(),
-              style: const TextStyle(color: Colors.black, fontSize: 22),
+              underline: SizedBox(),
+              style: TextStyle(color: Colors.black, fontSize: 22),
               value: valueChoose,
               onChanged: (newValue) {
                 setState(() {

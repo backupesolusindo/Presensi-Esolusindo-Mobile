@@ -15,8 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
-
   @override
   _Body createState() => _Body();
 }
@@ -28,7 +26,7 @@ class _Body extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchUser();
+    this.fetchUser();
   }
 
   fetchUser() async {
@@ -36,7 +34,7 @@ class _Body extends State<Body> {
       isLoading = true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse("${Core().ApiUrl}Kegiatan/getKegiatan");
+    var url = Uri.parse(Core().ApiUrl + "Kegiatan/getKegiatan");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
     });
@@ -64,23 +62,23 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || users.length < 0 || isLoading) {
-      return const Center(
+      return Center(
           child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
-    if (users.isEmpty) {
+    if (users.length <= 0) {
       return Container(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Jadwal Kegiatan Kosong",
-              style: TextStyle(
+          Text("Jadwal Kegiatan Kosong",
+              style: const TextStyle(
                   color: kPrimaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w800)),
-          const SizedBox(
+          SizedBox(
             height: 32,
           ),
           Image.asset(
@@ -118,11 +116,15 @@ class _Body extends State<Body> {
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
               child: Text(
                 (item['tanggal'] == item['tanggal_selesai'])
-                    ? "Pelaksanaan : ${formatDate(DateTime.parse(item['tanggal']),
-                            [dd, '-', mm, '-', yyyy])}"
-                    : "Pelaksanaan : ${formatDate(DateTime.parse(item['tanggal']),
-                            [dd, '-', mm, '-', yyyy])} s/d ${formatDate(DateTime.parse(item['tanggal_selesai']),
-                            [dd, '-', mm, '-', yyyy])}",
+                    ? "Pelaksanaan : " +
+                        formatDate(DateTime.parse(item['tanggal']),
+                            [dd, '-', mm, '-', yyyy])
+                    : "Pelaksanaan : " +
+                        formatDate(DateTime.parse(item['tanggal']),
+                            [dd, '-', mm, '-', yyyy]) +
+                        " s/d " +
+                        formatDate(DateTime.parse(item['tanggal_selesai']),
+                            [dd, '-', mm, '-', yyyy]),
                 style: const TextStyle(
                     color: kDarkPrimaryColor, fontWeight: FontWeight.w600),
               ),
@@ -137,24 +139,24 @@ class _Body extends State<Body> {
                           color: kPrimaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w800)),
-                  const SizedBox(
+                  SizedBox(
                     height: 4,
                   ),
                   Row(
                     children: <Widget>[
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Jam Mulai",
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
                           Text("Jam Selesai",
-                              style: TextStyle(fontSize: 12)),
-                          Text("Lokasi", style: TextStyle(fontSize: 12)),
-                          Text("PIC", style: TextStyle(fontSize: 12)),
+                              style: const TextStyle(fontSize: 12)),
+                          Text("Lokasi", style: const TextStyle(fontSize: 12)),
+                          Text("PIC", style: const TextStyle(fontSize: 12)),
                           Text("Unit Pengadaan",
-                              style: TextStyle(fontSize: 12)),
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                       Column(
@@ -166,8 +168,9 @@ class _Body extends State<Body> {
                               style: const TextStyle(fontSize: 12)),
                           Text(
                               (item['nama_gedung'] != null)
-                                  ? "${": " +
-                                      item['nama_gedung']}, " +
+                                  ? ": " +
+                                      item['nama_gedung'] +
+                                      ", " +
                                       item['nama_kampus']
                                   : ": " + item['nama_kampus'],
                               style: const TextStyle(fontSize: 12)),
@@ -182,7 +185,7 @@ class _Body extends State<Body> {
                 ],
               ),
             ),
-            const SizedBox(height: 16)
+            SizedBox(height: 16)
           ],
         ),
       ),
@@ -198,8 +201,8 @@ class _Body extends State<Body> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: const Text("Presensi Kegiatan"),
-            content: const SingleChildScrollView(
+            title: Text("Presensi Kegiatan"),
+            content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("Pilih Lokasi Presensi Kegiatan !"),
@@ -208,7 +211,7 @@ class _Body extends State<Body> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Presensi Di Lokasi'),
+                child: Text('Presensi Di Lokasi'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -223,7 +226,7 @@ class _Body extends State<Body> {
                 },
               ),
               TextButton(
-                child: const Text('Presensi Online'),
+                child: Text('Presensi Online'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(

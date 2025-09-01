@@ -23,14 +23,12 @@ import 'package:http/http.dart' as http;
 List<CameraDescription> cameras = [];
 
 class AbsenWFScreen extends StatefulWidget {
-  const AbsenWFScreen({super.key});
-
   @override
   _AbsenWFScreenState createState() => _AbsenWFScreenState();
 }
 
 class _AbsenWFScreenState extends State<AbsenWFScreen> {
-  final AbsenPost absenPost = AbsenPost();
+  final AbsenPost absenPost = new AbsenPost();
 
   late GoogleMapController _controller;
   double la_polije = -8.1594718;
@@ -61,7 +59,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
     prefs = await SharedPreferences.getInstance();
     String UUID = prefs.getString("ID")!;
     var res = await http.get(
-        Uri.parse("${Core().ApiUrl}Dash/set_jadwal_WFH/$UUID"),
+        Uri.parse(Core().ApiUrl + "Dash/set_jadwal_WFH/" + UUID),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
@@ -100,7 +98,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
 
   Future<XFile?> takePicture() async {
     final CameraController cameraController = controller;
-    if (!cameraController.value.isInitialized) {
+    if (cameraController == null || !cameraController.value.isInitialized) {
       return null;
     }
 
@@ -140,7 +138,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
   void onTakePictureButtonPressed() {
     Future<XFile?> takePicture() async {
       final CameraController cameraController = controller;
-      if (!cameraController.value.isInitialized) {
+      if (cameraController == null || !cameraController.value.isInitialized) {
         return null;
       }
 
@@ -218,15 +216,16 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
       GoogleMap(
         myLocationEnabled: true,
         initialCameraPosition: CameraPosition(
-          target: LatLng(la, lo),
+          target: new LatLng(la, lo),
           zoom: 16.0,
         ),
-        markers: <Marker>{
+        markers: Set<Marker>.of(
+          [
             Marker(
-              markerId: const MarkerId('marker_1'),
+              markerId: MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
-              infoWindow: const InfoWindow(
+              infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
                 snippet: "Presensi Anda",
               ),
@@ -234,35 +233,36 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                 print("Marker tapped");
               },
             ),
-          },
+          ],
+        ),
         mapType: MapType.hybrid,
-        polygons: <Polygon>{
+        polygons: Set<Polygon>.of([
           Polygon(
-              polygonId: const PolygonId("Area Polije"),
+              polygonId: PolygonId("Area Polije"),
               points: const <LatLng>[
-                LatLng(-8.159848, 113.720521),
-                LatLng(-8.161228, 113.723176),
-                LatLng(-8.160425, 113.723687),
-                LatLng(-8.161215, 113.725171),
-                LatLng(-8.154612, 113.725997),
-                LatLng(-8.153624, 113.723426),
+                const LatLng(-8.159848, 113.720521),
+                const LatLng(-8.161228, 113.723176),
+                const LatLng(-8.160425, 113.723687),
+                const LatLng(-8.161215, 113.725171),
+                const LatLng(-8.154612, 113.725997),
+                const LatLng(-8.153624, 113.723426),
               ],
               strokeWidth: 2,
               strokeColor: Colors.blue,
               fillColor: Colors.blue.withOpacity(0.1))
-        },
+        ]),
         onTap: (location) => print('onTap: $location'),
         onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
         compassEnabled: true,
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
-          Future.delayed(const Duration(seconds: 2)).then(
+          Future.delayed(Duration(seconds: 2)).then(
             (_) {
               controller.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
                     bearing: 0,
-                    target: LatLng(la, lo),
+                    target: new LatLng(la, lo),
                     tilt: 30.0,
                     zoom: 18,
                   ),
@@ -279,7 +279,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
           bottom: 12,
           width: size.width * 0.85,
           child: Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+            margin: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -293,25 +293,25 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                       Column(children: [
                         (_image == null)
                             ? Container(
-                                margin: const EdgeInsets.only(
+                                margin: EdgeInsets.only(
                                     left: 8.0, right: 8.0, top: 8.0),
                                 height: 59,
                                 width: 59,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  image: const DecorationImage(
+                                  image: DecorationImage(
                                     image: AssetImage(
                                         'assets/images/user_image.png'),
                                   ),
                                 ),
                               )
                             : Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                     left: 8.0, right: 8.0, top: 8.0),
                                 child:
                                     Image.file(_image, width: 80, height: 120)),
                         Padding(
-                          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+                          padding: EdgeInsets.only(left: 4.0, right: 4.0),
                           child: TextButton(
                             onPressed: () {
                               if (bacakamera) {
@@ -319,8 +319,9 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                               } else {
                                 getCameraEx();
                               }
+                              ;
                             },
-                            child: const Text(
+                            child: Text(
                               "Ambil Foto",
                               style: TextStyle(fontSize: 11),
                             ),
@@ -328,45 +329,45 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                         )
                       ]),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 5, top: 8, right: 0),
+                        padding: EdgeInsets.only(bottom: 5, top: 8, right: 0),
                         child: Column(
                           children: <Widget>[
-                            const Text("Nama Lengkap"),
+                            Text("Nama Lengkap"),
                             Text(
                               Nama,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.blue),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 4,
                             ),
-                            const Text("NIP"),
+                            Text("NIP"),
                             Text(
                               NIP,
                               style:
-                                  const TextStyle(fontSize: 12, color: Colors.blue),
+                                  TextStyle(fontSize: 12, color: Colors.blue),
                             ),
-                            const Text(
+                            Text(
                               "Work From Home ",
                               style: TextStyle(fontSize: 11, color: CSuccess),
                             ),
                             Container(
                               width: size.width * 0.4,
-                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              margin: EdgeInsets.symmetric(vertical: 4),
                               child: DropdownButton(
-                                hint: const Text("Jadwal Kerja : "),
+                                hint: Text("Jadwal Kerja : "),
                                 dropdownColor: Colors.white,
-                                icon: const Icon(Icons.arrow_drop_down),
+                                icon: Icon(Icons.arrow_drop_down),
                                 iconSize: 24,
                                 isExpanded: true,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: Colors.black, fontSize: 12),
                                 items: DataJadwal.map((item) {
-                                  return DropdownMenuItem(
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['nama']),
                                     value: item['idjadwal_masuk'].toString(),
-                                    child: Text(item['nama']),
                                   );
                                 }).toList(),
                                 onChanged: (newVal) {
@@ -386,7 +387,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                                 value: idJadwal,
                               ),
                             ),
-                            if (statusLoading == 1) const CircularProgressIndicator(),
+                            if (statusLoading == 1) CircularProgressIndicator(),
                             if (statusLoading == 0)
                               RoundedButtonSmall(
                                 text: "MULAI WFH",
@@ -405,37 +406,45 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                                       statusLoading = 0;
                                     });
                                   } else {
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    AbsenPost.connectToApi(
-                                            prefs.getString("ID")!,
-                                            la.toString(),
-                                            lo.toString(),
-                                            "4",
-                                            "2",
-                                            idJadwal,
-                                            JamMasuk,
-                                            _image)
-                                        .then((value) {
-                                      if (value!.status_kode == 200) {
-                                        Navigator.of(context).pop();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const DashboardScreen();
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        _showMyDialog(
-                                            "Absensi WFH", value.message);
-                                      }
+                                    if (_image == null) {
+                                      _showMyDialog("Absensi WFH",
+                                          "Anda Belum Mengambil Foto. Mohon Ambil Foto Terlebih Dahulu !");
                                       setState(() {
                                         statusLoading = 0;
                                       });
-                                    });
-                                                                    }
+                                    } else {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      AbsenPost.connectToApi(
+                                              prefs.getString("ID")!,
+                                              la.toString(),
+                                              lo.toString(),
+                                              "4",
+                                              "2",
+                                              idJadwal,
+                                              JamMasuk,
+                                              _image)
+                                          .then((value) {
+                                        if (value!.status_kode == 200) {
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return DashboardScreen();
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          _showMyDialog(
+                                              "Absensi WFH", value.message);
+                                        }
+                                        setState(() {
+                                          statusLoading = 0;
+                                        });
+                                      });
+                                    }
+                                  }
                                 },
                               ),
                           ],
@@ -450,7 +459,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
       Positioned(
           bottom: size.height * 0.15,
           right: 8,
-          child: SizedBox(
+          child: Container(
             width: 50,
             child: FloatingActionButton(
               onPressed: () {
@@ -459,7 +468,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
                       bearing: 0,
-                      target: LatLng(la, lo),
+                      target: new LatLng(la, lo),
                       tilt: 30.0,
                       zoom: 18,
                     ),
@@ -469,8 +478,8 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                     .getVisibleRegion()
                     .then((bounds) => print("bounds: ${bounds.toString()}"));
               },
-              backgroundColor: kPrimaryColor,
               child: const Icon(Icons.my_location),
+              backgroundColor: kPrimaryColor,
             ),
           ))
     ]));
@@ -494,7 +503,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -514,8 +523,8 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: const Text("FAKE GPS"),
-            content: const SingleChildScrollView(
+            title: Text("FAKE GPS"),
+            content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("HARAP UNINSTALL FAKE GPS ANDA !!!"),
@@ -524,7 +533,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: Text('Keluar'),
                 onPressed: () {
                   exit(0);
                 },
@@ -544,8 +553,8 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: const Text("PERIZINAN AKSES LOKASI"),
-            content: const SingleChildScrollView(
+            title: Text("PERIZINAN AKSES LOKASI"),
+            content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text(
@@ -555,7 +564,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('OK'),
+                child: Text('OK'),
                 onPressed: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
@@ -579,11 +588,11 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            contentPadding: const EdgeInsets.all(0),
+            contentPadding: EdgeInsets.all(0),
             content: Container(
               // height: size.height * 0.6,
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(0),
+              margin: EdgeInsets.all(0),
+              padding: EdgeInsets.all(0),
               child: CameraPreview(controller),
             ),
             actions: <Widget>[
@@ -595,7 +604,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
                 child: Image.asset("assets/icons/camera.png", height: 50),
               ),
               TextButton(
-                child: const Text('Kembali', style: TextStyle(color: CDanger)),
+                child: Text('Kembali', style: TextStyle(color: CDanger)),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
