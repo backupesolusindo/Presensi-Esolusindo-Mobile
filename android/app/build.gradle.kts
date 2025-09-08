@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    namespace = "com.esolusindo.epresensi"
+    namespace = "com.esolusindo.smpn3jember_guru"
     compileSdk = 36
     ndkVersion = "27.0.12077973"
 
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.esolusindo.epresensi"
+        applicationId = "com.esolusindo.smpn3jember_guru"
         minSdk = 26  
         targetSdk = 36
         versionCode = flutter.versionCode
