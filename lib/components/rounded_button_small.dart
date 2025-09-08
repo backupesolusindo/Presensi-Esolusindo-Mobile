@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
+import 'package:epresensi_esolusindo/constants.dart';
 
 class RoundedButtonSmall extends StatelessWidget {
   final String text;
@@ -7,13 +7,13 @@ class RoundedButtonSmall extends StatelessWidget {
   final Color color, textColor;
   final double width;
   const RoundedButtonSmall({
-    Key? key,
+    super.key,
     required this.text,
     required this.press,
     this.color = kPrimaryColor,
     this.textColor = Colors.white,
     this.width = 100,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class RoundedButtonSmall extends StatelessWidget {
     return TextButton(
       onPressed: press as void Function()?,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         width: width,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -31,7 +31,7 @@ class RoundedButtonSmall extends StatelessWidget {
             BoxShadow(
               color: color,
               blurRadius: 4,
-              offset: Offset(2, 4), // Shadow position
+              offset: const Offset(2, 4), // Shadow position
             ),
           ],
         ),

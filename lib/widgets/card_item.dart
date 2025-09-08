@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CardItem extends StatelessWidget {
   const CardItem({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -20,24 +20,24 @@ class CardItem extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.home_outlined,
                   size: 40.0,
                   color: Colors.blue,
                 ),
               ),
-              SizedBox(width: 24.0),
+              const SizedBox(width: 24.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     "Alamat",
                     style: TextStyle(
                       fontSize: 18.0,
                     ),
                   ),
-                  SizedBox(height: 4.0),
+                  const SizedBox(height: 4.0),
                   Text(
                     "Jember, Jawa Timur",
                     style: TextStyle(

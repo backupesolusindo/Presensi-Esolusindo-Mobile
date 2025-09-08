@@ -2,16 +2,18 @@ import 'dart:ui';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Lembur/absen_lembur_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/Lembur/components/background.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
+import 'package:epresensi_esolusindo/Screens/Lembur/absen_lembur_screen.dart';
+import 'package:epresensi_esolusindo/Screens/Lembur/components/background.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
@@ -23,15 +25,15 @@ class _Body extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.fetchUser();
+    fetchUser();
   }
 
-  fetchUser() async {
+  Future<void> fetchUser() async {
     setState(() {
       isLoading = true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse(Core().ApiUrl + "Lembur/getLembur");
+    var url = Uri.parse("${Core().ApiUrl}Lembur/getLembur");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
     });
@@ -60,23 +62,23 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || users.length < 0 || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
-    if (users.length <= 0) {
+    if (users.isEmpty) {
       return Container(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Jadwal Lembur Kosong",
-              style: const TextStyle(
+          const Text("Jadwal Lembur Kosong",
+              style: TextStyle(
                   color: kPrimaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w800)),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
           Image.asset(
@@ -114,15 +116,11 @@ class _Body extends State<Body> {
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
               child: Text(
                 (item['tgl_mulai'] == item['tgl_selesai'])
-                    ? "Pelaksanaan : " +
-                        formatDate(DateTime.parse(item['tgl_mulai']),
-                            [dd, '-', mm, '-', yyyy])
-                    : "Pelaksanaan : " +
-                        formatDate(DateTime.parse(item['tgl_mulai']),
-                            [dd, '-', mm, '-', yyyy]) +
-                        " s/d " +
-                        formatDate(DateTime.parse(item['tgl_selesai']),
-                            [dd, '-', mm, '-', yyyy]),
+                    ? "Pelaksanaan : ${formatDate(DateTime.parse(item['tgl_mulai']),
+                            [dd, '-', mm, '-', yyyy])}"
+                    : "Pelaksanaan : ${formatDate(DateTime.parse(item['tgl_mulai']),
+                            [dd, '-', mm, '-', yyyy])} s/d ${formatDate(DateTime.parse(item['tgl_selesai']),
+                            [dd, '-', mm, '-', yyyy])}",
                 style: const TextStyle(
                     color: kDarkPrimaryColor, fontWeight: FontWeight.w600),
               ),
@@ -137,15 +135,15 @@ class _Body extends State<Body> {
                           color: kPrimaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w800)),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Row(
                     children: <Widget>[
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Unit ", style: const TextStyle(fontSize: 12)),
+                          Text("Unit ", style: TextStyle(fontSize: 12)),
                         ],
                       ),
                       Column(
@@ -160,7 +158,7 @@ class _Body extends State<Body> {
                 ],
               ),
             ),
-            SizedBox(height: 16)
+            const SizedBox(height: 16)
           ],
         ),
       ),
@@ -175,8 +173,8 @@ class _Body extends State<Body> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("Presensi Kegiatan"),
-            content: SingleChildScrollView(
+            title: const Text("Presensi Kegiatan"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("Pilih Lokasi Presensi Kegiatan !"),
@@ -185,7 +183,7 @@ class _Body extends State<Body> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Presensi Di Lokasi'),
+                child: const Text('Presensi Di Lokasi'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(

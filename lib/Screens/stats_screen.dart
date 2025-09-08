@@ -1,12 +1,10 @@
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/config/palette.dart';
-import 'package:mobile_presensi_kdtg/config/styles.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/data/data.dart';
-import 'package:mobile_presensi_kdtg/widgets/widgets.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/widgets/widgets.dart';
 
 class StatsScreen extends StatefulWidget {
+  const StatsScreen({super.key});
+
   @override
   _StatsScreenState createState() => _StatsScreenState();
 }
@@ -15,73 +13,70 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        backgroundColor: CBackground,
-        // appBar: CustomAppBar(),
-        body: Stack(
+      body: Container(
+        color: CBackground,
+        child: Stack(
           children: [
-            // Positioned(
-            //   top: 0,
-            //   right: 0,
-            //   child: Image.asset(
-            //     "assets/images/dash_tr.png",
-            //     height: size.height * 0.4,
-            //   ),
-            // ),
-            Positioned(
-              bottom: 0,
-              left: 0,
+            Positioned.fill(
               child: Image.asset(
-                "assets/images/vector_kecil_kanan.png",
-                height: size.height * 0.4,
-                width: size.width,
-                fit: BoxFit.fill,
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Image.asset(
-                "assets/images/main_top.png",
-                color: Colors.blue[200],
-                height: size.height * 0.4,
-                width: size.width,
-                fit: BoxFit.fill,
+                "assets/images/WaliRename.png",
+                fit: BoxFit.cover,
               ),
             ),
             CustomScrollView(
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               slivers: <Widget>[
                 _buildHeader(),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                const SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   sliver: SliverToBoxAdapter(
-                    child: StatsGrid(),
+                    child: StatsGrid(), // Replace with your actual StatsGrid widget
                   ),
                 ),
-                // SliverPadding(
-                //   padding: const EdgeInsets.only(top: 20.0),
-                //   sliver: SliverToBoxAdapter(
-                //     child: CovidBarChart(covidCases: covidUSADailyNewCases),
-                //   ),
-                // ),
+                // Additional slivers go here
               ],
-            )
+            ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   SliverPadding _buildHeader() {
     return SliverPadding(
       padding: const EdgeInsets.only(
-          left: 20.0, right: 20.0, bottom: 20.0, top: 40.0),
+        left: 20.0,
+        right: 20.0,
+        bottom: 20.0,
+        top: 60.0,
+      ),
       sliver: SliverToBoxAdapter(
-        child: Text(
-          'Statistik Presensi',
-          style: const TextStyle(
-            color: CText,
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
+        child: Container(
+          decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8), // Rounded corners
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300, // Soft grey shadow with transparency
+            spreadRadius: 2, // Controls how much the shadow spreads
+            blurRadius: 8, // Higher value for smooth shadow
+            offset:
+                const Offset(0, 4), // Offset for vertical shadow, adjust as needed
+          ),
+        ],
+      ),
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Statistik Presensi',
+              style: TextStyle(
+                color: CText,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

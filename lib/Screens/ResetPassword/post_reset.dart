@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'package:http/http.dart' as http;
 
 class PostReset {
@@ -23,7 +22,7 @@ class PostReset {
   }
 
   static Future<PostReset?> connectToApi(String UUID, String password) async {
-    var url = Uri.parse(Core().ApiUrl + "Login/resetPassword");
+    var url = Uri.parse("${Core().ApiUrl}Login/resetPassword");
     var apiResult = await http.post(url, body: {
       "UUID": UUID,
       "password": password,

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Profil/profil_user.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'screens.dart';
+import 'package:epresensi_esolusindo/Screens/Profil/profil_user.dart';
+import 'package:epresensi_esolusindo/screens/screens.dart';
 
 class BottomNavScreen extends StatefulWidget {
+  const BottomNavScreen({super.key});
+
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
 }
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   final List _screens = [
-    HomeScreen(),
-    StatsScreen(),
-    ProfilUser(),
-    Scaffold(),
-    Scaffold(),
+    const HomeScreen(),
+    const StatsScreen(),
+    const ProfilUser(),
+    const Scaffold(),
+    const Scaffold(),
   ];
   int _currentIndex = 0;
 
@@ -29,8 +30,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         backgroundColor: Colors.white,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.blueAccent[700],
+        unselectedItemColor:
+            Colors.grey[400], // Lighter shade for unselected items
         elevation: 30.0,
         items:
             [Icons.home, Icons.history_outlined, Icons.account_circle_outlined]
@@ -46,11 +48,16 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: _currentIndex == key
-                                ? kPrimaryColor
+                                ? Colors.blueAccent // Menggunakan blueAccent
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          child: Icon(value),
+                          child: Icon(
+                            value,
+                            color: _currentIndex == key
+                                ? Colors.white
+                                : Colors.grey[400], // Set icon color
+                          ),
                         ),
                       ),
                     ))

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Welcome/components/body.dart';
-import 'package:mobile_presensi_kdtg/Screens/bottom_nav_screen.dart';
+import 'package:epresensi_esolusindo/Screens/bottom_nav_screen.dart';
 
 import '../constants.dart';
 
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Presensi POLIJE',
+      title: 'Presensi ESOLUSINDO',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: MaterialColor(
           kPrimaryColor.value,
-          <int, Color>{
+          const <int, Color>{
             50: kPrimaryColor,
             100: kPrimaryColor,
             200: kPrimaryColor,
@@ -29,7 +30,7 @@ class DashboardScreen extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BottomNavScreen(),
+      home: const BottomNavScreen(),
     );
   }
 }

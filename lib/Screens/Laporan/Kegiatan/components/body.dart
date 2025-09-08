@@ -1,18 +1,16 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/Laporan/Kegiatan/components/background.dart';
-import 'package:mobile_presensi_kdtg/Screens/dashboard_screen.dart';
-import 'package:mobile_presensi_kdtg/components/flat_date_field.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_date_field.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
-import 'dart:async';
+import 'package:epresensi_esolusindo/Screens/Laporan/Kegiatan/components/background.dart';
+import 'package:epresensi_esolusindo/components/flat_date_field.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
@@ -33,12 +31,12 @@ class _Body extends State<Body> {
     fetchUser();
   }
 
-  fetchUser() async {
+  Future<void> fetchUser() async {
     setState(() {
       isLoading = true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse(Core().ApiUrl + "RiwayatAbsen/laporan_kegiatan");
+    var url = Uri.parse("${Core().ApiUrl}RiwayatAbsen/laporan_kegiatan");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
       "status": warnaPilih,
@@ -80,7 +78,7 @@ class _Body extends State<Body> {
                     IdCon: txtTanggalAkhir,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 12, right: 6),
+                    margin: const EdgeInsets.only(top: 12, right: 6),
                     width: size.width * 0.15,
                     decoration: BoxDecoration(
                       color: kPrimaryLightColor,
@@ -90,14 +88,14 @@ class _Body extends State<Body> {
                         onPressed: () {
                           fetchUser();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.filter_alt_rounded,
                           color: kPrimaryColor,
                         )),
                   )
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -105,7 +103,7 @@ class _Body extends State<Body> {
                     children: <Widget>[
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                         width: size.width * 0.3,
                         height: size.height * 0.05,
                         child: ClipRRect(
@@ -115,7 +113,7 @@ class _Body extends State<Body> {
                               warnaPilih = "";
                               fetchUser();
                             },
-                            child: Text(
+                            child: const Text(
                               "Semua",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -124,7 +122,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -134,7 +132,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Diterima",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -143,7 +141,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -156,7 +154,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Ditolak",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -165,7 +163,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -178,7 +176,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Menunggu Respon",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -198,12 +196,12 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
-    if (users.length <= 0) {
+    if (users.isEmpty) {
       return Container(
           child: Image.asset(
         "assets/ilustrasi/laporankegiatan.png",
@@ -234,7 +232,7 @@ class _Body extends State<Body> {
                   : (item['status_aproval'] == "2")
                       ? Colors.redAccent.withOpacity(0.2)
                       : Colors.deepOrange.withOpacity(0.4),
-              offset: Offset(1.0, 3), //(x,y)
+              offset: const Offset(1.0, 3), //(x,y)
               blurRadius: 5.0,
             ),
           ]),
@@ -248,7 +246,7 @@ class _Body extends State<Body> {
                 Column(children: [
                   // (_image == null) ?
                   Container(
-                    margin: EdgeInsets.only(right: 8.0, top: 8.0),
+                    margin: const EdgeInsets.only(right: 8.0, top: 8.0),
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
@@ -257,7 +255,7 @@ class _Body extends State<Body> {
                           image: NetworkImage(Core().Url + item["foto"])),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -271,7 +269,7 @@ class _Body extends State<Body> {
                               style: const TextStyle(fontSize: 10)),
                         ],
                       ),
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [],
                       )
@@ -280,7 +278,7 @@ class _Body extends State<Body> {
                 ]),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 25, bottom: 5, top: 15, right: 0),
+                      const EdgeInsets.only(left: 25, bottom: 5, top: 15, right: 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -289,16 +287,16 @@ class _Body extends State<Body> {
                               color: kPrimaryColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w800)),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("Pelaksanaan",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("Pelaksanaan",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(": " + item['kegiatan']['tanggal'],
                                   style: const TextStyle(fontSize: 12)))
@@ -306,11 +304,11 @@ class _Body extends State<Body> {
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("Jam Mulai",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("Jam Mulai",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(": " + item['kegiatan']['jam_mulai'],
                                   style: const TextStyle(fontSize: 12)))
@@ -318,11 +316,11 @@ class _Body extends State<Body> {
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("Jam Selesai",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("Jam Selesai",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(
                                   ": " + item['kegiatan']['jam_selesai'],
@@ -331,11 +329,11 @@ class _Body extends State<Body> {
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("Jam Lokasi",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("Jam Lokasi",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(
                                   (item['kegiatan']['nama_gedung'] != null)
@@ -349,11 +347,11 @@ class _Body extends State<Body> {
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("PIC",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("PIC",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(
                                   ": " + item['kegiatan']['nama_pegawai'],
@@ -362,23 +360,23 @@ class _Body extends State<Body> {
                       ),
                       Row(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               width: size.width * 0.21,
-                              child: Text("Unit",
-                                  style: const TextStyle(fontSize: 12))),
-                          Container(
+                              child: const Text("Unit",
+                                  style: TextStyle(fontSize: 12))),
+                          SizedBox(
                               width: size.width * 0.37,
                               child: Text(": " + item['kegiatan']['nama_unit'],
                                   style: const TextStyle(fontSize: 12)))
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Container(
                         width: 90.0,
                         height: 35.0,
-                        margin: EdgeInsets.only(left: 140),
+                        margin: const EdgeInsets.only(left: 140),
                         decoration: BoxDecoration(
                           color: (item['status_aproval'] == "1")
                               ? softblue
@@ -410,7 +408,7 @@ class _Body extends State<Body> {
                 ),
               ],
             ),
-            SizedBox(height: 16)
+            const SizedBox(height: 16)
           ],
         ),
       ),
