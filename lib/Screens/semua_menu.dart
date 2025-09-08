@@ -16,6 +16,13 @@ import 'package:epresensi_esolusindo/core.dart';
 import 'package:epresensi_esolusindo/components/or_divider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:epresensi_esolusindo/Screens/Absen/WorkFrom/absen_wf_screen.dart';
+import 'package:epresensi_esolusindo/Screens/Absen/WorkFrom/absen_selesai_wf_screen.dart';
+//import 'package:epresensi_esolusindo/Screens/Absen/Istirahat/absen_istirahat_screen.dart';
+//import 'package:epresensi_esolusindo/Screens/Absen/Istirahat/absen_selesai_istirahat_screen.dart';
+//import 'package:epresensi_esolusindo/Screens/Kegiatan/ListKegiatan_screen.dart';
+//import 'package:epresensi_esolusindo/Screens/Lembur/ListLembur_screen.dart';
+//import 'package:epresensi_esolusindo/Screens/Absen/PresensiLokasi/presensi_lokasi_screen.dart';
 
 //import 'Camera/Camera_screen.dart';
 
@@ -255,267 +262,267 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             if (DataIstirahat == null) {
-            //               Navigator.push(context,
-            //                   MaterialPageRoute(builder: (context) {
-            //                 return AbsenIstirahatScreen();
-            //               }));
-            //             } else {
-            //               _showMyDialog("Presensi Istirahat",
-            //                   "Anda belum melakukan Presensi Selesai Istirahat. Silakan Presensi Selesai Istirahat terlebih dahulu !",
-            //                   MaterialPageRoute(builder: (context) {
-            //                 return AbsenSelesaiIstirahatScreen();
-            //               }));
-            //             }
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 "assets/icons/istirahat_keluar_warna.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Istirahat Keluar",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             if (DataIstirahat == null) {
-            //               _showMyDialog("Presensi Istirahat",
-            //                   "Anda belum melakukan Presensi Istirahat. Silakan Presensi Istirahat terlebih dahulu !",
-            //                   MaterialPageRoute(builder: (context) {
-            //                 return AbsenIstirahatScreen();
-            //               }));
-            //             } else {
-            //               Navigator.push(context,
-            //                   MaterialPageRoute(builder: (context) {
-            //                 return AbsenSelesaiIstirahatScreen();
-            //               }));
-            //             }
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 "assets/icons/istirahat_masuk_warna.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Istirahat Masuk",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
-            // ]),
-            // SizedBox(height: 15.0),
-            // Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             if (JenisAbsen == 0 || JenisAbsen == 4) {
-            //               if (StatusDinasLuar == 1) {
-            //                 if (DataAbsen == null) {
-            //                   Navigator.push(context,
-            //                       MaterialPageRoute(builder: (context) {
-            //                     return AbsenWFScreen();
-            //                   }));
-            //                 } else {
-            //                   if (DataAbsenPulang == null) {
-            //                     _showMyDialog("Presensi WFH",
-            //                         "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
-            //                         MaterialPageRoute(builder: (context) {
-            //                       return AbsenSelesaiWFScreen();
-            //                     }));
-            //                   } else {
-            //                     _showNotif("Presensi WFH",
-            //                         "Anda Sudah Melakukan Presensi WFH");
-            //                   }
-            //                 }
-            //               } else {
-            //                 _showNotif("Presensi WFH",
-            //                     "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
-            //               }
-            //             }
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 ((JenisAbsen == 0 || JenisAbsen == 4) &&
-            //                         StatusDinasLuar == 1)
-            //                     ? "assets/icons/mulai_wfh_warna.png"
-            //                     : "assets/icons/mulai_wfh_monokrom.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Mulai WFH",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             if (JenisAbsen == 0 || JenisAbsen == 4) {
-            //               if (StatusDinasLuar == 1) {
-            //                 if (DataAbsen == null) {
-            //                   _showMyDialog("Presensi WFH",
-            //                       "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
-            //                       MaterialPageRoute(builder: (context) {
-            //                     return AbsenWFScreen();
-            //                   }));
-            //                 } else {
-            //                   if (DataAbsenPulang == null) {
-            //                     Navigator.push(context,
-            //                         MaterialPageRoute(builder: (context) {
-            //                       return AbsenSelesaiWFScreen();
-            //                     }));
-            //                   } else {
-            //                     _showMyDialog("Presensi WFH",
-            //                         "Apakah Anda Memperbarui Pulang Sebelumnya ?",
-            //                         MaterialPageRoute(builder: (context) {
-            //                       return AbsenSelesaiWFScreen();
-            //                     }));
-            //                   }
-            //                 }
-            //               } else {
-            //                 _showNotif("Presensi WFH",
-            //                     "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
-            //               }
-            //             }
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 ((JenisAbsen == 0 || JenisAbsen == 4) &&
-            //                         StatusDinasLuar == 1)
-            //                     ? "assets/icons/selesai_wfh_warna.png"
-            //                     : "assets/icons/selesai_wfh_monokrom.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Selesai WFH",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             Navigator.push(context,
-            //                 MaterialPageRoute(builder: (context) {
-            //               return ListKegiatanScreen();
-            //             }));
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 "assets/icons/kegiatan.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Presensi Kegiatan",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
-            //   Container(
-            //       width: width_menu,
-            //       child: TextButton(
-            //           onPressed: () {
-            //             if (StatusDinasLuar == 1) {
-            //               Navigator.push(context,
-            //                   MaterialPageRoute(builder: (context) {
-            //                 return ListLemburScreen();
-            //               }));
-            //             } else {
-            //               _showNotif("Presensi WFH",
-            //                   "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
-            //             }
-            //           },
-            //           // minWidth: 0,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 (StatusDinasLuar == 1)
-            //                     ? "assets/icons/lembur_warna.png"
-            //                     : "assets/icons/lembur_monokrom.png",
-            //                 height: screenHeight * 0.07,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.003),
-            //               Text(
-            //                 "Presensi Lembur",
-            //                 style: const TextStyle(
-            //                   fontSize: 11.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))),
               // Container(
               //     width: width_menu,
-              //     child: TextButton(onPressed: (){
-              //       Navigator.push(context,MaterialPageRoute(builder: (context) {return PresensiLokasiScreen();}));
-              //     },
+              //     child: TextButton(
+              //         onPressed: () {
+              //           if (DataIstirahat == null) {
+              //             Navigator.push(context,
+              //                 MaterialPageRoute(builder: (context) {
+              //               return AbsenIstirahatScreen();
+              //             }));
+              //           } else {
+              //             _showMyDialog("Presensi Istirahat",
+              //                 "Anda belum melakukan Presensi Selesai Istirahat. Silakan Presensi Selesai Istirahat terlebih dahulu !",
+              //                 MaterialPageRoute(builder: (context) {
+              //               return AbsenSelesaiIstirahatScreen();
+              //             }));
+              //           }
+              //         },
               //         // minWidth: 0,
               //         child: Column(
               //           children: <Widget>[
               //             Image.asset(
-              //               "assets/icons/kerja_luar.png",
-              //               height: screenHeight * 0.06,
+              //               "assets/icons/istirahat_keluar_warna.png",
+              //               height: screenHeight * 0.07,
               //             ),
               //             SizedBox(height: screenHeight * 0.003),
               //             Text(
-              //               "Presensi Di Luar Jam Kerja",
+              //               "Istirahat Keluar",
               //               style: const TextStyle(
-              //                 fontSize: 10.0,
+              //                 fontSize: 11.0,
               //                 fontWeight: FontWeight.w500,
               //               ),
               //               textAlign: TextAlign.center,
               //             )
               //           ],
-              //         )
-              //     )),
+              //         ))),
+              // Container(
+              //     width: width_menu,
+              //     child: TextButton(
+              //         onPressed: () {
+              //           if (DataIstirahat == null) {
+              //             _showMyDialog("Presensi Istirahat",
+              //                 "Anda belum melakukan Presensi Istirahat. Silakan Presensi Istirahat terlebih dahulu !",
+              //                 MaterialPageRoute(builder: (context) {
+              //               return AbsenIstirahatScreen();
+              //             }));
+              //           } else {
+              //             Navigator.push(context,
+              //                 MaterialPageRoute(builder: (context) {
+              //               return AbsenSelesaiIstirahatScreen();
+              //             }));
+              //           }
+              //         },
+              //         // minWidth: 0,
+              //         child: Column(
+              //           children: <Widget>[
+              //             Image.asset(
+              //               "assets/icons/istirahat_masuk_warna.png",
+              //               height: screenHeight * 0.07,
+              //             ),
+              //             SizedBox(height: screenHeight * 0.003),
+              //             Text(
+              //               "Istirahat Masuk",
+              //               style: const TextStyle(
+              //                 fontSize: 11.0,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //               textAlign: TextAlign.center,
+              //             )
+              //           ],
+              //         ))),
+            ]),
+            SizedBox(height: 15.0),
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+              Container(
+                  width: width_menu,
+                  child: TextButton(
+                      onPressed: () {
+                        if (JenisAbsen == 0 || JenisAbsen == 4) {
+                          if (StatusDinasLuar == 1) {
+                            if (DataAbsen == null) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return AbsenWFScreen();
+                              }));
+                            } else {
+                              if (DataAbsenPulang == null) {
+                                _showMyDialog("Presensi WFH",
+                                    "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
+                                    MaterialPageRoute(builder: (context) {
+                                  return AbsenSelesaiWFScreen();
+                                }));
+                              } else {
+                                _showNotif("Presensi WFH",
+                                    "Anda Sudah Melakukan Presensi WFH");
+                              }
+                            }
+                          } else {
+                            _showNotif("Presensi WFH",
+                                "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
+                          }
+                        }
+                      },
+                      // minWidth: 0,
+                      child: Column(
+                        children: <Widget>[
+                          Image.asset(
+                            ((JenisAbsen == 0 || JenisAbsen == 4) &&
+                                    StatusDinasLuar == 1)
+                                ? "assets/icons/mulai_wfh_warna.png"
+                                : "assets/icons/mulai_wfh_monokrom.png",
+                            height: screenHeight * 0.07,
+                          ),
+                          SizedBox(height: screenHeight * 0.003),
+                          Text(
+                            "Mulai WFH",
+                            style: const TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ))),
+              Container(
+                  width: width_menu,
+                  child: TextButton(
+                      onPressed: () {
+                        if (JenisAbsen == 0 || JenisAbsen == 4) {
+                          if (StatusDinasLuar == 1) {
+                            if (DataAbsen == null) {
+                              _showMyDialog("Presensi WFH",
+                                  "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
+                                  MaterialPageRoute(builder: (context) {
+                                return AbsenWFScreen();
+                              }));
+                            } else {
+                              if (DataAbsenPulang == null) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return AbsenSelesaiWFScreen();
+                                }));
+                              } else {
+                                _showMyDialog("Presensi WFH",
+                                    "Apakah Anda Memperbarui Pulang Sebelumnya ?",
+                                    MaterialPageRoute(builder: (context) {
+                                  return AbsenSelesaiWFScreen();
+                                }));
+                              }
+                            }
+                          } else {
+                            _showNotif("Presensi WFH",
+                                "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
+                          }
+                        }
+                      },
+                      // minWidth: 0,
+                      child: Column(
+                        children: <Widget>[
+                          Image.asset(
+                            ((JenisAbsen == 0 || JenisAbsen == 4) &&
+                                    StatusDinasLuar == 1)
+                                ? "assets/icons/selesai_wfh_warna.png"
+                                : "assets/icons/selesai_wfh_monokrom.png",
+                            height: screenHeight * 0.07,
+                          ),
+                          SizedBox(height: screenHeight * 0.003),
+                          Text(
+                            "Selesai WFH",
+                            style: const TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ))),
+              // Container(
+              //     width: width_menu,
+              //     child: TextButton(
+              //         onPressed: () {
+              //           Navigator.push(context,
+              //               MaterialPageRoute(builder: (context) {
+              //             return ListKegiatanScreen();
+              //           }));
+              //         },
+              //         // minWidth: 0,
+              //         child: Column(
+              //           children: <Widget>[
+              //             Image.asset(
+              //               "assets/icons/kegiatan.png",
+              //               height: screenHeight * 0.07,
+              //             ),
+              //             SizedBox(height: screenHeight * 0.003),
+              //             Text(
+              //               "Presensi Kegiatan",
+              //               style: const TextStyle(
+              //                 fontSize: 11.0,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //               textAlign: TextAlign.center,
+              //             )
+              //           ],
+              //         ))),
+              // Container(
+              //     width: width_menu,
+              //     child: TextButton(
+              //         onPressed: () {
+              //           if (StatusDinasLuar == 1) {
+              //             Navigator.push(context,
+              //                 MaterialPageRoute(builder: (context) {
+              //               return ListLemburScreen();
+              //             }));
+              //           } else {
+              //             _showNotif("Presensi WFH",
+              //                 "Anda Dilarang Melakukan Presensi Karena Sedang Dinas Luar");
+              //           }
+              //         },
+              //         // minWidth: 0,
+              //         child: Column(
+              //           children: <Widget>[
+              //             Image.asset(
+              //               (StatusDinasLuar == 1)
+              //                   ? "assets/icons/lembur_warna.png"
+              //                   : "assets/icons/lembur_monokrom.png",
+              //               height: screenHeight * 0.07,
+              //             ),
+              //             SizedBox(height: screenHeight * 0.003),
+              //             Text(
+              //               "Presensi Lembur",
+              //               style: const TextStyle(
+              //                 fontSize: 11.0,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //               textAlign: TextAlign.center,
+              //             )
+              //           ],
+              //         ))),
+              // Container(
+              //     width: width_menu,
+              //     child: TextButton(onPressed: (){
+              //       Navigator.push(context,MaterialPageRoute(builder: (context) {return PresensiLokasiScreen();}));
+              //     },
+                      // // minWidth: 0,
+                      // child: Column(
+                      //   children: <Widget>[
+                      //     Image.asset(
+                      //       "assets/icons/kerja_luar.png",
+                      //       height: screenHeight * 0.06,
+                      //     ),
+                      //     SizedBox(height: screenHeight * 0.003),
+                      //     Text(
+                      //       "Presensi Di Luar Jam Kerja",
+                      //       style: const TextStyle(
+                      //         fontSize: 10.0,
+                      //         fontWeight: FontWeight.w500,
+                      //       ),
+                      //       textAlign: TextAlign.center,
+                      //     )
+                      //   ],
+                      // )
+                  //)),
             ]),
             const SizedBox(height: 15.0),
           ],
