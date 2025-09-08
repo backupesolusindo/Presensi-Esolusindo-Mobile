@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/JadwalWF/components/body.dart';
+import 'package:epresensi_esolusindo/Screens/JadwalWF/components/body.dart';
 
 class JadwalWFScreenn extends StatelessWidget {
+  const JadwalWFScreenn({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class JadwalWFScreenn extends StatelessWidget {
           ),
         ),
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

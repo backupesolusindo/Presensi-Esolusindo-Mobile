@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/components/text_field_container.dart';
+import 'package:epresensi_esolusindo/components/text_field_container.dart';
 import '../constants.dart';
 
 class RoundedPasswordField extends StatefulWidget {
@@ -7,8 +7,7 @@ class RoundedPasswordField extends StatefulWidget {
   final TextEditingController IdCon;
 
   const RoundedPasswordField(
-      {Key? key, required this.hintText, required this.IdCon})
-      : super(key: key);
+      {super.key, required this.hintText, required this.IdCon});
 
   @override
   _RoundedPasswordField createState() => _RoundedPasswordField();
@@ -26,7 +25,7 @@ class _RoundedPasswordField extends State<RoundedPasswordField> {
           keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
             hintText: widget.hintText,
-            icon: Icon(
+            icon: const Icon(
               Icons.lock,
               color: kPrimaryColor,
             ),

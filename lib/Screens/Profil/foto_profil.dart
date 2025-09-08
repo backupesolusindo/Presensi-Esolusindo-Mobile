@@ -4,54 +4,108 @@ import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Profil/upload_post.dart';
-import 'package:mobile_presensi_kdtg/Screens/dashboard_screen.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_button_small.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
+import 'package:epresensi_esolusindo/Screens/Profil/upload_post.dart';
+import 'package:epresensi_esolusindo/Screens/dashboard_screen.dart';
+import 'package:epresensi_esolusindo/components/rounded_button_small.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart'; // Ensure you have this import
+import 'package:epresensi_esolusindo/Screens/AktifGPS/aktifgps_screen.dart'; // Adjust the import path as necessary
+
 
 class Foto_Profil extends StatefulWidget {
+  const Foto_Profil({super.key});
+
   @override
   _Foto_ProfilState createState() => _Foto_ProfilState();
 }
 
 class _Foto_ProfilState extends State<Foto_Profil> {
-  late File _image;
+  File? _image; // Make _image nullable
   final picker = ImagePicker();
   late String UUID;
-  String NamaPegawai = "Nama Pegawai";
-  String NIP = "-";
-  String Foto = "desain/logo.png";
+  String Nama = "";
+  String NIP = "";
+  String Foto = "desain/user.png";
   String Email = "", Unit = "";
   var DataPegawai;
 
   @override
   void initState() {
-    // TODO: implement initState
-    // WidgetsBinding.instance.addPostFrameCallback(getPref());
     super.initState();
-    getDataDash();
+    fetchData(); // Call fetchData instead of getDataDash directly
   }
 
-  Future<String> getDataDash() async {
+  Future<void> fetchData() async {
+    var prefsData = await getPref();
+    UUID = prefsData['UUID'] ?? '';
+    NIP = prefsData['NIP'] ?? '-';
+    Nama = prefsData['Nama'] ?? '';
+    await getDataDash(); // Call getDataDash after fetching preferences
+  }
+
+  Future<Map<String, String?>> getPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    UUID = prefs.getString("ID")!;
-    var res = await http.get(Uri.parse(Core().ApiUrl + "Dash/get_dash/" + UUID),
-        headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-    setState(() {
-      DataPegawai = resBody['data']["pegawai"];
-      NamaPegawai = DataPegawai["nama_pegawai"];
-      NIP = DataPegawai["NIP"];
-      Email = DataPegawai["email"];
-      Unit = DataPegawai["unit"];
-      Foto = DataPegawai["foto_profil"];
-    });
-    print(resBody);
-    return "";
+    String? UUID = prefs.getString("ID");
+    String? NIP = prefs.getString("NIP");
+    String? Nama = prefs.getString("Nama");
+
+    if (prefs.getInt("CameraSelect") == null) {
+      prefs.setInt("CameraSelect", 1);
+    }
+
+    bool status = await Geolocator.isLocationServiceEnabled();
+    if (!status) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return const AktifGPS();
+      }));
+    }
+
+    return {
+      'UUID': UUID,
+      'NIP': NIP,
+      'Nama': Nama,
+    };
+  }
+
+  Future<void> getDataDash() async {
+    try {
+      var res = await http.get(
+        Uri.parse("${Core().ApiUrl}Dash/get_dash/$UUID"),
+        headers: {"Accept": "application/json"},
+      );
+
+      if (res.statusCode == 200) {
+        var resBody = json.decode(res.body);
+        setState(() {
+          DataPegawai = resBody['data']["pegawai"];
+          // You can assign other fields from DataPegawai if needed
+          Email = DataPegawai["email"];
+          Unit = DataPegawai["unit"];
+        //   Foto = DataPegawai["foto_profil"] ?? Foto; // Default to existing Foto
+        // });
+        // Validasi dan cleaning untuk foto_profil
+          String? fotoFromAPI = DataPegawai["foto_profil"];
+          if (fotoFromAPI != null && fotoFromAPI.isNotEmpty) {
+            // Jika foto dari API mengandung path yang salah, perbaiki
+            if (fotoFromAPI.contains("Login/logo.png")) {
+              Foto = "desain/user.png"; // Gunakan default
+            } else {
+              Foto = fotoFromAPI;
+            }
+          } else {
+            Foto = "desain/user.png"; // Default jika kosong
+          }
+        });
+      } else {
+        print("Error fetching data: ${res.statusCode}");
+      }
+    } catch (e) {
+      print("Exception occurred: $e");
+    }
   }
 
   @override
@@ -82,77 +136,76 @@ class _Foto_ProfilState extends State<Foto_Profil> {
             SizedBox(
               height: size.height * 0.15,
             ),
-            Text(
+            const Text(
                 "Upload Foto Profil Anda yang Baru, Dengan cara klik foto profil Anda, Pilih Foto dan Upload",
                 style: TextStyle(
                   fontSize: 18.0,
                   color: kDarkPrimaryColor,
                   fontWeight: FontWeight.bold,
                 )),
-            SizedBox(
-              height: 16,
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: _show,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                child: _image == null
+                    ? Image.network(
+                        Core().Url + Foto,
+                        width: size.width * 0.8,
+                        height: size.width * 0.8,
+                      )
+                    : Image.file(
+                        _image!,
+                        width: size.width * 0.8,
+                        height: size.width * 0.8,
+                      ),
+              ),
             ),
-            (_image == null)
-                ? TextButton(
-                    onPressed: () {
-                      _show();
-                    },
-                    child: Padding(
-                        padding:
-                            EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                        child: Image.network(Core().Url + Foto,
-                            width: size.width * 0.8, height: size.width * 0.8)))
-                : TextButton(
-                    onPressed: () {
-                      _show();
-                    },
-                    child: Padding(
-                        padding:
-                            EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                        child: Image.file(_image,
-                            width: size.width * 0.8,
-                            height: size.width * 0.8))),
             Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 8.0),
-                child: RoundedButtonSmall(
-                    text: "UPLOAD FOTO",
-                    color: kPrimaryColor,
-                    press: () async {
-                      if (_image == null) {
-                        _showMyDialog("Upload Foto Profil",
-                            "Pilih Foto terlebih dahulu dengan cara klik foto profil Anda");
+              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+              child: RoundedButtonSmall(
+                text: "UPLOAD FOTO",
+                color: kPrimaryColor,
+                press: () async {
+                  if (_image == null) {
+                    _showMyDialog("Upload Foto Profil",
+                        "Pilih Foto terlebih dahulu dengan cara klik foto profil Anda");
+                  } else {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    UploadPost.connectToApi(prefs.getString("ID")!, _image!)
+                        .then((value) {
+                      if (value!.status_kode == 200) {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const DashboardScreen();
+                        }));
                       } else {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        UploadPost.connectToApi(prefs.getString("ID")!, _image)
-                            .then((value) {
-                          if (value!.status_kode == 200) {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return DashboardScreen();
-                            }));
-                          } else {
-                            _showMyDialog("Upload Foto Profil", value.message);
-                          }
-                        });
+                        _showMyDialog("Upload Foto Profil", value.message);
                       }
-                    })),
+                    });
+                  }
+                },
+              ),
+            ),
             Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 32.0),
-                child: RoundedButtonSmall(
-                    text: "Kembali",
-                    color: ColorLight,
-                    press: () async {
-                      Navigator.of(context).pop();
-                    }))
+              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 32.0),
+              child: RoundedButtonSmall(
+                text: "Kembali",
+                color: ColorLight,
+                press: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            )
           ]),
         ],
       ),
     );
   }
 
-  Future getImage() async {
-    final pickedFile = await picker.getImage(
+  Future<void> getImage() async {
+    final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.front,
         maxHeight: 380,
@@ -167,7 +220,7 @@ class _Foto_ProfilState extends State<Foto_Profil> {
     });
   }
 
-  Future getFile() async {
+  Future<void> getFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
@@ -188,13 +241,13 @@ class _Foto_ProfilState extends State<Foto_Profil> {
   Future<void> _show() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("UPLOAD IMAGE"),
-            content: SingleChildScrollView(
+            title: const Text("UPLOAD IMAGE"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("Pilih File Dari Sumber?"),
@@ -203,16 +256,16 @@ class _Foto_ProfilState extends State<Foto_Profil> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('CAMERA'),
+                child: const Text('CAMERA'),
                 onPressed: () async {
-                  getImage();
+                  await getImage();
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('GALLERY'),
+                child: const Text('GALLERY'),
                 onPressed: () async {
-                  getFile();
+                  await getFile();
                   Navigator.of(context).pop();
                 },
               ),
@@ -223,25 +276,25 @@ class _Foto_ProfilState extends State<Foto_Profil> {
     );
   }
 
-  Future<void> _showMyDialog(String Title, String Keterangan) async {
+  Future<void> _showMyDialog(String title, String description) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text(Title),
+            title: Text(title),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text(Keterangan),
+                  Text(description),
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

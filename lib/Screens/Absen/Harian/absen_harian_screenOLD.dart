@@ -4,28 +4,27 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_post.dart';
-import 'package:mobile_presensi_kdtg/Screens/Login/components/body.dart';
-import 'package:mobile_presensi_kdtg/Screens/dashboard_screen.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_button_small.dart';
-import 'package:mobile_presensi_kdtg/components/show_peringatan.dart';
-import 'package:mobile_presensi_kdtg/components/text_style.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
+import 'package:epresensi_esolusindo/Screens/Absen/absen_post.dart';
+import 'package:epresensi_esolusindo/Screens/dashboard_screen.dart';
+import 'package:epresensi_esolusindo/components/rounded_button_small.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trust_location/trust_location.dart';
 import 'package:http/http.dart' as http;
+import 'package:epresensi_esolusindo/services/location_services.dart';
+
 
 class AbsenHarianScreen extends StatefulWidget {
+  const AbsenHarianScreen({super.key});
+
   @override
   _AbsenHarianScreenState createState() => _AbsenHarianScreenState();
 }
 
 class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
-  final AbsenPost absenPost = new AbsenPost();
+  final AbsenPost absenPost = AbsenPost();
 
   late GoogleMapController _controller;
   double la_polije = -8.1594718;
@@ -52,11 +51,11 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
     getDataPegawai();
   }
 
-  getDataPegawai() async {
+  Future<void> getDataPegawai() async {
     prefs = await SharedPreferences.getInstance();
     String UUID = prefs.getString("ID")!;
     var res = await http.get(
-        Uri.parse(Core().ApiUrl + "Dash/set_jadwal/" + UUID),
+        Uri.parse("${Core().ApiUrl}Dash/set_jadwal/$UUID"),
         headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
@@ -70,7 +69,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
   File? _image;
   final picker = ImagePicker();
   Future getImage() async {
-    final pickedFile = await picker.getImage(
+    final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.front,
         maxHeight: 380,
@@ -85,12 +84,12 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
     });
   }
 
-  getCurrentLocation() async {
+  Future<dynamic> getCurrentLocation() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getBool("sl_harian_masuk")!) {
       _showPerizinan();
     }
-    _isMockLocation = await TrustLocation.isMockLocation;
+    _isMockLocation = await LocationService.isMockLocation;
     print("fake GPS :");
     print(_isMockLocation);
     Nama = prefs.getString("Nama")!;
@@ -149,62 +148,60 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
       GoogleMap(
         myLocationEnabled: true,
         initialCameraPosition: CameraPosition(
-          target: new LatLng(la, lo),
+          target: LatLng(la, lo),
           zoom: 16.0,
         ),
-        markers: Set<Marker>.of(
-          [
+        markers: <Marker>{
             Marker(
-              markerId: MarkerId('marker_1'),
+              markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Jarak : " + Jarak.toInt().toString() + " M",
+                snippet: "Jarak : ${Jarak.toInt()} M",
               ),
               onTap: () {
                 print("Marker tapped");
               },
             ),
-          ],
-        ),
+          },
         mapType: MapType.hybrid,
-        circles: Set.from([
+        circles: {
           Circle(
-              circleId: CircleId("Area Polije"),
+              circleId: const CircleId("Area Polije"),
               center: LatLng(la_polije, lo_polije),
               radius: radius,
               strokeWidth: 2,
               strokeColor: Colors.blue,
               fillColor: Colors.blue.withOpacity(0.2))
-        ]),
-        polygons: Set<Polygon>.of([
+        },
+        polygons: <Polygon>{
           Polygon(
-              polygonId: PolygonId("Area Polije"),
+              polygonId: const PolygonId("Area Polije"),
               points: const <LatLng>[
-                const LatLng(-8.159848, 113.720521),
-                const LatLng(-8.161228, 113.723176),
-                const LatLng(-8.160425, 113.723687),
-                const LatLng(-8.161215, 113.725171),
-                const LatLng(-8.154612, 113.725997),
-                const LatLng(-8.153624, 113.723426),
+                LatLng(-8.159848, 113.720521),
+                LatLng(-8.161228, 113.723176),
+                LatLng(-8.160425, 113.723687),
+                LatLng(-8.161215, 113.725171),
+                LatLng(-8.154612, 113.725997),
+                LatLng(-8.153624, 113.723426),
               ],
               strokeWidth: 2,
               strokeColor: Colors.blue,
               fillColor: Colors.blue.withOpacity(0.1))
-        ]),
+        },
         onTap: (location) => print('onTap: $location'),
         onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
         compassEnabled: true,
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
-          Future.delayed(Duration(seconds: 2)).then(
+          Future.delayed(const Duration(seconds: 2)).then(
             (_) {
               controller.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
                     bearing: 0,
-                    target: new LatLng(la, lo),
+                    target: LatLng(la, lo),
                     tilt: 30.0,
                     zoom: 18,
                   ),
@@ -221,7 +218,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
           bottom: 12,
           width: size.width * 0.85,
           child: Container(
-            margin: EdgeInsets.only(left: 10.0, right: 10.0),
+            margin: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -235,28 +232,28 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                       Column(children: [
                         (_image == null)
                             ? Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 8.0, right: 8.0, top: 8.0),
                                 height: 59,
                                 width: 59,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  image: DecorationImage(
+                                  image: const DecorationImage(
                                     image: AssetImage(
                                         'assets/images/user_image.png'),
                                   ),
                                 ),
                               )
                             : Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     left: 8.0, right: 8.0, top: 8.0),
                                 child: Image.file(_image!,
                                     width: 80, height: 140)),
                         Padding(
-                          padding: EdgeInsets.only(left: 4.0, right: 4.0),
+                          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                           child: TextButton(
                             onPressed: getImage,
-                            child: Text(
+                            child: const Text(
                               "Ambil Foto",
                               style: TextStyle(fontSize: 11),
                             ),
@@ -264,25 +261,25 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                         )
                       ]),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 5, top: 8, right: 0),
+                        padding: const EdgeInsets.only(bottom: 5, top: 8, right: 0),
                         child: Column(
                           children: <Widget>[
-                            Text("Nama Lengkap"),
+                            const Text("Nama Lengkap"),
                             Text(
                               Nama,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.blue),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
-                            Text("NIP"),
+                            const Text("NIP"),
                             Text(
                               NIP,
                               style:
-                                  TextStyle(fontSize: 12, color: Colors.blue),
+                                  const TextStyle(fontSize: 12, color: Colors.blue),
                             ),
                             Text(
                               Jarak.toInt() < radius
@@ -296,19 +293,19 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                             ),
                             Container(
                               width: size.width * 0.4,
-                              margin: EdgeInsets.symmetric(vertical: 4),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
                               child: DropdownButton(
-                                hint: Text("Jadwal Kerja : "),
+                                hint: const Text("Jadwal Kerja : "),
                                 dropdownColor: Colors.white,
-                                icon: Icon(Icons.arrow_drop_down),
+                                icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 24,
                                 isExpanded: true,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black, fontSize: 12),
                                 items: DataJadwal.map((item) {
-                                  return new DropdownMenuItem(
-                                    child: new Text(item['nama']),
+                                  return DropdownMenuItem(
                                     value: item['idjadwal_masuk'].toString(),
+                                    child: Text(item['nama']),
                                   );
                                 }).toList(),
                                 onChanged: (newVal) {
@@ -322,13 +319,13 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                         JamMasuk = DataJadwal[i]['jam_masuk'];
                                       }
                                     }
-                                    print("Jam " + JamMasuk);
+                                    print("Jam $JamMasuk");
                                   });
                                 },
                                 value: idJadwal,
                               ),
                             ),
-                            if (statusLoading == 1) CircularProgressIndicator(),
+                            if (statusLoading == 1) const CircularProgressIndicator(),
                             if (statusLoading == 0)
                               RoundedButtonSmall(
                                 text: "PRESENSI MASUK",
@@ -360,7 +357,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                           Navigator.pushReplacement(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return DashboardScreen();
+                                            return const DashboardScreen();
                                           }));
                                         } else {
                                           _showMyDialog(
@@ -373,7 +370,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                     }
                                   } else {
                                     _isMockLocation =
-                                        await TrustLocation.isMockLocation;
+                                        await LocationService.isMockLocation;
                                     print("fake GPS :");
                                     print(_isMockLocation);
                                     if (_isMockLocation == true) {
@@ -404,7 +401,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                                               Navigator.pushReplacement(context,
                                                   MaterialPageRoute(
                                                       builder: (context) {
-                                                return DashboardScreen();
+                                                return const DashboardScreen();
                                               }));
                                             } else {
                                               _showMyDialog("Absensi Harian",
@@ -438,7 +435,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
       Positioned(
           bottom: size.height * 0.17,
           right: 8,
-          child: Container(
+          child: SizedBox(
             width: 50,
             child: FloatingActionButton(
               onPressed: () {
@@ -447,7 +444,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
                       bearing: 0,
-                      target: new LatLng(la, lo),
+                      target: LatLng(la, lo),
                       tilt: 30.0,
                       zoom: 18,
                     ),
@@ -457,8 +454,8 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
                     .getVisibleRegion()
                     .then((bounds) => print("bounds: ${bounds.toString()}"));
               },
-              child: const Icon(Icons.my_location),
               backgroundColor: kPrimaryColor,
+              child: const Icon(Icons.my_location),
             ),
           ))
     ]));
@@ -482,7 +479,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -502,8 +499,8 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("FAKE GPS"),
-            content: SingleChildScrollView(
+            title: const Text("FAKE GPS"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text("HARAP UNINSTALL FAKE GPS ANDA !!!"),
@@ -512,7 +509,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Keluar'),
+                child: const Text('Keluar'),
                 onPressed: () {
                   // exit(0);
                 },
@@ -532,8 +529,8 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
-            title: Text("PERIZINAN AKSES LOKASI"),
-            content: SingleChildScrollView(
+            title: const Text("PERIZINAN AKSES LOKASI"),
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text(
@@ -543,7 +540,7 @@ class _AbsenHarianScreenState extends State<AbsenHarianScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();

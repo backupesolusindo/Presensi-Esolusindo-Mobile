@@ -1,27 +1,24 @@
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/Login/components/background.dart';
-import 'package:mobile_presensi_kdtg/Screens/Login/post_login.dart';
-import 'package:mobile_presensi_kdtg/Screens/dashboard_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/screens.dart';
-import 'package:mobile_presensi_kdtg/components/already_have_an_account_acheck.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_input_field.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:epresensi_esolusindo/Screens/Login/components/background.dart';
+import 'package:epresensi_esolusindo/Screens/Login/post_login.dart';
+import 'package:epresensi_esolusindo/Screens/dashboard_screen.dart';
+import 'package:epresensi_esolusindo/components/rounded_button.dart';
+import 'package:epresensi_esolusindo/components/rounded_input_field.dart';
+import 'package:epresensi_esolusindo/components/rounded_password_field.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trust_location/trust_location.dart';
+import 'package:epresensi_esolusindo/services/location_services.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
 
 class _Body extends State<Body> {
-  PostLogin postLogin = new PostLogin();
+  PostLogin postLogin = PostLogin();
   String pesan = "";
   final txtUsername = TextEditingController();
   final txtPassword = TextEditingController();
@@ -36,10 +33,10 @@ class _Body extends State<Body> {
     getToken();
   }
 
-  cekFakeGPS() async {
-    bool _isMockLocation = await TrustLocation.isMockLocation;
+  Future<void> cekFakeGPS() async {
+    bool isMockLocation = await LocationService.isMockLocation;
     print("fake GPS :");
-    print(_isMockLocation);
+    print(isMockLocation);
   }
 
   void getToken() async {
@@ -54,20 +51,20 @@ class _Body extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               "HALAMAN LOGIN",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: size.height * 0.06),
+            SizedBox(height: size.height * 0.03),
             Container(
               child: Image.asset(
-                "assets/images/logo.png",
-                width: size.width * 0.6, //ukuran gambar
+                "assets/images/logosmpn3.png",
+                width: size.width * 0.4, //ukuran gambar
               ),
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: size.height * 0.05),
             RoundedInputField(
-              hintText: "NIP / NIK atau SSO Email Anda",
+              hintText: "NIP Anda",
               IdCon: txtUsername,
               onChanged: (String value) {},
             ),
@@ -81,7 +78,7 @@ class _Body extends State<Body> {
                 color: Colors.redAccent.withOpacity(0.8),
               ),
             ),
-            if (statusLoading == 1) CircularProgressIndicator(),
+            if (statusLoading == 1) const CircularProgressIndicator(),
             if (statusLoading == 0)
               RoundedButton(
                 text: "LOGIN",
@@ -133,12 +130,12 @@ class _Body extends State<Body> {
                           context,
                           PageTransition(
                               type: PageTransitionType.fade,
-                              child: DashboardScreen()));
+                              child: const DashboardScreen()));
                     }
                   });
                 },
               ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: size.height * 0.01),
           ],
         ),
       ),

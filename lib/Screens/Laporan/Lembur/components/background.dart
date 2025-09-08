@@ -4,15 +4,15 @@ class Background extends StatelessWidget {
   final Widget child;
   final Widget filter;
   const Background({
-    Key? key,
+    super.key,
     required this.child,
     required this.filter,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: size.height,
       child: Stack(
@@ -37,7 +37,7 @@ class Background extends StatelessWidget {
           Column(
             children: <Widget>[
               filter,
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               child,

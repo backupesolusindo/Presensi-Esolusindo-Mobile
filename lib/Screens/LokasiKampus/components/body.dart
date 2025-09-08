@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Absen/absen_screen.dart';
-import 'package:mobile_presensi_kdtg/Screens/LokasiKampus/components/background.dart';
-import 'package:mobile_presensi_kdtg/Screens/Login/post_login.dart';
-import 'package:mobile_presensi_kdtg/Screens/LokasiKampus/lokasi_kampus_post.dart';
-import 'package:mobile_presensi_kdtg/Screens/dashboard_screen.dart';
-import 'package:mobile_presensi_kdtg/components/already_have_an_account_acheck.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_button.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_date_field.dart';
-import 'package:mobile_presensi_kdtg/components/rounded_input_field.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
-import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:epresensi_esolusindo/Screens/LokasiKampus/components/background.dart';
+import 'package:epresensi_esolusindo/Screens/LokasiKampus/lokasi_kampus_post.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:mobile_presensi_kdtg/components/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
@@ -30,25 +22,41 @@ class _Body extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.fetchUser();
+    fetchUser();
   }
 
-  fetchUser() async {
+  Future<void> fetchUser() async {
     setState(() {
       isLoading = true;
     });
-    var response = await http.get(Uri.parse(Core().ApiUrl + "Kampus/get_list"));
+    var response = await http.get(Uri.parse("${Core().ApiUrl}Kampus/get_list"));
     print(response.body);
     if (response.statusCode == 200) {
-      var items = json.decode(response.body)['data'];
-      setState(() {
-        users = items;
-        isLoading = false;
-      });
+      var items = json.decode(response.body);
+      if (items['message']['status'] == 200) {
+        items = items['data'];
+        setState(() {
+          users = items;
+          isLoading = false;
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: items['message']['message'],
+          toastLength: Toast.LENGTH_SHORT, // Duration of the toast
+          gravity: ToastGravity.BOTTOM, // Position of the toast
+          timeInSecForIosWeb: 1, // Duration for iOS web
+          backgroundColor: Colors.blue.shade500, // Background color
+          textColor: Colors.white, // Text color
+          fontSize: 16.0, // Font size
+        );
+      }
     } else {
       users = [];
       isLoading = false;
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -61,9 +69,9 @@ class _Body extends State<Body> {
 
   Widget getBody() {
     if (users.contains(null) || users.length < 0 || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
     return ListView.builder(
@@ -104,16 +112,16 @@ class _Body extends State<Body> {
                       prefs.setDouble("Radius", double.parse(item['radius']));
                       LokasiKampusPost.connectToApi(idKampus).then((value) {});
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return DashboardScreen();
-                      }));
+                      //Navigator.push(context,
+                          //MaterialPageRoute(builder: (context) {
+                        //return const DashboardScreen();
+                      //}));
                     },
                     child: SizedBox(
                         width: MediaQuery.of(context).size.width - 200,
                         child: Text(
                           NamaKampus,
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         )),
                   )
                 ],

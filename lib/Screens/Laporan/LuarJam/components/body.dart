@@ -1,15 +1,16 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/Screens/Laporan/LuarJam/components/background.dart';
-import 'package:mobile_presensi_kdtg/components/flat_date_field.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
-import 'package:mobile_presensi_kdtg/core.dart';
-import 'dart:async';
+import 'package:epresensi_esolusindo/Screens/Laporan/LuarJam/components/background.dart';
+import 'package:epresensi_esolusindo/components/flat_date_field.dart';
+import 'package:epresensi_esolusindo/constants.dart';
+import 'package:epresensi_esolusindo/core.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   _Body createState() => _Body();
 }
@@ -30,12 +31,12 @@ class _Body extends State<Body> {
     fetchUser();
   }
 
-  fetchUser() async {
+  Future<void> fetchUser() async {
     setState(() {
       isLoading = true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = Uri.parse(Core().ApiUrl + "RiwayatAbsen/laporan_luarjam");
+    var url = Uri.parse("${Core().ApiUrl}RiwayatAbsen/laporan_luarjam");
     var response = await http.post(url, body: {
       "uuid": prefs.getString("ID"),
       "status": warnaPilih,
@@ -77,7 +78,7 @@ class _Body extends State<Body> {
                     IdCon: txtTanggalAkhir,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 12, right: 6),
+                    margin: const EdgeInsets.only(top: 12, right: 6),
                     width: size.width * 0.15,
                     decoration: BoxDecoration(
                       color: kPrimaryLightColor,
@@ -87,14 +88,14 @@ class _Body extends State<Body> {
                         onPressed: () {
                           fetchUser();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.filter_alt_rounded,
                           color: kPrimaryColor,
                         )),
                   )
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -102,7 +103,7 @@ class _Body extends State<Body> {
                     children: <Widget>[
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                         width: size.width * 0.3,
                         height: size.height * 0.05,
                         child: ClipRRect(
@@ -114,7 +115,7 @@ class _Body extends State<Body> {
                               warnaPilih = "";
                               fetchUser();
                             },
-                            child: Text(
+                            child: const Text(
                               "Semua",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -123,7 +124,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -135,7 +136,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Diterima",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -144,7 +145,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -156,7 +157,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Ditolak",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -165,7 +166,7 @@ class _Body extends State<Body> {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                            const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
                           child: TextButton(
@@ -177,7 +178,7 @@ class _Body extends State<Body> {
                                 fetchUser();
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Menunggu Respon",
                               style: TextStyle(color: kPrimaryColor),
                             ),
@@ -197,12 +198,12 @@ class _Body extends State<Body> {
   Widget getBody() {
     Size size = MediaQuery.of(context).size;
     if (users.contains(null) || isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+        valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
       ));
     }
-    if (users.length <= 0) {
+    if (users.isEmpty) {
       return Container(
           child: Image.asset(
         "assets/ilustrasi/laporankegiatan.png",
@@ -221,7 +222,7 @@ class _Body extends State<Body> {
 
   Widget getCard(item) {
     var waktu = item['waktu'];
-    var status_absensi = item['status_absensi'];
+    var statusAbsensi = item['status_absensi'];
     var foto = item['foto'];
     var jam = item['jam_presensi'];
     var tgl = item['tgl_presensi'];
@@ -238,7 +239,7 @@ class _Body extends State<Body> {
                   : (item['status_absensi'] == "2")
                       ? Colors.redAccent.withOpacity(0.2)
                       : Colors.deepOrange.withOpacity(0.4),
-              offset: Offset(1.0, 3), //(x,y)
+              offset: const Offset(1.0, 3), //(x,y)
               blurRadius: 5.0,
             ),
           ]),
@@ -257,7 +258,7 @@ class _Body extends State<Body> {
                         fit: BoxFit.cover,
                         image: NetworkImage(Core().Url + foto))),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(
@@ -265,53 +266,53 @@ class _Body extends State<Body> {
                 children: <Widget>[
                   SizedBox(
                       width: MediaQuery.of(context).size.width - 140,
-                      child: Text(
+                      child: const Text(
                         "Presensi Di Luar Jam",
                         style: TextStyle(fontSize: 14),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: [
-                      Container(
+                      const SizedBox(
                         width: 90,
                         child:
-                            Text("Waktu", style: const TextStyle(fontSize: 12)),
+                            Text("Waktu", style: TextStyle(fontSize: 12)),
                       ),
-                      Container(
+                      SizedBox(
                         width: 120,
                         child: Text(
-                          ": " + jam.toString(),
+                          ": $jam",
                           style: const TextStyle(fontSize: 13),
                         ),
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: <Widget>[
-                      Container(
+                      const SizedBox(
                         width: 90,
                         child: Text("Tanggal",
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.fade,
                             textAlign: TextAlign.left,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               wordSpacing: 10.0,
                             )),
                       ),
-                      Container(
+                      SizedBox(
                         width: 120,
                         child: Text(
-                          ": " + tgl.toString(),
+                          ": $tgl",
                           style: const TextStyle(fontSize: 12),
                         ),
                       )
@@ -320,7 +321,7 @@ class _Body extends State<Body> {
                   Container(
                     width: 80.0,
                     height: 30.0,
-                    margin: EdgeInsets.only(left: 145, top: 10),
+                    margin: const EdgeInsets.only(left: 145, top: 10),
                     decoration: BoxDecoration(
                       color: (item['status_absensi'] == "1")
                           ? softblue

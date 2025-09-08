@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/components/text_field_container.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
+import 'package:epresensi_esolusindo/components/text_field_container.dart';
+import 'package:epresensi_esolusindo/constants.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
@@ -8,12 +8,12 @@ class RoundedInputField extends StatelessWidget {
   final TextEditingController IdCon;
   final ValueChanged<String> onChanged;
   const RoundedInputField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.IdCon,
     this.icon = Icons.person,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

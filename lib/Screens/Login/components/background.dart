@@ -3,51 +3,31 @@ import 'package:flutter/material.dart';
 class Background extends StatelessWidget {
   final Widget child;
   const Background({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: size.height,
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
+          // Fullscreen image as background
+          Positioned.fill(
             child: Image.asset(
-              "assets/images/blob_left.png",
-              width: size.width * 0.35,
+              "assets/images/WaliRename.png",
+              fit: BoxFit.cover,
             ),
           ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/images/blob_right.png",
-              width: size.width * 0.35,
-            ),
+          // Black overlay with 0.3 opacity
+          Container(
+            color: Colors.black.withOpacity(0.3),
           ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/images/main_bottom_right.png",
-              width: size.width * 0.25,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset(
-              "assets/images/main_bottom_left.png",
-              width: size.width * 0.25,
-            ),
-          ),
+          // Main content on top of the overlay
           child,
         ],
       ),

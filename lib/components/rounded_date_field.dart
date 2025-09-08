@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/components/text_field_container.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
+import 'package:epresensi_esolusindo/components/text_field_container.dart';
+import 'package:epresensi_esolusindo/constants.dart';
 import 'package:date_format/date_format.dart';
 
 class RoundedDateField extends StatefulWidget {
   final String hintText;
   final TextEditingController IdCon;
   const RoundedDateField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.IdCon,
-  }) : super(key: key);
+  });
 
   @override
   _RoundedDateField createState() => _RoundedDateField();
@@ -42,14 +42,14 @@ class _RoundedDateField extends State<RoundedDateField> {
           },
           decoration: InputDecoration(
             hintText: widget.hintText,
-            icon: Icon(
+            icon: const Icon(
               Icons.date_range,
               color: kPrimaryColor,
             ),
           ),
           validator: (String? value) {
             if (value == null || value.isEmpty) {
-              return widget.hintText + " Harus Diisi";
+              return "${widget.hintText} Harus Diisi";
             }
             return null;
           }),

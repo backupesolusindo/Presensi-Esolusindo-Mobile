@@ -1,16 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/constants.dart';
 
 class ShowPeringatan extends StatelessWidget {
   final String text;
   final String title;
   const ShowPeringatan({
-    Key? key,
+    super.key,
     required this.text,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class ShowPeringatan extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Keluar'),
+            child: const Text('Keluar'),
             onPressed: () {
               Navigator.of(context).pop();
             },

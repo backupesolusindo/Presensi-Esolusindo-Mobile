@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_presensi_kdtg/config/palette.dart';
+import 'package:epresensi_esolusindo/config/palette.dart';
 
 // icon app bar
 class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -24,5 +26,5 @@ class CustomAppBar extends StatelessWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
