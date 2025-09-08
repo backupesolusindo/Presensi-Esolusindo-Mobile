@@ -1353,7 +1353,7 @@ Widget build(BuildContext context) {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(70),
                         image: const DecorationImage(
-                          image: AssetImage('assets/images/logosmpn3.png'),
+                          image: AssetImage('assets/images/logo_esolusindo.png'),
                         ),
                       ),
                     ),
