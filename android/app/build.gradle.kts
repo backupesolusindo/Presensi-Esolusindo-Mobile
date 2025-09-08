@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    namespace = "com.esolusindo.smpn3jember_guru"
+    namespace = "com.esolusindo.epresensi"
     compileSdk = 36
     ndkVersion = "27.0.12077973"
 
