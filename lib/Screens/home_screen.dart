@@ -373,7 +373,7 @@ Widget build(BuildContext context) {
                 _buildPengumumanSection(screenHeight),
                 _buildBox(screenHeight),
                 _buildKegiatanTerkini(screenHeight),
-                _buildJadwalMapelHariIni(screenHeight),
+                //_buildJadwalMapelHariIni(screenHeight),
               ],
             ),
           ),
@@ -933,85 +933,85 @@ Widget build(BuildContext context) {
     );
   }
 
-  SliverToBoxAdapter _buildJadwalMapelHariIni(double screenHeight) {
-    Size size = MediaQuery.of(context).size;
+  // SliverToBoxAdapter _buildJadwalMapelHariIni(double screenHeight) {
+  //   Size size = MediaQuery.of(context).size;
 
-    return SliverToBoxAdapter(
-      child: AnimatedOpacity(
-        opacity: ssFooter ? 1 : 0,
-        duration: const Duration(milliseconds: 500),
-        child: AnimatedContainer(
-          margin: ssFooter
-              ? const EdgeInsets.only(top: 0)
-              : const EdgeInsets.only(top: 30),
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.fastEaseInToSlowEaseOut,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.only(top: 8, left: 20),
-                child: Text(
-                  'Jadwal Mapel :',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              if (ListJadwalMapel.isEmpty)
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 5, horizontal: 20.0),
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withOpacity(0.5),
-                        blurRadius: 3,
-                        offset: const Offset(2, 2),
-                      ),
-                    ],
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        color: Colors.white70,
-                        size: 24,
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "Tidak ada jadwal mapel untuk hari ini.",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                ListView.builder(
-                  itemCount: ListJadwalMapel.length,
-                  shrinkWrap: true, // GridView akan menyusut sesuai isi
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return getCardJadwalMapel(ListJadwalMapel[index]);
-                  },
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //   return SliverToBoxAdapter(
+  //     child: AnimatedOpacity(
+  //       opacity: ssFooter ? 1 : 0,
+  //       duration: const Duration(milliseconds: 500),
+  //       child: AnimatedContainer(
+  //         margin: ssFooter
+  //             ? const EdgeInsets.only(top: 0)
+  //             : const EdgeInsets.only(top: 30),
+  //         duration: const Duration(milliseconds: 500),
+  //         curve: Curves.fastEaseInToSlowEaseOut,
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             const SizedBox(height: 10),
+  //             const Padding(
+  //               padding: EdgeInsets.only(top: 8, left: 20),
+  //               child: Text(
+  //                 'Jadwal Mapel :',
+  //                 style: TextStyle(
+  //                   fontSize: 15.0,
+  //                   fontWeight: FontWeight.w600,
+  //                 ),
+  //               ),
+  //             ),
+  //             if (ListJadwalMapel.isEmpty)
+  //               Container(
+  //                 padding: const EdgeInsets.all(15.0),
+  //                 margin: const EdgeInsets.symmetric(
+  //                     vertical: 5, horizontal: 20.0),
+  //                 width: size.width,
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.blue,
+  //                   borderRadius: BorderRadius.circular(10.0),
+  //                   boxShadow: [
+  //                     BoxShadow(
+  //                       color: Colors.blue.withOpacity(0.5),
+  //                       blurRadius: 3,
+  //                       offset: const Offset(2, 2),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 child: const Row(
+  //                   children: [
+  //                     Icon(
+  //                       Icons.error_outline,
+  //                       color: Colors.white70,
+  //                       size: 24,
+  //                     ),
+  //                     SizedBox(width: 8),
+  //                     Expanded(
+  //                       child: Text(
+  //                         "Tidak ada jadwal mapel untuk hari ini.",
+  //                         style: TextStyle(
+  //                           color: Colors.white70,
+  //                           fontWeight: FontWeight.w600,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               )
+  //             else
+  //               ListView.builder(
+  //                 itemCount: ListJadwalMapel.length,
+  //                 shrinkWrap: true, // GridView akan menyusut sesuai isi
+  //                 physics: const NeverScrollableScrollPhysics(),
+  //                 itemBuilder: (context, index) {
+  //                   return getCardJadwalMapel(ListJadwalMapel[index]);
+  //                 },
+  //               ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget getCardJadwalMapel(Map<String, dynamic> item) {
     return GestureDetector(
