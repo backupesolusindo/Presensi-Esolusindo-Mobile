@@ -110,7 +110,7 @@ class _ProfilUserState extends State<ProfilUser> {
                     child: Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/gedung_smpn_3_jember.jpg'),
+                          image: AssetImage('assets/images/gedung_esolusindo.jpg'),
                           fit: BoxFit.cover,
                         ),
                       ),
