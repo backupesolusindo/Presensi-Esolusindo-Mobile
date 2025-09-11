@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:epresensi_esolusindo/Screens/Absen/absen_post.dart';
@@ -11,12 +10,9 @@ import 'package:epresensi_esolusindo/components/rounded_button_small.dart';
 import 'package:epresensi_esolusindo/constants.dart';
 import 'package:epresensi_esolusindo/core.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:epresensi_esolusindo/services/location_services.dart';
-
-List<CameraDescription> cameras = [];
 
 class AbsenWFScreen extends StatefulWidget {
   const AbsenWFScreen({super.key});
@@ -36,147 +32,139 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
   double la = 0;
   double lo = 0;
   int statusLoading = 0;
-  late String Nama = "", NIP = "", JamMasuk, idJadwal;
+  late String Nama = "", NIP = "", JamMasuk = "", idJadwal = "";
   late SharedPreferences prefs;
+  bool ssHeader = false;
 
-  late CameraController controller;
-  late XFile imageFile;
-  late File _image;
-  bool bacakamera = false;
-  List DataJadwal = [];
+  List DataJadwal = List.empty();
 
   @override
   void initState() {
     super.initState();
-    prepareCamera();
-    getCurrentLocation();
     getDataPegawai();
+    getCurrentLocation();
   }
 
   Future<void> getDataPegawai() async {
-    prefs = await SharedPreferences.getInstance();
-    String UUID = prefs.getString("ID")!;
-    var res = await http.get(
-        Uri.parse("${Core().ApiUrl}Dash/set_jadwal_WFH/$UUID"),
-        headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-    setState(() {
-      DataJadwal = resBody['data']["jadwal"];
-      JamMasuk = DataJadwal[0]['jam_masuk'].toString();
-      idJadwal = DataJadwal[0]['idjadwal_masuk'].toString();
-    });
-    print(resBody);
-  }
-
-  Future<void> prepareCamera() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    cameras = await availableCameras();
-    controller = CameraController(
-      cameras[prefs.getInt('CameraSelect')!],
-      ResolutionPreset.low,
-      enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-    controller.initialize().then((_) {
-      if (!mounted) {
-        _showMyDialog("KAMERA", "Kamera Depan Tidak Terbaca");
-        controller = CameraController(
-          cameras[1],
-          ResolutionPreset.low,
-          enableAudio: false,
-          imageFormatGroup: ImageFormatGroup.jpeg,
-        );
-        return;
-      } else {
-        bacakamera = true;
-      }
-      setState(() {});
-    });
-  }
-
-  Future<XFile?> takePicture() async {
-    final CameraController cameraController = controller;
-    if (!cameraController.value.isInitialized) {
-      return null;
-    }
-
-    if (cameraController.value.isTakingPicture) {
-      // A capture is already pending, do nothing.
-      return null;
-    }
-
     try {
-      XFile file = await cameraController.takePicture();
-      return file;
-    } on CameraException catch (e) {
-      print("error Camera :");
-      print(e);
-      getCameraEx();
-      return null;
-    }
-  }
-
-  final picker = ImagePicker();
-  Future getCameraEx() async {
-    final pickedFile = await picker.pickImage(
-        source: ImageSource.camera,
-        preferredCameraDevice: CameraDevice.front,
-        maxHeight: 380,
-        maxWidth: 540);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
+      prefs = await SharedPreferences.getInstance();
+      String? UUID = prefs.getString("ID");
+      
+      if (UUID == null || UUID.isEmpty) {
+        print("Error: UUID tidak ditemukan");
+        setState(() {
+          DataJadwal = [];
+        });
+        return;
+      }
+      
+      print("UUID: $UUID");
+      
+      // PERBAIKAN 1: Tambahkan timeout dan error handling yang lebih baik
+      var res = await http.get(
+        Uri.parse("${Core().ApiUrl}Dash/set_jadwal_WFH/$UUID"),
+        headers: {"Accept": "application/json"}
+      ).timeout(Duration(seconds: 30)); // Tambahkan timeout
+      
+      print("Status Code: ${res.statusCode}");
+      print("Response Body: ${res.body}");
+      
+      if (res.statusCode == 200) {
+        var resBody = json.decode(res.body);
+        print("Full Response: $resBody");
+        
+        setState(() {
+          // PERBAIKAN 2: Cek response structure sesuai dengan API PHP
+          if (resBody != null && 
+              resBody['data'] != null && 
+              resBody['data']["jadwal"] != null) {
+            
+            // Pastikan jadwal adalah List
+            if (resBody['data']["jadwal"] is List) {
+              DataJadwal = resBody['data']["jadwal"];
+            } else {
+              // Jika bukan list, mungkin object tunggal, buat jadi list
+              DataJadwal = [resBody['data']["jadwal"]];
+            }
+            
+            // Set nilai default jika ada data
+            if (DataJadwal.isNotEmpty) {
+              // PERBAIKAN 3: Gunakan null safety yang lebih baik
+              var firstSchedule = DataJadwal[0];
+              JamMasuk = firstSchedule['jam_masuk']?.toString() ?? "";
+              idJadwal = firstSchedule['idjadwal_masuk']?.toString() ?? "";
+              
+              print("JamMasuk: $JamMasuk");
+              print("idJadwal: $idJadwal");
+            } else {
+              JamMasuk = "";
+              idJadwal = "";
+              print("DataJadwal kosong dari API");
+            }
+          } else {
+            DataJadwal = [];
+            JamMasuk = "";
+            idJadwal = "";
+            print("Struktur response tidak sesuai");
+          }
+          
+          // PERBAIKAN 4: Cek juga response message
+          if (resBody['message'] != null && resBody['message']['status'] != 200) {
+            print("API Error: ${resBody['message']['message']}");
+            // Tampilkan error message ke user
+            _showMyDialog("Error", resBody['message']['message'] ?? "Terjadi kesalahan");
+          }
+        });
       } else {
-        print('No image selected.');
+        print("Error: Status code ${res.statusCode}");
+        setState(() {
+          DataJadwal = [];
+        });
+        // PERBAIKAN 5: Tampilkan error ke user
+        _showMyDialog("Error", "Gagal mengambil data jadwal. Status: ${res.statusCode}");
       }
-    });
-  }
-
-  void onTakePictureButtonPressed() {
-    Future<XFile?> takePicture() async {
-      final CameraController cameraController = controller;
-      if (!cameraController.value.isInitialized) {
-        return null;
-      }
-
-      if (cameraController.value.isTakingPicture) {
-        // A capture is already pending, do nothing.
-        return null;
-      }
-
-      try {
-        XFile file = await cameraController.takePicture();
-        return file;
-      } on CameraException catch (e) {
-        print("error Camera :");
-        print(e);
-        getCameraEx();
-        return null;
-      }
+    } on SocketException {
+      // PERBAIKAN 6: Handle network errors
+      print("Error: No internet connection");
+      setState(() {
+        DataJadwal = [];
+      });
+      _showMyDialog("Error", "Tidak ada koneksi internet. Periksa koneksi Anda.");
+    } on FormatException {
+      // Handle JSON parsing errors
+      print("Error: Invalid JSON format");
+      setState(() {
+        DataJadwal = [];
+      });
+      _showMyDialog("Error", "Format data tidak valid.");
+    } catch (e) {
+      print("Error getting data pegawai: $e");
+      setState(() {
+        DataJadwal = [];
+      });
+      _showMyDialog("Error", "Terjadi kesalahan: $e");
     }
   }
 
   Future<dynamic> getCurrentLocation() async {
     prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("sl_wfh_mulai")!) {
+    if (prefs.getBool("sl_wfh_mulai") ?? false) {
       _showPerizinan();
     }
+    
     _isMockLocation = await LocationService.isMockLocation;
     print("fake GPS :");
     print(_isMockLocation);
 
-    Nama = prefs.getString("Nama")!;
-    NIP = prefs.getString("NIP")!;
+    Nama = prefs.getString("Nama") ?? "";
+    NIP = prefs.getString("NIP") ?? "";
+    
     bool serviceEnabled;
     LocationPermission permission;
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -184,25 +172,21 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
+    
     final geoposition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     setState(() {
       la = geoposition.latitude;
       lo = geoposition.longitude;
+      ssHeader = true;
     });
   }
 
@@ -211,240 +195,312 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Stack(children: <Widget>[
-      GoogleMap(
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(la, lo),
-          zoom: 16.0,
+      if (!ssHeader)
+        const Center(
+          child: CircularProgressIndicator(),
         ),
-        markers: <Marker>{
+      if (ssHeader)
+        GoogleMap(
+          myLocationEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(la, lo),
+            zoom: 16.0,
+          ),
+          markers: <Marker>{
             Marker(
               markerId: const MarkerId('marker_1'),
               position: LatLng(la, lo),
               consumeTapEvents: true,
               infoWindow: const InfoWindow(
                 title: 'Lokasi Anda',
-                snippet: "Presensi Anda",
+                snippet: "Presensi WFH Anda",
               ),
               onTap: () {
                 print("Marker tapped");
               },
             ),
           },
-        mapType: MapType.hybrid,
-        polygons: <Polygon>{
-          Polygon(
-              polygonId: const PolygonId("Area Polije"),
-              points: const <LatLng>[
-                LatLng(-8.159848, 113.720521),
-                LatLng(-8.161228, 113.723176),
-                LatLng(-8.160425, 113.723687),
-                LatLng(-8.161215, 113.725171),
-                LatLng(-8.154612, 113.725997),
-                LatLng(-8.153624, 113.723426),
-              ],
-              strokeWidth: 2,
-              strokeColor: Colors.blue,
-              fillColor: Colors.blue.withOpacity(0.1))
-        },
-        onTap: (location) => print('onTap: $location'),
-        onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
-        compassEnabled: true,
-        onMapCreated: (GoogleMapController controller) {
-          _controller = controller;
-          Future.delayed(const Duration(seconds: 2)).then(
-            (_) {
-              controller.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    bearing: 0,
-                    target: LatLng(la, lo),
-                    tilt: 30.0,
-                    zoom: 18,
+          mapType: MapType.hybrid,
+          polygons: <Polygon>{
+            Polygon(
+                polygonId: const PolygonId("Area Polije"),
+                points: const <LatLng>[
+                  LatLng(-8.159848, 113.720521),
+                  LatLng(-8.161228, 113.723176),
+                  LatLng(-8.160425, 113.723687),
+                  LatLng(-8.161215, 113.725171),
+                  LatLng(-8.154612, 113.725997),
+                  LatLng(-8.153624, 113.723426),
+                ],
+                strokeWidth: 2,
+                strokeColor: Colors.blue,
+                fillColor: Colors.blue.withOpacity(0.1))
+          },
+          onTap: (location) => print('onTap: $location'),
+          onCameraMove: (cameraUpdate) => print('onCameraMove: $cameraUpdate'),
+          compassEnabled: true,
+          onMapCreated: (GoogleMapController controller) {
+            _controller = controller;
+            Future.delayed(const Duration(seconds: 2)).then(
+              (_) {
+                controller.animateCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                      bearing: 0,
+                      target: LatLng(la, lo),
+                      tilt: 30.0,
+                      zoom: 18,
+                    ),
                   ),
-                ),
-              );
-              controller
-                  .getVisibleRegion()
-                  .then((bounds) => print("bounds: ${bounds.toString()}"));
-            },
-          );
-        },
-      ),
+                );
+                controller
+                    .getVisibleRegion()
+                    .then((bounds) => print("bounds: ${bounds.toString()}"));
+              },
+            );
+          },
+        ),
+      
+      // Header dengan info pegawai
       Positioned(
-          bottom: 12,
-          width: size.width * 0.85,
-          child: Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              color: Colors.white,
-              elevation: 10,
-              child: Column(
+          child: AnimatedOpacity(
+        opacity: ssHeader ? 1 : 0,
+        duration: const Duration(milliseconds: 500),
+        child: AnimatedContainer(
+          padding: const EdgeInsets.only(
+              left: 20.0, right: 20.0, bottom: 10.0, top: 40.0),
+          margin: ssHeader ? const EdgeInsets.only(top: 0) : const EdgeInsets.only(top: 30),
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastEaseInToSlowEaseOut,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: [
-                      Column(children: [
-                        (_image == null)
-                            ? Container(
-                                margin: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 8.0),
-                                height: 59,
-                                width: 59,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  image: const DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/user_image.png'),
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 8.0),
-                                child:
-                                    Image.file(_image, width: 80, height: 120)),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-                          child: TextButton(
-                            onPressed: () {
-                              if (bacakamera) {
-                                _popCamera();
-                              } else {
-                                getCameraEx();
-                              }
-                            },
-                            child: const Text(
-                              "Ambil Foto",
-                              style: TextStyle(fontSize: 11),
-                            ),
-                          ),
-                        )
-                      ]),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5, top: 8, right: 0),
-                        child: Column(
-                          children: <Widget>[
-                            const Text("Nama Lengkap"),
-                            Text(
-                              Nama,
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.blue),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            const Text("NIP"),
-                            Text(
-                              NIP,
-                              style:
-                                  const TextStyle(fontSize: 12, color: Colors.blue),
-                            ),
-                            const Text(
-                              "Work From Home ",
-                              style: TextStyle(fontSize: 11, color: CSuccess),
-                            ),
-                            Container(
-                              width: size.width * 0.4,
-                              margin: const EdgeInsets.symmetric(vertical: 4),
-                              child: DropdownButton(
-                                hint: const Text("Jadwal Kerja : "),
-                                dropdownColor: Colors.white,
-                                icon: const Icon(Icons.arrow_drop_down),
-                                iconSize: 24,
-                                isExpanded: true,
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 12),
-                                items: DataJadwal.map((item) {
-                                  return DropdownMenuItem(
-                                    value: item['idjadwal_masuk'].toString(),
-                                    child: Text(item['nama']),
-                                  );
-                                }).toList(),
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    idJadwal = newVal as String;
-                                    for (var i = 0;
-                                        i < DataJadwal.length;
-                                        i++) {
-                                      if (DataJadwal[i]['idjadwal_masuk'] ==
-                                          idJadwal) {
-                                        JamMasuk =
-                                            DataJadwal[i]['idjadwal_masuk'];
-                                      }
-                                    }
-                                  });
-                                },
-                                value: idJadwal,
-                              ),
-                            ),
-                            if (statusLoading == 1) const CircularProgressIndicator(),
-                            if (statusLoading == 0)
-                              RoundedButtonSmall(
-                                text: "MULAI WFH",
-                                color: kPrimaryColor,
-                                press: () async {
-                                  setState(() {
-                                    statusLoading = 1;
-                                  });
-                                  _isMockLocation =
-                                      await LocationService.isMockLocation;
-                                  print("fake GPS :");
-                                  print(_isMockLocation);
-                                  if (_isMockLocation == true) {
-                                    _showMyDialogFake();
-                                    setState(() {
-                                      statusLoading = 0;
-                                    });
-                                  } else {
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    AbsenPost.connectToApi(
-                                            prefs.getString("ID")!,
-                                            la.toString(),
-                                            lo.toString(),
-                                            "4",
-                                            "2",
-                                            idJadwal,
-                                            JamMasuk,
-                                            _image)
-                                        .then((value) {
-                                      if (value!.status_kode == 200) {
-                                        Navigator.of(context).pop();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const DashboardScreen();
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        _showMyDialog(
-                                            "Absensi WFH", value.message);
-                                      }
-                                      setState(() {
-                                        statusLoading = 0;
-                                      });
-                                    });
-                                                                    }
-                                },
-                              ),
-                          ],
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.white70,
+                          blurRadius: 4,
+                          offset: Offset(2, 4),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          Nama,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: CText),
+                        ),
+                        Text(
+                          (NIP == "") ? "-" : NIP,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: CText),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Work From Home",
+                          style: TextStyle(
+                            fontSize: 14, 
+                            color: CSuccess,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-          )),
+              )
+            ],
+          ),
+        ),
+      )),
+      
+      // Container untuk dropdown jadwal
       Positioned(
-          bottom: size.height * 0.15,
+          bottom: 80,
+          width: size.width,
+          child: AnimatedOpacity(
+              opacity: ssHeader ? 1 : 0,
+              duration: const Duration(milliseconds: 500),
+              child: AnimatedContainer(
+                  margin: ssHeader
+                      ? const EdgeInsets.only(bottom: 0)
+                      : const EdgeInsets.only(bottom: 30),
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.white70,
+                          blurRadius: 4,
+                          offset: Offset(2, 4),
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: <Widget>[
+                          const Text(
+                            "Pilih Jadwal Work From Home",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: CSuccess),
+                          ),
+                          const SizedBox(height: 16),
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 8),
+                            child: DataJadwal.isNotEmpty
+                                ? DropdownButton(
+                                    hint: const Text("Jadwal Kerja : ",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black)),
+                                    dropdownColor: Colors.white,
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    iconSize: 24,
+                                    isExpanded: true,
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                    items: DataJadwal.map<DropdownMenuItem<String>>((item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item['idjadwal_masuk']?.toString() ?? "",
+                                        child: Text(
+                                          "${item['nama'] ?? 'Jadwal Tidak Tersedia'} (${item['jam_masuk'] ?? ''} - ${item['jam_pulang'] ?? ''})", 
+                                          style: const TextStyle(fontSize: 12)
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newVal) {
+                                      setState(() {
+                                        idJadwal = newVal as String;
+                                        // PERBAIKAN 7: Cari jadwal yang sesuai dengan lebih aman
+                                        try {
+                                          var selectedSchedule = DataJadwal.firstWhere(
+                                            (item) => item['idjadwal_masuk'].toString() == idJadwal
+                                          );
+                                          JamMasuk = selectedSchedule['jam_masuk']?.toString() ?? "";
+                                          print("Selected Jam: $JamMasuk");
+                                        } catch (e) {
+                                          print("Error finding schedule: $e");
+                                          JamMasuk = "";
+                                        }
+                                      });
+                                    },
+                                    value: (idJadwal.isEmpty) ? null : idJadwal,
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                                    child: Text(
+                                      "Tidak ada jadwal WFH tersedia",
+                                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                                    ),
+                                  ),
+                          ),
+                          // PERBAIKAN 8: Tambahkan tombol refresh
+                          if (DataJadwal.isEmpty)
+                            ElevatedButton(
+                              onPressed: () {
+                                getDataPegawai();
+                              },
+                              child: const Text("Refresh Jadwal"),
+                            ),
+                        ],
+                      ),
+                    ),
+                  )))),
+      
+      // Button Mulai WFH
+      Positioned(
+          bottom: 20,
+          width: size.width,
+          child: AnimatedOpacity(
+              opacity: ssHeader ? 1 : 0,
+              duration: const Duration(milliseconds: 500),
+              child: AnimatedContainer(
+                margin: ssHeader
+                    ? const EdgeInsets.only(bottom: 0)
+                    : const EdgeInsets.only(bottom: 30),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.fastEaseInToSlowEaseOut,
+                child: (statusLoading == 1)
+                    ? const Center(child: CircularProgressIndicator())
+                    : RoundedButtonSmall(
+                        text: "MULAI WFH",
+                        width: size.width * 0.9,
+                        color: DataJadwal.isNotEmpty && idJadwal.isNotEmpty
+                            ? kPrimaryColor
+                            : Colors.blueGrey,
+                        press: () async {
+                          if (idJadwal.isEmpty) {
+                            _showMyDialog("Error", "Silakan pilih jadwal kerja terlebih dahulu");
+                            return;
+                          }
+                          
+                          setState(() {
+                            statusLoading = 1;
+                          });
+                          
+                          _isMockLocation = await LocationService.isMockLocation;
+                          print("fake GPS :");
+                          print(_isMockLocation);
+                          
+                          if (_isMockLocation == true) {
+                            _showMyDialogFake();
+                            setState(() {
+                              statusLoading = 0;
+                            });
+                          } else {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            
+                            // Panggil API tanpa parameter image
+                            AbsenPost.connectToApiNoPhoto(
+                                    prefs.getString("ID")!,
+                                    la.toString(),
+                                    lo.toString(),
+                                    "4",
+                                    "2",
+                                    idJadwal,
+                                    JamMasuk)
+                                .then((value) {
+                              if (value!.status_kode == 200) {
+                                _showMyDialogSuccess("WFH Berhasil", "Anda sudah berhasil memulai Work From Home.");
+                              } else {
+                                _showMyDialog("Absensi WFH", value.message);
+                              }
+                              setState(() {
+                                statusLoading = 0;
+                              });
+                            });
+                          }
+                        },
+                      ),
+              ))),
+      
+      // Floating Action Button untuk refresh lokasi
+      Positioned(
+          bottom: size.height * 0.24,
           right: 8,
           child: SizedBox(
             width: 50,
@@ -475,7 +531,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
   Future<void> _showMyDialog(String Title, String Keterangan) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
@@ -490,7 +546,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Keluar'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -505,7 +561,7 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
   Future<void> _showMyDialogFake() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
@@ -532,10 +588,47 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
     );
   }
 
+  // FUNGSI BARU UNTUK DIALOG SUKSES
+  Future<void> _showMyDialogSuccess(String title, String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(message),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Oke'),
+                onPressed: () {
+                  // Tutup dialog terlebih dahulu
+                  Navigator.of(context).pop();
+                  // Kemudian navigasi ke Dashboard
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return const DashboardScreen();
+                  }));
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _showPerizinan() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
@@ -553,46 +646,8 @@ class _AbsenWFScreenState extends State<AbsenWFScreen> {
               TextButton(
                 child: const Text('OK'),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.setBool("sl_wfh_mulai", false);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _popCamera() async {
-    Size size = MediaQuery.of(context).size;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-          child: AlertDialog(
-            contentPadding: const EdgeInsets.all(0),
-            content: Container(
-              // height: size.height * 0.6,
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(0),
-              child: CameraPreview(controller),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () async {
-                  onTakePictureButtonPressed();
-                  Navigator.of(context).pop();
-                },
-                child: Image.asset("assets/icons/camera.png", height: 50),
-              ),
-              TextButton(
-                child: const Text('Kembali', style: TextStyle(color: CDanger)),
-                onPressed: () async {
                   Navigator.of(context).pop();
                 },
               ),

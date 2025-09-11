@@ -333,9 +333,9 @@ class _SemuaMenu extends State<SemuaMenu> {
               //           ],
               //         ))),
             ]),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              Container(
+              SizedBox(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -344,14 +344,14 @@ class _SemuaMenu extends State<SemuaMenu> {
                             if (DataAbsen == null) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenWFScreen();
+                                return const AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 _showMyDialog("Presensi WFH",
                                     "Anda belum melakukan Presensi Selesai WFH. Silakan Presensi Selesai WFH terlebih dahulu !",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showNotif("Presensi WFH",
@@ -375,9 +375,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          Text(
+                          const Text(
                             "Mulai WFH",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -385,7 +385,7 @@ class _SemuaMenu extends State<SemuaMenu> {
                           )
                         ],
                       ))),
-              Container(
+              SizedBox(
                   width: width_menu,
                   child: TextButton(
                       onPressed: () {
@@ -395,19 +395,19 @@ class _SemuaMenu extends State<SemuaMenu> {
                               _showMyDialog("Presensi WFH",
                                   "Anda belum melakukan Presensi WFH. Silakan Presensi WFH terlebih dahulu !",
                                   MaterialPageRoute(builder: (context) {
-                                return AbsenWFScreen();
+                                return const AbsenWFScreen();
                               }));
                             } else {
                               if (DataAbsenPulang == null) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               } else {
                                 _showMyDialog("Presensi WFH",
                                     "Apakah Anda Memperbarui Pulang Sebelumnya ?",
                                     MaterialPageRoute(builder: (context) {
-                                  return AbsenSelesaiWFScreen();
+                                  return const AbsenSelesaiWFScreen();
                                 }));
                               }
                             }
@@ -428,9 +428,9 @@ class _SemuaMenu extends State<SemuaMenu> {
                             height: screenHeight * 0.07,
                           ),
                           SizedBox(height: screenHeight * 0.003),
-                          Text(
+                          const Text(
                             "Selesai WFH",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.w500,
                             ),
