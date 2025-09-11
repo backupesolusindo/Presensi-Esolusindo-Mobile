@@ -305,7 +305,7 @@ class _AbsenSelesaiWFScreenState extends State<AbsenSelesaiWFScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: (DataPegawai != null && DataPegawai['idabsen'] != null) 
-                                    ? Colors.orange 
+                                    ? Colors.green 
                                     : Colors.grey),
                           ),
                           const SizedBox(height: 8),
@@ -316,7 +316,7 @@ class _AbsenSelesaiWFScreenState extends State<AbsenSelesaiWFScreen> {
                             style: TextStyle(
                                 fontSize: 14,
                                 color: (DataPegawai != null && DataPegawai['idabsen'] != null) 
-                                    ? Colors.orange 
+                                    ? Colors.green 
                                     : Colors.grey),
                             textAlign: TextAlign.center,
                           ),
@@ -344,7 +344,7 @@ class _AbsenSelesaiWFScreenState extends State<AbsenSelesaiWFScreen> {
                         text: "SELESAI WFH",
                         width: size.width * 0.9,
                         color: (DataPegawai != null && DataPegawai['idabsen'] != null)
-                            ? Colors.orange
+                            ? Colors.green
                             : Colors.blueGrey,
                         press: () async {
                           setState(() {
@@ -442,7 +442,7 @@ class _AbsenSelesaiWFScreenState extends State<AbsenSelesaiWFScreen> {
                     .getVisibleRegion()
                     .then((bounds) => print("bounds: ${bounds.toString()}"));
               },
-              backgroundColor: Colors.orange,
+              backgroundColor: Colors.green,
               child: const Icon(Icons.my_location),
             ),
           ))
